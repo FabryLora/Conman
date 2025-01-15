@@ -6,11 +6,14 @@ export default {
   ],
   theme: {
     fontFamily: {
-      'roboto': ['Roboto', 'sans-serif']
+      'roboto': ['Roboto', 'sans-serif'],
+      'roboto-condensed': ['Roboto Condensed', 'sans-serif'],
     },
     extend: {
       colors: {
-        "primary-orange": "#F2781E",
+        "primary-blue": "#002C72",
+        "primary-red": "#FF1F14",
+        "special-white": "#F5F5F5"
 
       }
     },
