@@ -12,12 +12,15 @@ export default {
     extend: {
       colors: {
         "primary-blue": "#002C72",
+        "primary-blue-dark": "#092552",
         "primary-red": "#FF1F14",
         "special-white": "#F5F5F5"
 
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 }
 
