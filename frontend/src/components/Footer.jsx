@@ -9,14 +9,20 @@ import cosmanWhiteLogo from "../assets/logos/conman-white-logo.png";
 
 export default function Footer() {
     const links = [
-        { title: "Nosotros", href: "/nosotros" },
-        { title: "Terminales y accesorios", href: "/terminales-y-accesorios" },
-        { title: "Mangueras", href: "/mangueras" },
-        { title: "Acoples rapidos", href: "/acoples-rapidos" },
-        { title: "Productos", href: "/productos" },
-        { title: "Calidad", href: "/calidad" },
-        { title: "Novedades", href: "/novedads" },
-        { title: "Contacto", href: "/contacto" },
+        { title: "Nosotros", href: "/inicio/nosotros" },
+        {
+            title: "Terminales y accesorios",
+            href: "/inicio/terminales-y-accesorios",
+        },
+        { title: "Mangueras", href: "/inicio/mangueras" },
+        {
+            title: "Acoples rapidos",
+            href: "/inicio/acoples-rapidos-hidraulicos",
+        },
+        { title: "Productos", href: "/inicio/productos" },
+        { title: "Calidad", href: "/inicio/calidad" },
+        { title: "Novedades", href: "/inicio/novedads" },
+        { title: "Contacto", href: "/inicio/contacto" },
     ];
 
     const social = [
@@ -37,7 +43,7 @@ export default function Footer() {
         <footer className="bg-primary-blue h-[402px] font-roboto-condensed text-white flex flex-col justify-between">
             <div className="flex flex-row gap-10 justify-evenly items-center h-full">
                 {/* logos y redes */}
-                <div className="flex flex-col justify-center items-center gap-3">
+                <div className="flex flex-col justify-center items-center gap-8">
                     <div className="flex flex-col">
                         <img src={cosmanWhiteLogo} alt="" />
                     </div>

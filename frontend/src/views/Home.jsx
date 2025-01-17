@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import shieldIcon from "../assets/icons/shield-icon.svg";
 import acoples from "../assets/inicio/acoples.png";
 import bannerHome from "../assets/inicio/banner-home.png";
@@ -15,7 +16,7 @@ import Carousel from "../components/Carousel";
 import Footer from "../components/Footer";
 import HomeCategory from "../components/HomeCategory";
 import Navbar from "../components/Navbar";
-import Novedades from "../components/Novedades";
+import NovedadesCard from "../components/NovedadesCard";
 
 export default function Home() {
     const categories = [
@@ -50,13 +51,6 @@ export default function Home() {
             title: "Accesorios para alta presión",
             description:
                 "Fabricados y certificados bajo norma ISO 9001:2015. Tee macho fijo x macho fijo 7/8 UNF asiento tubo x macho fijo 1/2 NPT",
-            href: "#",
-        },
-        {
-            image: novedades3,
-            title: "FIMAQH",
-            description:
-                "Conmon exhibió su última generación de sistemas de monitoreo en tiempo real, diseñados para prevenir fallos en equipos y optimizar la eficiencia operativa. Estas herramientas no solo impulsan...",
             href: "#",
         },
         {
@@ -156,9 +150,12 @@ export default function Home() {
                             </p>
                         </div>
                         <div className="mt-auto">
-                            <button className="bg-primary-red w-full sm:w-[200px] lg:w-[289px] h-[47px] text-white mx-auto lg:mx-0 mt-20">
+                            <Link
+                                to={"/inicio/nosotros"}
+                                className="bg-primary-red w-[289px] h-[47px] text-white flex justify-center items-center  mt-20 "
+                            >
                                 MÁS INFO
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -193,9 +190,12 @@ export default function Home() {
                             <img src={iramLogo} alt="" />
                             <img src={iqnetLogo} alt="" />
                         </div>
-                        <button className="w-full h-[47px] border border-white">
+                        <Link
+                            to={"/inicio/calidad"}
+                            className="w-full h-[47px] border border-white flex justify-center items-center"
+                        >
                             MAS INFO
-                        </button>
+                        </Link>
                     </div>
                 </div>
 
@@ -206,14 +206,20 @@ export default function Home() {
                             <h2 className="text-[40px] font-bold font-roboto-condensed">
                                 Enterate de nuestra ultimas novedades
                             </h2>
-                            <button className="text-[16px] text-primary-red font-medium border border-primary-red w-[172px] h-[47px] bg-white">
+                            <Link
+                                to={"/inicio/novedades"}
+                                className="text-[16px] text-primary-red font-medium border border-primary-red w-[172px] h-[47px] bg-white flex justify-center items-center"
+                            >
                                 VER TODAS
-                            </button>
+                            </Link>
                         </div>
 
-                        <div className="flex flex-row flex-wrap gap-5 justify-between">
+                        <div className="flex relative flex-row flex-wrap gap-5 justify-between">
                             {novedades.map((novedad, index) => (
-                                <Novedades key={index} newsObject={novedad} />
+                                <NovedadesCard
+                                    key={index}
+                                    newsObject={novedad}
+                                />
                             ))}
                         </div>
                     </div>

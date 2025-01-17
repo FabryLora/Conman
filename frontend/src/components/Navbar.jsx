@@ -1,16 +1,21 @@
-import { useEffect } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import barsIcon from "../assets/icons/bars-solid.svg";
+import chevronDownWhite from "../assets/icons/chevron-down-white.svg";
 import chevronDown from "../assets/icons/chevron-down.svg";
 import fbIcon from "../assets/icons/fbIcon.svg";
 import igIcon from "../assets/icons/igIcon.svg";
 import phoneIcon from "../assets/icons/phone.svg";
 import searchIcon from "../assets/icons/search.svg";
 import letterIcon from "../assets/icons/sobre.svg";
+import xmark from "../assets/icons/xmark-solid.svg";
 import conmanLogo from "../assets/logos/conman-logo.png";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Navbar() {
     const { contactInfo, fetchContactInfo } = useStateContext();
+    const [tinyMenu, setTinyMenu] = useState(false);
 
     const links = [
         { title: "Nosotros", href: "/inicio/nosotros", chevron: false },
@@ -65,29 +70,67 @@ export default function Navbar() {
                     </button>
                 </div>
             </div>
-            <nav className="flex flex-row items-center pl-5 pr-5 md:pl-20 md:pr-10 gap-5 md:gap-32 w-full h-[60px] md:h-[85px] shadow-sm">
-                <Link to={"/"}>
-                    <img src={conmanLogo} alt="Logo" className="h-8 md:h-10" />
+            <nav className="flex relative flex-row items-center pl-10 gap-20 w-full h-[85px] shadow-sm max-lg:justify-center">
+                <Link className="w-[267px] h-[57px]" to={"/"}>
+                    <img src={conmanLogo} alt="Logo" className="w-full" />
                 </Link>
-                <ul className="flex flex-col md:flex-row gap-5 md:gap-10 text-sm md:text-base 2xl:text-[2px]">
+                <ul className="flex flex-row gap-5 w-full max-lg:hidden">
                     {links.map((link) => (
                         <div
-                            className="flex gap-1 items-center"
+                            className="flex gap-1 max-xl:text-sm items-center"
                             key={link.title}
                         >
-                            <Link
-                                className="text-sm md:text-base"
-                                to={link.href}
-                            >
-                                {link.title}
-                            </Link>
+                            <Link to={link.href}>{link.title}</Link>
                             {link.chevron && (
                                 <img src={chevronDown} alt="Chevron" />
                             )}
                         </div>
                     ))}
                 </ul>
+                <button
+                    onClick={() => setTinyMenu(!tinyMenu)}
+                    className="w-[24px] h-[24px] absolute left-10 lg:hidden"
+                >
+                    <img src={barsIcon} alt="" />
+                </button>
             </nav>
+            <AnimatePresence>
+                {tinyMenu && (
+                    <div className="absolute top-0 left-0 w-screen h-screen bg-[rgba(0,0,0,0.5)] z-20">
+                        <motion.div
+                            initial={{ x: "-100%" }}
+                            animate={{ x: 0 }}
+                            exit={{ x: "-100%" }}
+                            transition={{ duration: 0.5 }}
+                            className="flex flex-col absolute top-0 left-0 h-screen w-1/2 bg-primary-blue"
+                        >
+                            <button
+                                onClick={() => setTinyMenu(false)}
+                                className="absolute h-[16px] w-[16px] right-4 top-2"
+                            >
+                                <img src={xmark} alt="" />
+                            </button>
+                            <ul className="flex flex-col gap-5 p-10 text-white w-full">
+                                {links.map((link) => (
+                                    <div
+                                        className="flex gap-1 justify-between items-center"
+                                        key={link.title}
+                                    >
+                                        <Link to={link.href}>{link.title}</Link>
+                                        {link.chevron && (
+                                            <img
+                                                className="w-[16px] h-[16px]"
+                                                src={chevronDownWhite}
+                                                alt="Chevron"
+                                            />
+                                        )}
+                                    </div>
+                                ))}
+                            </ul>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }

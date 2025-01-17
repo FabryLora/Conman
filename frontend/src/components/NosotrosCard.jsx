@@ -6,7 +6,9 @@ export default function NosotrosCard({ title, text, icon }) {
             </div>
             <div className="pt-6 flex flex-col gap-3">
                 <h2 className="text-[30px] font-semibold">{title}</h2>
-                <p className="text-[15px] text-[#515A53] break-words">{text}</p>
+                <p className="text-[15px] text-[#515A53] break-words leading-relaxed">
+                    {text}
+                </p>
             </div>
         </div>
     );

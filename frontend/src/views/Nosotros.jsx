@@ -36,7 +36,7 @@ export default function Nosotros() {
                 </div>
                 {/* Texto - 50% */}
                 <div className="flex flex-col gap-6 lg:gap-10 h-full lg:w-1/2 px-6 lg:px-10 items-center ">
-                    <div className="flex flex-col gap-6 text-[14px] sm:text-[16px] text-justify  items-start max-w-[80%]">
+                    <div className="flex flex-col gap-6 text-[14px] sm:text-[16px] text-justify  items-start max-w-[80%] leading-relaxed">
                         <h2 className="text-[24px] sm:text-[32px] lg:text-[40px] font-bold text-center lg:text-left">
                             ¿Quiénes somos?
                         </h2>
@@ -86,8 +86,8 @@ export default function Nosotros() {
 
             <div className="h-[639px] w-full bg-special-white flex justify-center">
                 <div className="w-[90%]">
-                    <h2 className="font-bold text-[40px] py-20">
-                        Porque Elegirnos?
+                    <h2 className="font-bold text-[40px] pb-20 pt-16">
+                        ¿Porque elegirnos?
                     </h2>
                     <div className="flex flex-row justify-between">
                         {nosotrosInfo.map((info, index) => (
