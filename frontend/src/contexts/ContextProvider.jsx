@@ -1,32 +1,50 @@
-import { createContext, useContext, useState } from "react";
-import axiosClient from "../axios.js"
+import { createContext, useContext, useEffect, useState } from "react";
+import axiosClient from "../axios.js";
 
 const StateContext = createContext({
-    contactInfo: {},
-    fetchContactInfo: () => { }
-})
+    userToken: null,
+    setUserToken: () => {},
+
+    userInfo: {},
+    fetchUserInfo: () => {},
+});
 
 export const ContextProvider = ({ children }) => {
-    const [contactInfo, setContactInfo] = useState([]);
+    const [userInfo, setUserInfo] = useState({});
+    const [userToken, _setUserToken] = useState(
+        localStorage.getItem("TOKEN") || ""
+    );
 
-    const fetchContactInfo = () => {
-        axiosClient
-            .get("/contactinfo")
-            .then((res) => {
-                setContactInfo(res.data.data[0]);
-            })
-            .catch((error) => {
-                console.error("Error buscando la ingformacion del contacto", error);
-            });
+    const setUserToken = (token) => {
+        if (token) {
+            localStorage.setItem("TOKEN", token);
+        } else {
+            localStorage.removeItem("TOKEN");
+        }
+        _setUserToken(token);
     };
 
+    const fetchUserInfo = () => {
+        axiosClient.get("/me").then(({ data }) => {
+            setUserInfo(data);
+        });
+    };
+
+    useEffect(() => {
+        if (userToken) {
+            fetchUserInfo();
+        }
+    }, [userToken]);
 
     return (
         <StateContext.Provider
             value={{
-                contactInfo,
-                fetchContactInfo
-            }}>
+                userToken,
+                setUserToken,
+                userInfo,
+                fetchUserInfo,
+            }}
+        >
             {children}
         </StateContext.Provider>
     );

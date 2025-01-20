@@ -5,16 +5,26 @@ import Calidad from "./views/Calidad";
 import Contacto from "./views/Contacto";
 import DefaultLayout from "./views/DefaultLayout";
 import Home from "./views/Home";
+import Login from "./views/Login";
 import Mangueras from "./views/Mangueras";
 import Nosotros from "./views/Nosotros";
 import Novedades from "./views/Novedades";
 import Productos from "./views/Productos";
+import Signup from "./views/Signup";
 import TerminalesyAccesorios from "./views/TerminalesyAccesorios";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <Home />,
+    },
+    {
+        path: "/registro",
+        element: <Signup />,
+    },
+    {
+        path: "/iniciar-sesion",
+        element: <Login />,
     },
     {
         path: "/inicio",
@@ -57,6 +67,7 @@ const router = createBrowserRouter([
     {
         path: "/adm",
         element: <Administrator />,
+        children: [],
     },
 ]);
 

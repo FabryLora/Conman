@@ -91,7 +91,7 @@ export default function Home() {
                     <h2 className="font-bold text-[40px] font-roboto-condensed self-start">
                         Categorias
                     </h2>
-                    <div className="grid grid-cols-2 grid-rows-2 h-fit justify-items-center gap-5 w-full">
+                    <div className="grid grid-cols-2 grid-rows-2 h-fit justify-items-center gap-5 w-full max-md:w-screen max-md:flex max-md:flex-row max-md:overflow-x-scroll max-md:scrollbar-hide">
                         {categories.map((category, index) => (
                             <HomeCategory
                                 key={index}
@@ -103,9 +103,14 @@ export default function Home() {
                 </div>
 
                 {/* Quienes somos */}
-                <div className="flex flex-row lg:flex-row items-center lg:items-end my-10 font-roboto-condensed justify-center w-full h-full">
+                <div className="max-md:relative max-md:h-[700px] flex flex-row lg:flex-row items-center lg:items-end my-10 font-roboto-condensed justify-center w-full h-full max-md:bg-primary-blue">
                     {/* Imagen - 50% */}
-                    <div className="w-full lg:w-1/2 flex justify-center items-center">
+                    <img
+                        className="absolute w-full h-full object-fill opacity-30 md:hidden"
+                        src={quienes}
+                        alt="¿Quiénes somos?"
+                    />
+                    <div className="w-full lg:w-1/2 flex justify-center items-center max-md:hidden">
                         <img
                             className="w-full h-auto lg:h-[678px] object-cover"
                             src={quienes}
@@ -113,7 +118,7 @@ export default function Home() {
                         />
                     </div>
                     {/* Texto - 50% */}
-                    <div className="flex flex-col gap-6 lg:gap-10 h-full w-full lg:w-1/2 px-6 lg:px-10">
+                    <div className="max-md:py-5 max-md:items-center max-md:absolute max-md:z-10 flex flex-col gap-6 lg:gap-10 h-full w-full lg:w-1/2 px-6 lg:px-10 max-md:text-white">
                         <h2 className="text-[24px] sm:text-[32px] lg:text-[40px] font-bold text-center lg:text-left">
                             ¿Quiénes somos?
                         </h2>
@@ -152,7 +157,7 @@ export default function Home() {
                         <div className="mt-auto">
                             <Link
                                 to={"/inicio/nosotros"}
-                                className="bg-primary-red w-[289px] h-[47px] text-white flex justify-center items-center  mt-20 "
+                                className="bg-primary-red w-[289px] h-[47px] text-white flex justify-center items-center  mt-20 max-md:mt-0"
                             >
                                 MÁS INFO
                             </Link>

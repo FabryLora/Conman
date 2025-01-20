@@ -9,31 +9,57 @@ import igIcon from "../assets/icons/igIcon.svg";
 import phoneIcon from "../assets/icons/phone.svg";
 import searchIcon from "../assets/icons/search.svg";
 import letterIcon from "../assets/icons/sobre.svg";
+import userIcon from "../assets/icons/user-icon.svg";
 import xmark from "../assets/icons/xmark-solid.svg";
 import conmanLogo from "../assets/logos/conman-logo.png";
+import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Navbar() {
-    const { contactInfo, fetchContactInfo } = useStateContext();
     const [tinyMenu, setTinyMenu] = useState(false);
+    const [userMenu, setUserMenu] = useState(false);
+    const [user, setUser] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const { setUserToken, userToken, userInfo } = useStateContext();
+
+    const onSubmit = (ev) => {
+        ev.preventDefault();
+        axiosClient
+            .post("/login", {
+                name: user,
+                password: password,
+            })
+            .then(({ data }) => {
+                setUserToken(data.token);
+            })
+            .catch((error) => {
+                if (error.response) {
+                    setError(
+                        Object.values(error.response.data.errors).join(" ")
+                    );
+                }
+                console.log(error);
+            });
+    };
 
     const links = [
         { title: "Nosotros", href: "/inicio/nosotros", chevron: false },
         {
             title: "Terminales y accesorios",
-            href: "/terminales-y-accesorios",
+            href: "/inicio/terminales-y-accesorios",
             chevron: true,
         },
-        { title: "Mangueras", href: "/mangueras", chevron: true },
+        { title: "Mangueras", href: "/inicio/mangueras", chevron: true },
         {
             title: "Acoples rapidos",
             href: "/inicio/acoples-rapidos-hidraulicos",
             chevron: true,
         },
-        { title: "Productos", href: "/productos", chevron: true },
-        { title: "Calidad", href: "/calidad", chevron: false },
-        { title: "Novedades", href: "/novedades", chevron: false },
-        { title: "Contacto", href: "/contacto", chevron: false },
+        { title: "Productos", href: "/inicio/productos", chevron: true },
+        { title: "Calidad", href: "/inicio/calidad", chevron: false },
+        { title: "Novedades", href: "/inicio/novedades", chevron: false },
+        { title: "Contacto", href: "/inicio/contacto", chevron: false },
     ];
 
     const socials = [
@@ -41,33 +67,114 @@ export default function Navbar() {
         { logo: igIcon, href: "#" },
     ];
 
-    useEffect(() => {
-        fetchContactInfo();
-    }, []);
-
     return (
         <div className="flex flex-col items-center justify-center font-roboto-condensed">
             <div className="bg-primary-blue h-[40px] w-full flex items-center justify-between pl-20 pr-10">
                 <div className="flex gap-4 items-center text-[14px] text-white h-[16px]">
                     <div className="flex gap-2 items-center">
                         <img className="h-[16px]" src={letterIcon} alt="" />
-                        <h2>{contactInfo.mail}</h2>
                     </div>
                     <div className="flex gap-2 items-center">
                         <img className="h-[16px]" src={phoneIcon} alt="" />
-                        <h2>{contactInfo.phone}</h2>
                     </div>
                 </div>
+                <div className="flex fle-row gap-4 h-full items-center">
+                    <div className="flex flex-row gap-4 h-[16px] items-center justify-center">
+                        {socials.map((social, index) => (
+                            <Link key={index} to={social.href}>
+                                <img src={social.logo} alt="" />
+                            </Link>
+                        ))}
+                        <button>
+                            <img src={searchIcon} alt="" />
+                        </button>
 
-                <div className="flex flex-row gap-4 h-[16px] items-center justify-center">
-                    {socials.map((social, index) => (
-                        <Link key={index} to={social.href}>
-                            <img src={social.logo} alt="" />
-                        </Link>
-                    ))}
-                    <button>
-                        <img src={searchIcon} alt="" />
-                    </button>
+                        {!userToken && (
+                            <>
+                                <button onClick={() => setUserMenu(!userMenu)}>
+                                    <img
+                                        className="h-[15px] w-[15px]"
+                                        src={userIcon}
+                                        alt=""
+                                    />
+                                </button>
+                                {userMenu && (
+                                    <div className="absolute flex flex-col top-10 right-10 bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-[439px] z-20">
+                                        <h2 className="font-bold text-[24px] py-5">
+                                            Iniciar sesion
+                                        </h2>
+                                        <form
+                                            onSubmit={onSubmit}
+                                            className="w-full h-full flex flex-col justify-around gap-3"
+                                            action=""
+                                        >
+                                            <div>
+                                                <div className="flex flex-col gap-2">
+                                                    <label htmlFor="user">
+                                                        Usuario
+                                                    </label>
+                                                    <input
+                                                        value={user}
+                                                        onChange={(ev) =>
+                                                            setUser(
+                                                                ev.target.value
+                                                            )
+                                                        }
+                                                        className="w-[328px] h-[45px] border pl-2"
+                                                        type="text"
+                                                        name="user"
+                                                        id="user"
+                                                    />
+                                                </div>
+                                                <div className="flex flex-col gap-2">
+                                                    <label htmlFor="password">
+                                                        Contras;e
+                                                    </label>
+                                                    <input
+                                                        value={password}
+                                                        onChange={(ev) =>
+                                                            setPassword(
+                                                                ev.target.value
+                                                            )
+                                                        }
+                                                        className="w-[328px] h-[45px] border pl-2"
+                                                        type="password"
+                                                        name="password"
+                                                        id="password"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <button
+                                                className="w-[325px] h-[47px] bg-primary-red text-white self-center"
+                                                type="submit"
+                                            >
+                                                INICIAR SESION
+                                            </button>
+                                        </form>
+                                        <div className="flex flex-col items-center">
+                                            <p>¿No tenes usuario?</p>
+                                            <Link
+                                                className="text-primary-red"
+                                                to={"/registro"}
+                                            >
+                                                REGISTRATE
+                                            </Link>
+                                        </div>
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    </div>
+                    {userToken && (
+                        <div className="w-[139px] h-full flex justify-center items-center bg-white">
+                            <h2 className="font-medium text-sm text-primary-blue">
+                                {userInfo.name
+                                    ? userInfo.name.toUpperCase()
+                                    : "Error"}
+                            </h2>
+                        </div>
+                    )}
                 </div>
             </div>
             <nav className="flex relative flex-row items-center pl-10 gap-20 w-full h-[85px] shadow-sm max-lg:justify-center">
