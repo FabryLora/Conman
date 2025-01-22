@@ -5,7 +5,14 @@ const axiosClient = axios.create({
 });
 
 axiosClient.interceptors.request.use((config) => {
-    config.headers.Authorization = `Bearer ${localStorage.getItem("TOKEN")}`;
+    const isAdminRoute = config.url.includes('/adm');
+    const token = isAdminRoute
+        ? localStorage.getItem("ADMIN_TOKEN")
+        : localStorage.getItem("TOKEN");
+
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
 });
 

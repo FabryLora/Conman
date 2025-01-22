@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import AcoplesRapidos from "./views/AcoplesRapidos";
 import Administrator from "./views/Administrator";
+import AdminLogin from "./views/AdminLogin";
 import Calidad from "./views/Calidad";
 import Contacto from "./views/Contacto";
 import DefaultLayout from "./views/DefaultLayout";
@@ -8,6 +9,7 @@ import Home from "./views/Home";
 import Login from "./views/Login";
 import Mangueras from "./views/Mangueras";
 import Nosotros from "./views/Nosotros";
+import NosotrosAdmin from "./views/NosotrosAdmin";
 import Novedades from "./views/Novedades";
 import Productos from "./views/Productos";
 import Signup from "./views/Signup";
@@ -66,8 +68,17 @@ const router = createBrowserRouter([
     },
     {
         path: "/adm",
+        element: <AdminLogin />,
+    },
+    {
+        path: "/dashboard",
         element: <Administrator />,
-        children: [],
+        children: [
+            {
+                path: "/dashboard/nosotros",
+                element: <NosotrosAdmin />,
+            },
+        ],
     },
 ]);
 

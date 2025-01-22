@@ -20,7 +20,7 @@ export default function Navbar() {
     const [userMenu, setUserMenu] = useState(false);
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+
     const { setUserToken, userToken, userInfo } = useStateContext();
 
     const onSubmit = (ev) => {
@@ -32,14 +32,6 @@ export default function Navbar() {
             })
             .then(({ data }) => {
                 setUserToken(data.token);
-            })
-            .catch((error) => {
-                if (error.response) {
-                    setError(
-                        Object.values(error.response.data.errors).join(" ")
-                    );
-                }
-                console.log(error);
             });
     };
 
@@ -171,7 +163,7 @@ export default function Navbar() {
                             <h2 className="font-medium text-sm text-primary-blue">
                                 {userInfo.name
                                     ? userInfo.name.toUpperCase()
-                                    : "Error"}
+                                    : ""}
                             </h2>
                         </div>
                     )}

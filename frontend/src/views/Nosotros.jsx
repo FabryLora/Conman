@@ -3,8 +3,11 @@ import mision from "../assets/nosotros/mision-icon.svg";
 import sustent from "../assets/nosotros/sustent-icon.svg";
 import vision from "../assets/nosotros/vision-icon.svg";
 import NosotrosCard from "../components/NosotrosCard";
+import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Nosotros() {
+    const { nosotrosFirstInfo } = useStateContext();
+
     const nosotrosInfo = [
         {
             icon: mision,
@@ -30,7 +33,7 @@ export default function Nosotros() {
                 <div className="w-full lg:w-1/2 flex justify-center items-center">
                     <img
                         className="w-full h-auto lg:h-[678px] object-cover"
-                        src={quienes}
+                        src={nosotrosFirstInfo.image_url}
                         alt="¿Quiénes somos?"
                     />
                 </div>
