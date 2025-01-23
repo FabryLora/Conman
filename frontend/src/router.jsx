@@ -3,6 +3,7 @@ import AcoplesRapidos from "./views/AcoplesRapidos";
 import Administrator from "./views/Administrator";
 import AdminLogin from "./views/AdminLogin";
 import Calidad from "./views/Calidad";
+import CategoriasAdmin from "./views/CategoriasAdmin";
 import Contacto from "./views/Contacto";
 import DefaultLayout from "./views/DefaultLayout";
 import Home from "./views/Home";
@@ -12,7 +13,9 @@ import Nosotros from "./views/Nosotros";
 import NosotrosAdmin from "./views/NosotrosAdmin";
 import Novedades from "./views/Novedades";
 import Productos from "./views/Productos";
+import ProductosAdmin from "./views/ProductosAdmin";
 import Signup from "./views/Signup";
+import SliderAdmin from "./views/SliderAdmin";
 import TerminalesyAccesorios from "./views/TerminalesyAccesorios";
 
 const router = createBrowserRouter([
@@ -77,6 +80,18 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/nosotros",
                 element: <NosotrosAdmin />,
+            },
+            {
+                path: "/dashboard/slider",
+                element: <SliderAdmin />,
+            },
+            {
+                path: "/dashboard/categorias",
+                element: <CategoriasAdmin />,
+            },
+            {
+                path: "/dashboard/productos",
+                element: <ProductosAdmin />,
             },
         ],
     },

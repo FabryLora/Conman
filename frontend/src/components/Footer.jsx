@@ -6,8 +6,11 @@ import locationIcon from "../assets/icons/location-red-icon.svg";
 import phoneIcon from "../assets/icons/phone-red-icon.svg";
 import whatsappIcon from "../assets/icons/whatsapp-red-icon.svg";
 import cosmanWhiteLogo from "../assets/logos/conman-white-logo.png";
+import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Footer() {
+    const { contactInfo } = useStateContext();
+
     const links = [
         { title: "Nosotros", href: "/inicio/nosotros" },
         {
@@ -30,14 +33,14 @@ export default function Footer() {
         { logo: igIcon, href: "#" },
     ];
 
-    const contactInfo = [
+    const contactoInfo = [
         {
             icon: locationIcon,
-            text: "Remedios de Escalada de San Martín 3771 - (1822) Valentin Alsina. Buenos Aires, Argentina",
+            text: contactInfo?.location,
         },
-        { icon: phoneIcon, text: "+54 11 2345 6789" },
-        { icon: letterIcon, text: "Rz6wI@example.com" },
-        { icon: whatsappIcon, text: "+54 11 2345 6789" },
+        { icon: phoneIcon, text: contactInfo?.phone },
+        { icon: letterIcon, text: contactInfo?.mail },
+        { icon: whatsappIcon, text: contactInfo?.wp },
     ];
     return (
         <footer className="bg-primary-blue h-[402px] font-roboto-condensed text-white flex flex-col justify-between">
@@ -79,7 +82,7 @@ export default function Footer() {
                 <div className="flex flex-col gap-3">
                     <h2 className="text-xl font-semibold">Datos de Contacto</h2>
                     <div className="flex flex-col gap-3">
-                        {contactInfo.map((item, index) => (
+                        {contactoInfo.map((item, index) => (
                             <div
                                 className="flex flex-row gap-4 items-center"
                                 key={index}

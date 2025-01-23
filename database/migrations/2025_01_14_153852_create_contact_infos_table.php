@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string("mail");
             $table->string("phone");
+            $table->string("wp");
             $table->string("location");
+            $table->string("iframe");
             $table->timestamps();
         });
     }

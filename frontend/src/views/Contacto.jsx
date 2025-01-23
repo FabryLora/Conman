@@ -2,16 +2,19 @@ import letterIcon from "../assets/icons/letter-red-icon.svg";
 import locationIcon from "../assets/icons/location-red-icon.svg";
 import phoneIcon from "../assets/icons/phone-red-icon.svg";
 import whatsappIcon from "../assets/icons/whatsapp-red-icon.svg";
+import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Contacto() {
-    const contactInfo = [
+    const { contactInfo } = useStateContext();
+
+    const contactoInfo = [
         {
             icon: locationIcon,
-            text: "Remedios de Escalada de San Martín 3771 - (1822) Valentin Alsina. Buenos Aires, Argentina",
+            text: contactInfo?.location,
         },
-        { icon: letterIcon, text: "info@conman.com.ar" },
-        { icon: phoneIcon, text: "54 + 11 4208-5568" },
-        { icon: whatsappIcon, text: "54 + 11 6134-3773" },
+        { icon: letterIcon, text: contactInfo?.mail },
+        { icon: phoneIcon, text: contactInfo?.phone },
+        { icon: whatsappIcon, text: contactInfo?.wp },
     ];
 
     const inputInfo = [
@@ -32,7 +35,7 @@ export default function Contacto() {
                             nuestras vías de comunicación.
                         </p>
                         <div className="flex flex-col gap-4 justify-start">
-                            {contactInfo.map((item, index) => (
+                            {contactoInfo.map((item, index) => (
                                 <div
                                     key={index}
                                     className="flex flex-row items-center gap-3"

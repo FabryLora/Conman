@@ -13,7 +13,7 @@ class ContactInfoController extends Controller
     public function index()
     {
 
-        return ContactInfoResource::collection(ContactInfo::orderBy('created_at', 'desc')->paginate(50));
+        return ContactInfoResource::collection(ContactInfo::paginate(50));
     }
 
 

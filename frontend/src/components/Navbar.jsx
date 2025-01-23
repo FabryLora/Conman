@@ -1,3 +1,8 @@
+import {
+    faChevronCircleRight,
+    faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -21,7 +26,8 @@ export default function Navbar() {
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
 
-    const { setUserToken, userToken, userInfo } = useStateContext();
+    const { setUserToken, userToken, userInfo, contactInfo } =
+        useStateContext();
 
     const onSubmit = (ev) => {
         ev.preventDefault();
@@ -35,29 +41,122 @@ export default function Navbar() {
             });
     };
 
-    const links = [
-        { title: "Nosotros", href: "/inicio/nosotros", chevron: false },
-        {
-            title: "Terminales y accesorios",
-            href: "/inicio/terminales-y-accesorios",
-            chevron: true,
-        },
-        { title: "Mangueras", href: "/inicio/mangueras", chevron: true },
-        {
-            title: "Acoples rapidos",
-            href: "/inicio/acoples-rapidos-hidraulicos",
-            chevron: true,
-        },
-        { title: "Productos", href: "/inicio/productos", chevron: true },
-        { title: "Calidad", href: "/inicio/calidad", chevron: false },
-        { title: "Novedades", href: "/inicio/novedades", chevron: false },
-        { title: "Contacto", href: "/inicio/contacto", chevron: false },
-    ];
+    const toggleDropdown = (id) => {
+        setDropdowns((prevDropdowns) =>
+            prevDropdowns.map((drop) =>
+                drop.id === id ? { ...drop, open: !drop.open } : drop
+            )
+        );
+    };
 
     const socials = [
         { logo: fbIcon, href: "#" },
         { logo: igIcon, href: "#" },
     ];
+
+    const [dropdowns, setDropdowns] = useState([
+        {
+            id: "Nosotros",
+            open: false,
+            href: "/inicio/nosotros",
+            chevron: false,
+        },
+        {
+            id: "Terminales y accesorios",
+            open: false,
+            href: "/inicio/terminales-y-accesorios",
+            chevron: true,
+            subHref: [
+                { title: "Terminales", href: "/inicio/terminales" },
+                { title: "Accesorios", href: "/inicio/accesorios" },
+            ],
+        },
+        {
+            id: "Mangueras",
+            open: false,
+            href: "/inicio/mangueras",
+            chevron: true,
+            subHref: [
+                { title: "SAE 100", href: "/inicio/mangueras-hidraulicas" },
+                {
+                    title: "Para combustible",
+                    href: "/inicio/mangueras-industriales",
+                },
+                {
+                    title: "20 bar / 300 lbs",
+                    href: "/inicio/mangueras-de-aire",
+                },
+                {
+                    title: "Multiproposito verde",
+                    href: "/inicio/mangueras-de-agua",
+                },
+                {
+                    title: "Aire acondicionado",
+                    href: "/inicio/mangueras-de-combustible",
+                },
+                {
+                    title: "Inoxidable con malla",
+                    href: "/inicio/mangueras-de-vapor",
+                },
+            ],
+        },
+        {
+            id: "Acoples rapidos",
+            open: false,
+            href: "/inicio/acoples-rapidos-hidraulicos",
+            chevron: true,
+            subHref: [
+                {
+                    title: "Acople rapido hidraulico",
+                    href: "/inicio/mangueras-hidraulicas",
+                },
+                { title: "Bolita", href: "/inicio/mangueras-industriales" },
+                { title: "Punta", href: "/inicio/mangueras-de-aire" },
+                { title: "Frente plano", href: "/inicio/mangueras-de-agua" },
+                { title: "Mariposa", href: "/inicio/mangueras-de-combustible" },
+            ],
+        },
+        {
+            id: "Productos",
+            open: false,
+            href: "/inicio/productos",
+            chevron: true,
+            subHref: [
+                {
+                    title: "Articulos de lubricacion",
+                    href: "/inicio/mangueras-hidraulicas",
+                },
+                {
+                    title: "Tratamientos de aire",
+                    href: "/inicio/mangueras-industriales",
+                },
+                { title: "Abrazaderas", href: "/inicio/mangueras-de-aire" },
+                { title: "Arandelas", href: "/inicio/mangueras-de-agua" },
+                {
+                    title: "Prensas / Manguera",
+                    href: "/inicio/mangueras-de-combustible",
+                },
+            ],
+        },
+        {
+            id: "Calidad",
+            open: false,
+            href: "/inicio/calidad",
+            chevron: false,
+        },
+        {
+            id: "Novedades",
+            open: false,
+            href: "/inicio/novedades",
+            chevron: false,
+        },
+        {
+            id: "Contacto",
+            open: false,
+            href: "/inicio/contacto",
+            chevron: false,
+        },
+    ]);
 
     return (
         <div className="flex flex-col items-center justify-center font-roboto-condensed">
@@ -65,9 +164,11 @@ export default function Navbar() {
                 <div className="flex gap-4 items-center text-[14px] text-white h-[16px]">
                     <div className="flex gap-2 items-center">
                         <img className="h-[16px]" src={letterIcon} alt="" />
+                        <p>{contactInfo?.mail}</p>
                     </div>
                     <div className="flex gap-2 items-center">
                         <img className="h-[16px]" src={phoneIcon} alt="" />
+                        <p>{contactInfo?.phone}</p>
                     </div>
                 </div>
                 <div className="flex fle-row gap-4 h-full items-center">
@@ -174,14 +275,38 @@ export default function Navbar() {
                     <img src={conmanLogo} alt="Logo" className="w-full" />
                 </Link>
                 <ul className="flex flex-row gap-5 w-full max-lg:hidden">
-                    {links.map((link) => (
+                    {dropdowns.map((drop) => (
                         <div
-                            className="flex gap-1 max-xl:text-sm items-center"
-                            key={link.title}
+                            onMouseEnter={() => toggleDropdown(drop.id)}
+                            onMouseLeave={() => toggleDropdown(drop.id)}
+                            className="relative flex gap-1 max-xl:text-sm items-center hover:bg-[#CBCBCB] p-2"
+                            key={drop.id}
                         >
-                            <Link to={link.href}>{link.title}</Link>
-                            {link.chevron && (
+                            <Link
+                                className="hover:text-gray-600"
+                                to={drop.href}
+                            >
+                                {drop.id}
+                            </Link>
+                            {drop.chevron && (
                                 <img src={chevronDown} alt="Chevron" />
+                            )}
+                            {drop.open && drop.subHref && (
+                                <div className="absolute flex flex-col top-9 left-0 bg-[#CBCBCB] shadow-md font-roboto-condensed w-[200px] h-fit z-20">
+                                    {drop.subHref.map((sub) => (
+                                        <Link
+                                            className="flex flex-row items-center justify-between px-2 border-b border-white hover:text-gray-600"
+                                            key={sub.title}
+                                            to={sub.href}
+                                        >
+                                            {sub.title}
+                                            <FontAwesomeIcon
+                                                icon={faChevronRight}
+                                                color={"#000"}
+                                            />
+                                        </Link>
+                                    ))}
+                                </div>
                             )}
                         </div>
                     ))}

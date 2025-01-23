@@ -18,7 +18,9 @@ class ContactInfoResource extends JsonResource
             "id" => $this->id,
             "mail" => $this->mail,
             "phone" => $this->phone,
-            "location" => $this->location
+            "wp" => $this->wp,
+            "location" => $this->location,
+            "iframe" => $this->iframe,
         ];
     }
 }

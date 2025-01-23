@@ -11,12 +11,21 @@ const StateContext = createContext({
     adminInfo: {},
     fetchAdminInfo: () => {},
     nosotrosFirst: [],
-    setNosotrosFirst: () => {},
+    fetchNosotrosFirstInfo: () => {},
+    contactInfo: {},
+    fetchContactInfo: () => {},
+    sliderInfo: [],
+    fetchSliderInfo: () => {},
+    categoryInfo: [],
+    fetchCategoryInfo: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
+    const [contactInfo, setContactInfo] = useState({});
     const [userInfo, setUserInfo] = useState({});
     const [adminInfo, setAdminInfo] = useState({});
+    const [sliderInfo, setSliderInfo] = useState([]);
+    const [categoryInfo, setCategoryInfo] = useState([]);
     const [userToken, _setUserToken] = useState(
         localStorage.getItem("TOKEN") || ""
     );
@@ -49,14 +58,35 @@ export const ContextProvider = ({ children }) => {
         });
     };
 
-    const fetchNosotrosFirst = () => {
+    const fetchNosotrosFirstInfo = () => {
         axiosClient.get("/nosotros-first").then(({ data }) => {
             setNosotrosFirstInfo(data.data[0]);
         });
     };
 
+    const fetchContactInfo = () => {
+        axiosClient.get("/contact-info").then(({ data }) => {
+            setContactInfo(data.data[0]);
+        });
+    };
+
+    const fetchSliderInfo = () => {
+        axiosClient.get("/slider").then(({ data }) => {
+            setSliderInfo(data.data);
+        });
+    };
+
+    const fetchCategoryInfo = () => {
+        axiosClient.get("/category").then(({ data }) => {
+            setCategoryInfo(data.data);
+        });
+    };
+
     useEffect(() => {
-        fetchNosotrosFirst();
+        fetchNosotrosFirstInfo();
+        fetchContactInfo();
+        fetchSliderInfo();
+        fetchCategoryInfo();
     }, []);
 
     useEffect(() => {
@@ -80,8 +110,14 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                categoryInfo,
+                fetchCategoryInfo,
+                sliderInfo,
+                fetchSliderInfo,
+                contactInfo,
+                fetchContactInfo,
                 nosotrosFirstInfo,
-                setNosotrosFirstInfo,
+                fetchNosotrosFirstInfo,
                 adminInfo,
                 fetchAdminInfo,
                 adminToken,

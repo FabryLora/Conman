@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('nosotros_firsts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('text');
-            $table->string('image'); 
+            $table->text('text');
+            $table->string('image');
             $table->timestamps();
         });
     }

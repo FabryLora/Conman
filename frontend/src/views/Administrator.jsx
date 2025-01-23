@@ -8,7 +8,6 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import conmanWhiteLogo from "../assets/logos/conman-white-logo.png";
-import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Administrator() {
@@ -38,11 +37,17 @@ export default function Administrator() {
             title: "Inicio",
             icon: faHouse,
             href: "#",
+            subHref: [{ title: "Slider", href: "/dashboard/slider" }],
+        },
+        {
+            id: "catalogo",
+            open: false,
+            title: "Catalogo",
+            icon: faHouse,
+            href: "#",
             subHref: [
-                { title: "Slider", href: "#" },
-                { title: "¿Quiénes somos?", href: "#" },
-                { title: "Politicas de Calidad", href: "#" },
-                { title: "Novedades", href: "#" },
+                { title: "Categorias", href: "/dashboard/categorias" },
+                { title: "Productos", href: "/dashboard/productos" },
             ],
         },
         {
@@ -54,69 +59,12 @@ export default function Administrator() {
             subHref: [{ title: "Nosotros", href: "/dashboard/nosotros" }],
         },
         {
-            id: "productos",
-            open: false,
-            title: "Terminales y accesorios",
-            icon: faHouse,
-            href: "#",
-            subHref: [
-                { title: "Slider", href: "#" },
-                { title: "¿Quiénes somos?", href: "#" },
-                { title: "Politicas de Calidad", href: "#" },
-                { title: "Novedades", href: "#" },
-            ],
-        },
-        {
-            id: "categorias",
-            open: false,
-            title: "Mangueras",
-            icon: faHouse,
-            href: "#",
-            subHref: [
-                { title: "Slider", href: "#" },
-                { title: "¿Quiénes somos?", href: "#" },
-                { title: "Politicas de Calidad", href: "#" },
-                { title: "Novedades", href: "#" },
-            ],
-        },
-        {
-            id: "pedidos",
-            open: false,
-            title: "Acoples rapidos",
-            icon: faHouse,
-            href: "#",
-            subHref: [
-                { title: "Slider", href: "#" },
-                { title: "¿Quiénes somos?", href: "#" },
-                { title: "Politicas de Calidad", href: "#" },
-                { title: "Novedades", href: "#" },
-            ],
-        },
-        {
-            id: "configuracion",
-            open: false,
-            title: "Productos",
-            icon: faHouse,
-            href: "#",
-            subHref: [
-                { title: "Slider", href: "#" },
-                { title: "¿Quiénes somos?", href: "#" },
-                { title: "Politicas de Calidad", href: "#" },
-                { title: "Novedades", href: "#" },
-            ],
-        },
-        {
             id: "calidad",
             open: false,
             title: "Calidad",
             icon: faHouse,
             href: "#",
-            subHref: [
-                { title: "Slider", href: "#" },
-                { title: "¿Quiénes somos?", href: "#" },
-                { title: "Politicas de Calidad", href: "#" },
-                { title: "Novedades", href: "#" },
-            ],
+            subHref: [{ title: "Slider", href: "#" }],
         },
         {
             id: "novedades",
@@ -124,12 +72,7 @@ export default function Administrator() {
             title: "Novedades",
             icon: faHouse,
             href: "#",
-            subHref: [
-                { title: "Slider", href: "#" },
-                { title: "¿Quiénes somos?", href: "#" },
-                { title: "Politicas de Calidad", href: "#" },
-                { title: "Novedades", href: "#" },
-            ],
+            subHref: [{ title: "Slider", href: "#" }],
         },
         {
             id: "contacto",
@@ -137,12 +80,7 @@ export default function Administrator() {
             title: "Contacto",
             icon: faHouse,
             href: "#",
-            subHref: [
-                { title: "Slider", href: "#" },
-                { title: "¿Quiénes somos?", href: "#" },
-                { title: "Politicas de Calidad", href: "#" },
-                { title: "Novedades", href: "#" },
-            ],
+            subHref: [{ title: "Slider", href: "#" }],
         },
     ]);
 
@@ -213,7 +151,7 @@ export default function Administrator() {
                                                     duration: 0.2,
                                                     ease: "linear",
                                                 }}
-                                                className="flex flex-col gap-2 overflow-hidden"
+                                                className="flex flex-col gap-2 overflow-hidden py-2"
                                             >
                                                 {drop.subHref.map(
                                                     (sub, index) => (
@@ -269,7 +207,7 @@ export default function Administrator() {
                                             <span className="text-gray-500 pr-2">
                                                 Usuario:
                                             </span>
-                                            {adminInfo[0].name.toUpperCase()}
+                                            {adminInfo[0]?.name.toUpperCase()}
                                         </h2>
                                     </div>
                                     <button

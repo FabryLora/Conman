@@ -8,7 +8,7 @@ export default function Login() {
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const { setCurrentUser, setUserToken, userToken } = useStateContext();
+    const { setUserToken, userToken } = useStateContext();
 
     const onSubmit = (ev) => {
         ev.preventDefault();
@@ -18,7 +18,6 @@ export default function Login() {
                 password: password,
             })
             .then(({ data }) => {
-                setCurrentUser(data.user);
                 setUserToken(data.token);
             })
             .catch((error) => {
