@@ -80,7 +80,7 @@ export default function Administrator() {
             title: "Contacto",
             icon: faHouse,
             href: "#",
-            subHref: [{ title: "Slider", href: "#" }],
+            subHref: [{ title: "Contacto", href: "/dashboard/contacto-admin" }],
         },
     ]);
 
@@ -143,16 +143,7 @@ export default function Administrator() {
                                     </button>
                                     <AnimatePresence>
                                         {drop.open && (
-                                            <motion.ul
-                                                initial={{ height: 0 }}
-                                                animate={{ height: 100 }}
-                                                exit={{ height: 0 }}
-                                                transition={{
-                                                    duration: 0.2,
-                                                    ease: "linear",
-                                                }}
-                                                className="flex flex-col gap-2 overflow-hidden py-2"
-                                            >
+                                            <ul className="flex flex-col gap-2 overflow-hidden py-2 h-fit">
                                                 {drop.subHref.map(
                                                     (sub, index) => (
                                                         <MotionLink
@@ -169,7 +160,7 @@ export default function Administrator() {
                                                         </MotionLink>
                                                     )
                                                 )}
-                                            </motion.ul>
+                                            </ul>
                                         )}
                                     </AnimatePresence>
                                 </li>

@@ -15,7 +15,7 @@ class SubCategoryController extends Controller
      */
     public function index()
     {
-        return SubCategoryResource::collection(SubCategory::all());
+        return SubCategoryResource::collection(SubCategory::with("products")->get());
     }
 
    
@@ -35,6 +35,7 @@ class SubCategoryController extends Controller
      */
     public function show(SubCategory $subCategory)
     {
+        $subCategory->load("products");
         return new SubCategoryResource($subCategory);
     }
 

@@ -5,6 +5,7 @@ import AdminLogin from "./views/AdminLogin";
 import Calidad from "./views/Calidad";
 import CategoriasAdmin from "./views/CategoriasAdmin";
 import Contacto from "./views/Contacto";
+import ContactoAdmin from "./views/ContactoAdmin";
 import DefaultLayout from "./views/DefaultLayout";
 import Home from "./views/Home";
 import Login from "./views/Login";
@@ -92,6 +93,10 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/productos",
                 element: <ProductosAdmin />,
+            },
+            {
+                path: "/dashboard/contacto-admin",
+                element: <ContactoAdmin />,
             },
         ],
     },

@@ -4,8 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\URL;
-class ImageResource extends JsonResource
+
+class ProvinciaResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +16,8 @@ class ImageResource extends JsonResource
     {
         return [
             "id"=> $this->id,
-            'image_url' => $this->image ? URL::to($this->image) : null,
-            "product_id" => $this->product_id,
-            "principal" => $this->principal,
+            "name" => $this->name,
+            "localidades" => LocalidadResource::collection($this->whenLoaded('localidades')),
         ];
     }
 }

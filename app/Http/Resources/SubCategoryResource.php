@@ -19,6 +19,7 @@ class SubCategoryResource extends JsonResource
             "name"=> $this->name,
             "category_id"=> $this->category_id,
             "order_value"=> $this->order_value,
+            "products" => ProductResource::collection($this->whenLoaded('products')),
         ];
     }
 }

@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Image extends Model
 {
-    protected $table = ["image", "principal"];
+    protected $fillable = ["image", "principal", "product_id"];
 
-    public function product()
+    public function products()
     {
         return $this->belongsTo(Product::class);
     }

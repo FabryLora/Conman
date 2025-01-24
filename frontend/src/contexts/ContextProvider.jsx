@@ -18,6 +18,12 @@ const StateContext = createContext({
     fetchSliderInfo: () => {},
     categoryInfo: [],
     fetchCategoryInfo: () => {},
+    productInfo: [],
+    fetchProductInfo: () => {},
+    subCategoryInfo: [],
+    fetchSubCategoryInfo: () => {},
+    provincias: [],
+    fetchProvincias: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -26,6 +32,9 @@ export const ContextProvider = ({ children }) => {
     const [adminInfo, setAdminInfo] = useState({});
     const [sliderInfo, setSliderInfo] = useState([]);
     const [categoryInfo, setCategoryInfo] = useState([]);
+    const [productInfo, setProductInfo] = useState([]);
+    const [subCategoryInfo, setSubCategoryInfo] = useState([]);
+    const [provincias, setProvincias] = useState([]);
     const [userToken, _setUserToken] = useState(
         localStorage.getItem("TOKEN") || ""
     );
@@ -82,11 +91,32 @@ export const ContextProvider = ({ children }) => {
         });
     };
 
+    const fetchProductInfo = () => {
+        axiosClient.get("/product").then(({ data }) => {
+            setProductInfo(data.data);
+        });
+    };
+
+    const fetchSubCategoryInfo = () => {
+        axiosClient.get("/subcategory").then(({ data }) => {
+            setSubCategoryInfo(data.data);
+        });
+    };
+
+    const fetchProvincias = () => {
+        axiosClient.get("/provincia").then(({ data }) => {
+            setProvincias(data.data);
+        });
+    };
+
     useEffect(() => {
         fetchNosotrosFirstInfo();
         fetchContactInfo();
         fetchSliderInfo();
         fetchCategoryInfo();
+        fetchProductInfo();
+        fetchSubCategoryInfo();
+        fetchProvincias();
     }, []);
 
     useEffect(() => {
@@ -110,6 +140,12 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                provincias,
+                fetchProvincias,
+                subCategoryInfo,
+                fetchSubCategoryInfo,
+                productInfo,
+                fetchProductInfo,
                 categoryInfo,
                 fetchCategoryInfo,
                 sliderInfo,
