@@ -5,12 +5,16 @@ export default function CategoryAdminCard({ category }) {
                 <img src={category?.image_url} alt="" />
             </div>
             <div className="table-cell">{category?.name}</div>
+
             <div className="table-cell">
-                {category?.subcategories.map((subCategory) => (
-                    <p key={subCategory.id}>{subCategory?.name}</p>
-                ))}
+                <input
+                    type="checkbox"
+                    value={category?.destacado}
+                    checked={category?.destacado}
+                    name=""
+                    id=""
+                />
             </div>
-            <div className="table-cell">{category?.destacado}</div>
             <div className="table-cell">{category?.order}</div>
         </div>
     );

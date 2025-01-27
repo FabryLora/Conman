@@ -230,7 +230,7 @@ export default function Signup() {
                             </div>
                             <div className="flex flex-col gap-2">
                                 <label htmlFor="codigo_postal">
-                                    codigo_postal
+                                    Codigo postal
                                 </label>
                                 <input
                                     value={userSubmitInfo.codigo_postal}

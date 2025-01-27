@@ -19,6 +19,7 @@ class CategoryResource extends JsonResource
             "name"=> $this->name,
             "order_value"=> $this->order_value,
             "subcategories" => SubCategoryResource::collection($this->whenLoaded('subcategories')),
+            "products" => ProductResource::collection($this->whenLoaded('products')),
             "destacado" => $this->destacado,
             'image_url' => $this->image ? URL::to($this->image) : null,
         ];

@@ -3,7 +3,7 @@ import DefaultCard from "../components/DefaultCard";
 import { useStateContext } from "../contexts/ContextProvider.jsx";
 
 export default function TerminalesyAccesorios() {
-    const { categoryInfo, subCategoryInfo } = useStateContext();
+    const { categoryInfo, subCategoryInfo, productInfo } = useStateContext();
 
     // Obtener la categoría principal "TERMINALES Y ACCESORIOS"
     const terminalesCategory = categoryInfo.find(
@@ -13,9 +13,9 @@ export default function TerminalesyAccesorios() {
     const [selectedSubcategory, setSelectedSubcategory] = useState(null);
 
     // Obtener los productos de la subcategoría seleccionada
-    const filteredProducts =
-        subCategoryInfo.find((info) => info.name === selectedSubcategory)
-            ?.products || [];
+    const filteredProducts = productInfo.filter(
+        (info) => info.category.name === selectedSubcategory
+    );
 
     return (
         <div className="flex flex-row w-full py-20 px-5 font-roboto-condensed">
@@ -35,7 +35,11 @@ export default function TerminalesyAccesorios() {
             {/* Lista de productos */}
             <div className="flex flex-row justify-evenly w-[80%]">
                 {filteredProducts.map((product, index) => (
-                    <DefaultCard key={index} cardObject={product} />
+                    <DefaultCard
+                        key={index}
+                        cardObject={product}
+                        images={product.images}
+                    />
                 ))}
             </div>
         </div>

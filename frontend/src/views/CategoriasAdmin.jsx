@@ -10,7 +10,6 @@ export default function CategoriasAdmin() {
                     <div className="table-row text-center">
                         <div className="table-cell">Imagen</div>
                         <div className="table-cell">Nombre</div>
-                        <div className="table-cell">Sub Categoria</div>
                         <div className="table-cell">Destacado</div>
                         <div className="table-cell">Orden</div>
                         <div className="table-cell">Editar</div>
@@ -34,12 +33,6 @@ export default function CategoriasAdmin() {
                             />
                         </div>
 
-                        <div className="table-cell">
-                            <input
-                                type="text"
-                                placeholder="Nombre de la sub categoria"
-                            />
-                        </div>
                         <div className="table-cell">
                             <input type="checkbox" placeholder="Destacado" />
                         </div>

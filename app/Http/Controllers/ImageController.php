@@ -23,18 +23,19 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate(
-            [
-                "image" => "required|string",
-                "principal" => "boolean|nullable"
-            ]
-        );
-        if (isset($data["image"])) {
-            $realativePath = $this->saveImage($data["image"]);
-            $data["image"] = $realativePath;
-        }
+        $data = $request->validate([
+            "image" => "required|file|mimes:jpg,jpeg,png,gif", // Para imágenes cargadas como archivos
+            "principal" => "boolean|nullable",
+            "product_id" => "required|exists:products,id"
+        ]);
 
+        // Guardar la imagen en el sistema de archivos
+        $imagePath = $request->file('image')->store('images', 'public');
+        $data["image"] = $imagePath;
+
+        // Crear el registro de la imagen
         $image = Image::create($data);
+
         return new ImageResource($image);
     }
 
@@ -52,20 +53,28 @@ class ImageController extends Controller
     public function update(Request $request, Image $image)
     {
         $data = $request->validate([
-            "image"=> "required|string",
+            "image" => "file|mimes:jpg,jpeg,png,gif|nullable", // Imagen opcional
             "principal" => "boolean|nullable"
         ]);
-        if (isset($data["image"])) {
-            $relativePath = $this->saveImage($data["image"]);
-            $data["image"] = $relativePath;
 
+        if ($request->hasFile('image')) {
+            // Eliminar la imagen existente del sistema de archivos
             if ($image->image) {
-                $absolutePath = public_path($image->image);
-                File::delete($absolutePath);
+                $absolutePath = public_path('storage/' . $image->image);
+                if (File::exists($absolutePath)) {
+                    File::delete($absolutePath);
+                }
             }
+
+            // Guardar la nueva imagen
+            $imagePath = $request->file('image')->store('images', 'public');
+            $data["image"] = $imagePath;
         }
+
+        // Actualizar el registro de la imagen
         $image->update($data);
-       
+
+        return new ImageResource($image);
     }
 
     /**
@@ -73,34 +82,17 @@ class ImageController extends Controller
      */
     public function destroy(Image $image)
     {
-        $image->delete();
-        return response('',204);
-    }
-
-    private function saveImage($image) {
-        if (preg_match('/^data:image\/(\w+);base64,/', $image, $type)) {
-            $image = substr($image, strpos($image, ",") + 1);
-            $type = strtolower($type[1]);
-
-            if (!in_array($type, ["jpg", "jpeg", "gif", "png"])) {
-                throw new \Exception("invalid image type");
+        // Eliminar la imagen del sistema de archivos
+        if ($image->image) {
+            $absolutePath = public_path('storage/' . $image->image);
+            if (File::exists($absolutePath)) {
+                File::delete($absolutePath);
             }
-            $image = str_replace(" ", "+", $image);
-            $image = base64_decode($image);
-        }
-        else {
-            throw new \Exception("did not match data URI with image data");
         }
 
-        $dir = "images/";
-        $file = Str::random() . "." . $type;
-        $absolutePath = public_path($dir);
-        $relativePath = $dir . $file;
-        if (!File::exists($absolutePath)) {
-            File::makeDirectory($absolutePath, 0755, true);
-        }
-        file_put_contents($relativePath, $image);
+        // Eliminar el registro de la imagen
+        $image->delete();
 
-        return $relativePath;
+        return response('', 204);
     }
 }

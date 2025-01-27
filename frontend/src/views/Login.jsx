@@ -61,7 +61,7 @@ export default function Login() {
                         </div>
 
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="password">Contrasñe</label>
+                            <label htmlFor="password">Contraseña</label>
                             <input
                                 value={password}
                                 onChange={(ev) => setPassword(ev.target.value)}

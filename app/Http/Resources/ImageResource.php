@@ -16,7 +16,7 @@ class ImageResource extends JsonResource
     {
         return [
             "id"=> $this->id,
-            'image_url' => $this->image ? URL::to($this->image) : null,
+            'image_url' => url('storage/' . $this->image),
             "product_id" => $this->product_id,
             "principal" => $this->principal,
         ];

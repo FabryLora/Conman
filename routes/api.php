@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactInfoController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\NosotrosFirstController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProvinciaController;
@@ -23,9 +24,12 @@ Route::apiResource('/nosotros-first', NosotrosFirstController::class);
 Route::apiResource('/slider', SliderController::class);
 Route::apiResource('/subcategory', SubCategoryController::class);
 Route::apiResource('/category', CategoryController::class);
-Route::apiResource('/product', ProductController::class);
+Route::apiResource('/product', controller: ProductController::class);
+Route::get('/products/{id}', [ProductController::class, "show_products"]);
+
 Route::apiResource('/subcategory', SubCategoryController::class);
 Route::apiResource('/provincia', ProvinciaController::class);
+Route::apiResource('/image', ImageController::class);
 
 
 

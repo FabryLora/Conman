@@ -25,6 +25,8 @@ class ProductStore extends FormRequest
             "code"  => "required|string",
             "name"  => "required|string",
             "price" => "required|numeric",
+            "sub_category_id" => "required|exists:sub_categories,id",
+            "category_id" => "required|exists:categories,id",
 
         ];
     }

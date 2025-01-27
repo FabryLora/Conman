@@ -14,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return CategoryResource::collection(Category::with('subcategories')->get());
+        return CategoryResource::collection(Category::with('subcategories', 'products')->get());
     }
 
    
@@ -40,7 +40,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        $category->load('subcategories');
+        $category->load('subcategories', 'products');
         return new CategoryResource($category);
     }
     

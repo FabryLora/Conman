@@ -15,7 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return ProductResource::collection(Product::with("images")->get());
+        return ProductResource::collection(Product::with(["images","category","subCategory"])->get());
     }
 
     /**
@@ -25,7 +25,18 @@ class ProductController extends Controller
     {
         $data = $request->validated();
         $product = Product::create($data);
-        return new ProductResource($product);
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image');
+            $imagePath = $imagePath->store('images', 'public');
+    
+            
+            $product->images()->create([
+                'image' => $imagePath,
+            ]);
+        }
+
+        return new ProductResource($product->load(["images", "subCategory", "category"]));
     }
 
     /**
@@ -33,10 +44,16 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        $product->load("images");
+        $product->load(['images', 'subCategory', 'category']);
         return new ProductResource($product);
     }
 
+    public function show_products($id)
+    {   
+        $product = Product::findOrFail($id);
+        $product->load(['images', 'subCategory']);
+        return new ProductResource($product);
+    }
 
     /**
      * Update the specified resource in storage.
@@ -52,7 +69,10 @@ class ProductController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Product $product)
-    {
+    {   
+        $product->images->each(function($image){
+            $image->delete();
+        });
         $product->delete();
         return response("",204);
     }

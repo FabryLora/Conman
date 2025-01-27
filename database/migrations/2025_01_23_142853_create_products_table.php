@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('code');
             $table->string('name');
             $table->double('price');
-
+            $table->foreignIdFor(Category::class, "category_id")->constrained()->cascadeOnDelete();
             $table->foreignIdFor(SubCategory::class, "sub_category_id")->constrained()->cascadeOnDelete();
 
             $table->timestamps();

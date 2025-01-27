@@ -1,3 +1,4 @@
+import { ReactSummernoteLite } from "@easylogic/react-summernote-lite";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import axiosClient from "../axios";

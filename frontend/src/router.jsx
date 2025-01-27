@@ -13,10 +13,12 @@ import Mangueras from "./views/Mangueras";
 import Nosotros from "./views/Nosotros";
 import NosotrosAdmin from "./views/NosotrosAdmin";
 import Novedades from "./views/Novedades";
+import PrivateZone from "./views/PrivateZone";
 import Productos from "./views/Productos";
 import ProductosAdmin from "./views/ProductosAdmin";
 import Signup from "./views/Signup";
 import SliderAdmin from "./views/SliderAdmin";
+import TerminalesView from "./views/TerminalesView";
 import TerminalesyAccesorios from "./views/TerminalesyAccesorios";
 
 const router = createBrowserRouter([
@@ -48,6 +50,11 @@ const router = createBrowserRouter([
                 path: "/inicio/terminales-y-accesorios",
                 element: <TerminalesyAccesorios />,
             },
+            {
+                path: "/inicio/terminales-y-accesorios/:id",
+                element: <TerminalesView />,
+            },
+
             {
                 path: "/inicio/mangueras",
                 element: <Mangueras />,
@@ -98,6 +105,24 @@ const router = createBrowserRouter([
                 path: "/dashboard/contacto-admin",
                 element: <ContactoAdmin />,
             },
+        ],
+    },
+    {
+        path: "/privada",
+        element: <PrivateZone />,
+        children: [
+            /* {
+                path: "/privada/productos",
+                element: <PrivateProducts />
+            },
+            {
+                path: "/privada/pedidos",
+                element: <Pedidos />
+            },
+            {
+                path: "/privada/lista-de-precios",
+                element: <ListaDePrecios />
+            } */
         ],
     },
 ]);

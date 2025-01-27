@@ -23,6 +23,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 export default function Navbar() {
     const [tinyMenu, setTinyMenu] = useState(false);
     const [userMenu, setUserMenu] = useState(false);
+    const [userLoged, setUserLoged] = useState(false);
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
 
@@ -221,7 +222,7 @@ export default function Navbar() {
                                                 </div>
                                                 <div className="flex flex-col gap-2">
                                                     <label htmlFor="password">
-                                                        Contras;e
+                                                        Contraseña
                                                     </label>
                                                     <input
                                                         value={password}
@@ -260,12 +261,38 @@ export default function Navbar() {
                         )}
                     </div>
                     {userToken && (
-                        <div className="w-[139px] h-full flex justify-center items-center bg-white">
-                            <h2 className="font-medium text-sm text-primary-blue">
-                                {userInfo.name
-                                    ? userInfo.name.toUpperCase()
-                                    : ""}
-                            </h2>
+                        <div className="h-full relative">
+                            <button
+                                onClick={() => setUserLoged(!userLoged)}
+                                className="w-[139px] h-full flex justify-center items-center bg-white"
+                            >
+                                <h2 className="font-medium text-sm text-primary-blue">
+                                    {userInfo.name
+                                        ? userInfo.name.toUpperCase()
+                                        : ""}
+                                </h2>
+                            </button>
+                            <AnimatePresence>
+                                {userLoged && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: -30 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -30 }}
+                                        transition={{
+                                            duration: 0.1,
+                                            ease: "linear",
+                                        }}
+                                        className="absolute flex flex-col top-10 right-0 border broder-gray bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-fit z-20"
+                                    >
+                                        <Link
+                                            className="bg-primary-red text-white text-center p-4"
+                                            to={"/privado"}
+                                        >
+                                            SECCION PRIVADA
+                                        </Link>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </div>
                     )}
                 </div>

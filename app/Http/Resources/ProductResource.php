@@ -20,6 +20,8 @@ class ProductResource extends JsonResource
             "name"=> $this->name,
             "price" => $this->price,
             "images" => ImageResource::collection($this->whenLoaded('images')),
+            "category" => new CategoryResource($this->whenLoaded('category')),
+            "subCategory" => new SubCategoryResource($this->whenLoaded('subCategory')),
 
         ];
     }

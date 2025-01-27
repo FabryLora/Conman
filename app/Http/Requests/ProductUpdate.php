@@ -25,6 +25,8 @@ class ProductUpdate extends FormRequest
             "code" => "required|string",
             "name"=> "required|string",
             "price"=> "required|numeric",
+            "category_id" => "required|integer|exists:categories,id", // Validación de categoría
+            "sub_category_id" => "required|integer|exists:sub_categories,id", // Validación de subcategoría
         ];
     }
 }
