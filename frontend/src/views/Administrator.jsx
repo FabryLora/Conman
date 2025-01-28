@@ -82,6 +82,14 @@ export default function Administrator() {
             href: "#",
             subHref: [{ title: "Contacto", href: "/dashboard/contacto-admin" }],
         },
+        {
+            id: "usuarios",
+            open: false,
+            title: "Usuarios",
+            icon: faHouse,
+            href: "#",
+            subHref: [{ title: "Usuarios", href: "/dashboard/usuarios" }],
+        },
     ]);
 
     const [userMenu, setUserMenu] = useState(false);

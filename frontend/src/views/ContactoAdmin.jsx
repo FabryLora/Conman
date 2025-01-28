@@ -1,15 +1,32 @@
 import { useState } from "react";
+import axiosClient from "../axios";
+import { useStateContext } from "../contexts/ContextProvider";
 
 export default function ContactoAdmin() {
+    const { contactInfo, fetchContactInfo } = useStateContext();
+
     const [contact, setContacto] = useState({
-        mail: contact?.mail,
-        phone: contact?.phone,
-        wp: contact?.wp,
-        location: contact?.location,
+        mail: contactInfo?.mail,
+        phone: contactInfo?.phone,
+        wp: contactInfo?.wp,
+        location: contactInfo?.location,
     });
 
+    const submit = (ev) => {
+        ev.preventDefault();
+
+        const payload = { ...contact };
+
+        axiosClient.put("/contact-info/1", payload).then(() => {
+            fetchContactInfo();
+        });
+    };
+
     return (
-        <form className="p-5 flex flex-col justify-between h-screen">
+        <form
+            onSubmit={submit}
+            className="p-5 flex flex-col justify-between h-screen"
+        >
             <div className="space-y-12">
                 <div className="border-b border-gray-900/10 pb-12">
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">

@@ -28,34 +28,34 @@ export default function Nosotros() {
 
     return (
         <div>
-            <div className="flex flex-row lg:flex-row items-center my-10 font-roboto-condensed justify-center w-full h-full">
+            <div className="flex flex-col lg:flex-row items-center my-10 font-roboto-condensed justify-center w-full h-full">
                 {/* Imagen - 50% */}
-                <div className="w-full lg:w-1/2 flex justify-center items-center">
+                <div className="w-full lg:w-1/2 flex justify-center items-center mb-6 lg:mb-0">
                     <img
-                        className="w-full h-auto lg:h-[678px] object-cover"
+                        className="w-full h-auto sm:h-[300px] md:h-[450px] lg:h-[678px] object-cover"
                         src={nosotrosFirstInfo?.image_url}
                         alt="¿Quiénes somos?"
                     />
                 </div>
-                {/* Texto - 50% */}
-                <div className="flex flex-col gap-6 lg:gap-10 h-full lg:w-1/2 px-6 lg:px-10 items-center ">
-                    <div className="flex flex-col gap-6 text-[14px] sm:text-[16px] text-justify  items-start max-w-[80%] leading-relaxed">
-                        <h2 className="text-[24px] sm:text-[32px] lg:text-[40px] font-bold text-center lg:text-left">
+                {/* Texto - dinámico */}
+                <div className="flex flex-col gap-6 h-full px-6 w-full lg:w-1/2 max-lg:max-w-full max-w-[90%] sm:max-w-[80%] md:max-w-full lg:max-w-none items-center">
+                    <div className="flex flex-col gap-6 text-[14px] max-lg:max-w-full max-w-[90%] text-justify items-start leading-relaxed overflow-y-auto">
+                        <h2 className="text-[24px] sm:text-[32px] lg:text-[40px] font-bold text-left max-lg:text-center w-full">
                             {nosotrosFirstInfo?.title}
                         </h2>
-                        <p className="whitespace-pre-line">
+                        <p className="whitespace-pre-line break-words w-full text-[16px] sm:text-[18px]">
                             {nosotrosFirstInfo?.text}
                         </p>
                     </div>
                 </div>
             </div>
 
-            <div className="h-[639px] w-full bg-special-white flex justify-center">
+            <div className="h-fit w-full bg-special-white flex justify-center pb-20">
                 <div className="w-[90%]">
                     <h2 className="font-bold text-[40px] pb-20 pt-16">
                         ¿Porque elegirnos?
                     </h2>
-                    <div className="flex flex-row justify-between">
+                    <div className="flex flex-row flex-wrap gap-y-20 justify-between max-lg:justify-center">
                         {nosotrosInfo.map((info, index) => (
                             <NosotrosCard
                                 key={index}

@@ -52,10 +52,6 @@ export default function Signup() {
         setUserSubmitInfo({ ...userSubmitInfo, [name]: value });
     };
 
-    const localidadesFiltradas =
-        provincias.find((pr) => pr.name === userSubmitInfo.provincia)
-            ?.localidades || [];
-
     return (
         <div className="flex flex-col gap-10 justify-center items-center w-screen h-screen bg-black bg-opacity-50 fixed top-0 left-0 z-10">
             <Link to="/">
@@ -182,7 +178,6 @@ export default function Signup() {
                                     className="py-2 border h-[45px]"
                                     name="provincia"
                                     id="provincia"
-                                    required
                                 >
                                     <option value="">
                                         Selecciona una provincia
@@ -207,7 +202,6 @@ export default function Signup() {
                                     className="py-2 border h-[45px]"
                                     name="localidad"
                                     id="localidad"
-                                    required
                                 >
                                     <option value="">
                                         Selecciona una localidad

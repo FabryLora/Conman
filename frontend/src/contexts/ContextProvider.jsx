@@ -6,7 +6,7 @@ const StateContext = createContext({
     setUserToken: () => {},
     adminToken: null,
     setAdminToken: () => {},
-    userInfo: {},
+    userInfo: [],
     fetchUserInfo: () => {},
     adminInfo: {},
     fetchAdminInfo: () => {},
@@ -24,6 +24,11 @@ const StateContext = createContext({
     fetchSubCategoryInfo: () => {},
     provincias: [],
     fetchProvincias: () => {},
+    allUsers: [],
+    fetchAllUsers: () => {},
+    addToCart: () => {},
+    removeFromCart: () => {},
+    cart: [],
 });
 
 export const ContextProvider = ({ children }) => {
@@ -35,6 +40,36 @@ export const ContextProvider = ({ children }) => {
     const [productInfo, setProductInfo] = useState([]);
     const [subCategoryInfo, setSubCategoryInfo] = useState([]);
     const [provincias, setProvincias] = useState([]);
+    const [allUsers, setAllUsers] = useState([]);
+    const [cart, setCart] = useState(() => {
+        const savedCart = localStorage.getItem("cart");
+        return savedCart ? JSON.parse(savedCart) : [];
+    });
+
+    const addToCart = (product) => {
+        const exists = cart.find((item) => item.id === product.id);
+        let updatedCart;
+        if (exists) {
+            updatedCart = cart.map((item) =>
+                item.id === product.id
+                    ? { ...item, quantity: item.quantity + 1 }
+                    : item
+            );
+        } else {
+            updatedCart = [...cart, { ...product, quantity: 1 }];
+        }
+        setCart(updatedCart);
+    };
+
+    const removeFromCart = (productId) => {
+        const updatedCart = cart.filter((item) => item.id !== productId);
+        setCart(updatedCart);
+    };
+
+    useEffect(() => {
+        localStorage.setItem("cart", JSON.stringify(cart));
+    }, [cart]);
+
     const [userToken, _setUserToken] = useState(
         localStorage.getItem("TOKEN") || ""
     );
@@ -64,6 +99,12 @@ export const ContextProvider = ({ children }) => {
     const fetchUserInfo = () => {
         axiosClient.get("/me").then(({ data }) => {
             setUserInfo(data);
+        });
+    };
+
+    const fetchAllUsers = () => {
+        axiosClient.get("/allusers").then(({ data }) => {
+            setAllUsers(data.data);
         });
     };
 
@@ -117,6 +158,7 @@ export const ContextProvider = ({ children }) => {
         fetchProductInfo();
         fetchSubCategoryInfo();
         fetchProvincias();
+        fetchAllUsers();
     }, []);
 
     useEffect(() => {
@@ -140,6 +182,11 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                cart,
+                removeFromCart,
+                addToCart,
+                allUsers,
+                fetchAllUsers,
                 provincias,
                 fetchProvincias,
                 subCategoryInfo,

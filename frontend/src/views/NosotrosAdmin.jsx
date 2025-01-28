@@ -1,11 +1,14 @@
-import { ReactSummernoteLite } from "@easylogic/react-summernote-lite";
 import { PhotoIcon } from "@heroicons/react/24/solid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function NosotrosAdmin() {
     const { nosotrosFirstInfo, fetchNosotrosFirstInfo } = useStateContext();
+
+    useEffect(() => {
+        fetchNosotrosFirstInfo();
+    }, []);
 
     const [nosotrosFirst, setNosotrosFirst] = useState({
         title: nosotrosFirstInfo?.title,
@@ -109,6 +112,7 @@ export default function NosotrosAdmin() {
                                             ...nosotrosFirst,
                                             text: ev.target.value,
                                         });
+                                        console.log(nosotrosFirst.text);
                                     }}
                                     id="about"
                                     name="about"

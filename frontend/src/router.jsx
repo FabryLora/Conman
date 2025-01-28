@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import AcoplesRapidos from "./views/AcoplesRapidos";
 import Administrator from "./views/Administrator";
 import AdminLogin from "./views/AdminLogin";
@@ -8,11 +8,14 @@ import Contacto from "./views/Contacto";
 import ContactoAdmin from "./views/ContactoAdmin";
 import DefaultLayout from "./views/DefaultLayout";
 import Home from "./views/Home";
+import ListaDePrecios from "./views/ListaDePrecios";
 import Login from "./views/Login";
 import Mangueras from "./views/Mangueras";
 import Nosotros from "./views/Nosotros";
 import NosotrosAdmin from "./views/NosotrosAdmin";
 import Novedades from "./views/Novedades";
+import Pedidos from "./views/Pedidos";
+import PrivateProducts from "./views/PrivateProducts";
 import PrivateZone from "./views/PrivateZone";
 import Productos from "./views/Productos";
 import ProductosAdmin from "./views/ProductosAdmin";
@@ -20,6 +23,7 @@ import Signup from "./views/Signup";
 import SliderAdmin from "./views/SliderAdmin";
 import TerminalesView from "./views/TerminalesView";
 import TerminalesyAccesorios from "./views/TerminalesyAccesorios";
+import UsuariosAdmin from "./views/UsuariosAdmin";
 
 const router = createBrowserRouter([
     {
@@ -38,6 +42,10 @@ const router = createBrowserRouter([
         path: "/inicio",
         element: <DefaultLayout />,
         children: [
+            {
+                path: "/inicio",
+                element: <Navigate to={"/"} />,
+            },
             {
                 path: "/inicio/nosotros",
                 element: <Nosotros />,
@@ -105,24 +113,32 @@ const router = createBrowserRouter([
                 path: "/dashboard/contacto-admin",
                 element: <ContactoAdmin />,
             },
+            {
+                path: "/dashboard/usuarios",
+                element: <UsuariosAdmin />,
+            },
         ],
     },
     {
-        path: "/privada",
+        path: "/privado",
         element: <PrivateZone />,
         children: [
-            /* {
-                path: "/privada/productos",
-                element: <PrivateProducts />
+            {
+                path: "/privado",
+                element: <Navigate to={"/privado/productos"} />,
             },
             {
-                path: "/privada/pedidos",
-                element: <Pedidos />
+                path: "/privado/productos",
+                element: <PrivateProducts />,
             },
             {
-                path: "/privada/lista-de-precios",
-                element: <ListaDePrecios />
-            } */
+                path: "/privado/pedido",
+                element: <Pedidos />,
+            },
+            {
+                path: "/privado/lista-de-precios",
+                element: <ListaDePrecios />,
+            },
         ],
     },
 ]);

@@ -162,7 +162,7 @@ export default function Navbar() {
     return (
         <div className="flex flex-col items-center justify-center font-roboto-condensed">
             <div className="bg-primary-blue h-[40px] w-full flex items-center justify-between pl-20 pr-10">
-                <div className="flex gap-4 items-center text-[14px] text-white h-[16px]">
+                <div className="flex gap-4 items-center text-[14px] text-white h-[16px] max-md:hidden">
                     <div className="flex gap-2 items-center">
                         <img className="h-[16px]" src={letterIcon} alt="" />
                         <p>{contactInfo?.mail}</p>
@@ -173,7 +173,7 @@ export default function Navbar() {
                     </div>
                 </div>
                 <div className="flex fle-row gap-4 h-full items-center">
-                    <div className="flex flex-row gap-4 h-[16px] items-center justify-center">
+                    <div className="flex flex-row gap-4 h-[16px] items-center justify-center max-md:hidden">
                         {socials.map((social, index) => (
                             <Link key={index} to={social.href}>
                                 <img src={social.logo} alt="" />
@@ -193,7 +193,7 @@ export default function Navbar() {
                                     />
                                 </button>
                                 {userMenu && (
-                                    <div className="absolute flex flex-col top-10 right-10 bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-[439px] z-20">
+                                    <div className="absolute flex flex-col top-10 right-10 bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-[439px] z-30">
                                         <h2 className="font-bold text-[24px] py-5">
                                             Iniciar sesion
                                         </h2>
@@ -267,8 +267,8 @@ export default function Navbar() {
                                 className="w-[139px] h-full flex justify-center items-center bg-white"
                             >
                                 <h2 className="font-medium text-sm text-primary-blue">
-                                    {userInfo.name
-                                        ? userInfo.name.toUpperCase()
+                                    {userInfo?.name
+                                        ? userInfo?.name.toUpperCase()
                                         : ""}
                                 </h2>
                             </button>

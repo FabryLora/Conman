@@ -1,12 +1,11 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import barsIcon from "../assets/icons/bars-solid.svg";
 import chevronDownWhite from "../assets/icons/chevron-down-white.svg";
 import fbIcon from "../assets/icons/fbIcon.svg";
 import igIcon from "../assets/icons/igIcon.svg";
 import phoneIcon from "../assets/icons/phone.svg";
-import searchIcon from "../assets/icons/search.svg";
 import letterIcon from "../assets/icons/sobre.svg";
 import xmark from "../assets/icons/xmark-solid.svg";
 import conmanLogo from "../assets/logos/conman-logo.png";
@@ -16,7 +15,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 export default function NavbarPrivado() {
     const [tinyMenu, setTinyMenu] = useState(false);
     const [userLoged, setUserLoged] = useState(false);
-
+    const [selectedLink, setSelectedLink] = useState("Productos");
     const { userToken, userInfo, contactInfo } = useStateContext();
 
     const socials = [
@@ -25,9 +24,13 @@ export default function NavbarPrivado() {
     ];
 
     const links = [
-        { title: "Productos", href: "/privada/productos" },
-        { title: "Pedido", href: "/privada/pedido" },
-        { title: "Lista de precios", href: "/privada/lista-de-precios" },
+        { title: "Productos", href: "/privado/productos", selected: false },
+        { title: "Pedido", href: "/privado/pedido", selected: false },
+        {
+            title: "Lista de precios",
+            href: "/privado/lista-de-precios",
+            selected: false,
+        },
     ];
 
     return (
@@ -93,9 +96,21 @@ export default function NavbarPrivado() {
                     <img src={conmanLogo} alt="Logo" className="w-full" />
                 </Link>
                 <ul className="flex flex-row gap-5 w-full justify-end pr-10 max-lg:hidden">
-                    {links.map((link) => (
-                        <li key={link.title}>
-                            <Link to={link.href}>{link.title}</Link>
+                    {links.map((linkInfo) => (
+                        <li
+                            onClick={() => setSelectedLink(linkInfo.title)}
+                            key={linkInfo.title}
+                        >
+                            <Link
+                                className={`${
+                                    linkInfo.title === selectedLink
+                                        ? "font-bold"
+                                        : ""
+                                }`}
+                                to={linkInfo.href}
+                            >
+                                {linkInfo.title}
+                            </Link>
                         </li>
                     ))}
                 </ul>

@@ -19,7 +19,7 @@ export default function DefaultLayout() {
     const finalPath = cleanPathname.join("/");
 
     return (
-        <>
+        <div className="overflow-hidden">
             <Navbar />
             <DefaultBanner
                 title={finalPath}
@@ -28,6 +28,6 @@ export default function DefaultLayout() {
             />
             <Outlet />
             <Footer />
-        </>
+        </div>
     );
 }

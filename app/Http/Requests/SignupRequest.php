@@ -25,6 +25,13 @@ class SignupRequest extends FormRequest
             'name' => "required|string|max:255",
             'email' => "required|string|email|max:255|unique:users,email",
             "password"=> "required|confirmed|string|min:8",
+            "razon_social"=> "required|string|max:100",
+            "dni"=> "required|string|max:100",
+            "telefono"=> "required|string|max:100",
+            "direccion"=> "required|string|max:100",
+            "provincia"=> "nullable|string|max:100",
+            "localidad"=> "nullable|string|max:100",
+            "codigo_postal"=> "required|string|max:100",
 
         ];
     }

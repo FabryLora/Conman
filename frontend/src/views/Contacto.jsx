@@ -1,28 +1,70 @@
+import { useState } from "react";
 import letterIcon from "../assets/icons/letter-red-icon.svg";
 import locationIcon from "../assets/icons/location-red-icon.svg";
 import phoneIcon from "../assets/icons/phone-red-icon.svg";
 import whatsappIcon from "../assets/icons/whatsapp-red-icon.svg";
+import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Contacto() {
     const { contactInfo } = useStateContext();
 
     const contactoInfo = [
-        {
-            icon: locationIcon,
-            text: contactInfo?.location,
-        },
+        { icon: locationIcon, text: contactInfo?.location },
         { icon: letterIcon, text: contactInfo?.mail },
         { icon: phoneIcon, text: contactInfo?.phone },
         { icon: whatsappIcon, text: contactInfo?.wp },
     ];
 
     const inputInfo = [
-        { title: "Nombre", type: "text", id: "nombre" },
-        { title: "Telefono", type: "number", id: "nombre" },
-        { title: "Email", type: "email", id: "nombre" },
-        { title: "Empresa", type: "text", id: "nombre" },
+        { title: "Nombre", type: "text", id: "name" },
+        { title: "Teléfono", type: "number", id: "phone" },
+        { title: "Email", type: "email", id: "email" },
+        { title: "Empresa", type: "text", id: "company" },
     ];
+
+    const [formData, setFormData] = useState({
+        name: "",
+        phone: "",
+        email: "",
+        company: "",
+        message: "",
+    });
+
+    const [errors, setErrors] = useState({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setErrors({});
+
+        try {
+            await axiosClient.post("/sendcontact", formData);
+            alert("¡Mensaje enviado exitosamente!");
+            setFormData({
+                name: "",
+                phone: "",
+                email: "",
+                company: "",
+                message: "",
+            });
+        } catch (error) {
+            if (error.response?.status === 422) {
+                // Muestra errores de validación enviados por Laravel
+                setErrors(error.response.data.errors || {});
+            } else {
+                alert("Hubo un error al enviar el mensaje.");
+            }
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
     return (
         <div className="flex justify-center">
@@ -49,7 +91,10 @@ export default function Contacto() {
                         </div>
                     </div>
                     <div className="w-1/2 flex justify-end">
-                        <form className="w-fit flex flex-col gap-10" action="">
+                        <form
+                            className="w-fit flex flex-col gap-10"
+                            onSubmit={handleSubmit}
+                        >
                             <div className="grid grid-cols-2 grid-rows-2 gap-5 items-center justify-center w-fit">
                                 {inputInfo.map((info, index) => (
                                     <div
@@ -60,25 +105,58 @@ export default function Contacto() {
                                             {info.title}
                                         </label>
                                         <input
-                                            className="border pl-3 w-[264px] h-[48px]"
+                                            className={`border pl-3 w-[264px] h-[48px] ${
+                                                errors[info.id]
+                                                    ? "border-red-500"
+                                                    : "border-gray-300"
+                                            }`}
                                             type={info.type}
                                             name={info.id}
                                             id={info.id}
+                                            value={formData[info.id]}
+                                            onChange={handleInputChange}
+                                            required
                                         />
+                                        {errors[info.id] && (
+                                            <span className="text-red-500 text-sm">
+                                                {errors[info.id][0]}
+                                            </span>
+                                        )}
                                     </div>
                                 ))}
                                 <div className="col-span-2">
-                                    <label htmlFor="mensaje">Mensaje</label>
+                                    <label htmlFor="message">Mensaje</label>
                                     <textarea
-                                        className="w-full h-[155px] border p-3"
-                                        type="text"
-                                        name="mensaje"
-                                        id="mensaje"
-                                    />
+                                        className={`w-full h-[155px] border p-3 ${
+                                            errors.message
+                                                ? "border-red-500"
+                                                : "border-gray-300"
+                                        }`}
+                                        name="message"
+                                        id="message"
+                                        value={formData.message}
+                                        onChange={handleInputChange}
+                                        required
+                                    ></textarea>
+                                    {errors.message && (
+                                        <span className="text-red-500 text-sm">
+                                            {errors.message[0]}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
-                            <button className="w-full h-[47px] bg-primary-red text-white">
-                                ENVIAR MENSAJE
+                            <button
+                                type="submit"
+                                className={`w-full h-[47px] text-white ${
+                                    isSubmitting
+                                        ? "bg-gray-400"
+                                        : "bg-primary-red"
+                                }`}
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting
+                                    ? "Enviando..."
+                                    : "ENVIAR MENSAJE"}
                             </button>
                         </form>
                     </div>
@@ -87,7 +165,7 @@ export default function Contacto() {
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3281.4647215277473!2d-58.4196176234808!3d-34.66821886090883!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bccc7fe2a9ac01%3A0xd6121cc1d8cbb189!2sConman%20Argentina!5e0!3m2!1ses-419!2sar!4v1737124645441!5m2!1ses-419!2sar"
                         className="w-full h-[520px]"
-                        allowfullscreen=""
+                        allowFullScreen=""
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
                     ></iframe>

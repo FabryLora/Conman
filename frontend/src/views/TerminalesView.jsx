@@ -25,9 +25,9 @@ export default function TerminalesView() {
     }
 
     return (
-        <div className="font-roboto-condensed w-[90%] mx-auto py-20">
+        <div className="font-roboto-condensed w-[80%] mx-auto py-20">
             <div className="grid grid-cols-2 grid-rows-2 gap-4 gap-y-10">
-                <div className="flex flex-row w-full justify-between">
+                <div className="flex flex-row w-full gap-3">
                     <div className="flex flex-col justify-between h-[300px] overflow-y-auto scrollbar-hide gap-y-3">
                         {productInfo.images.map((image, index) => (
                             <button
@@ -64,7 +64,7 @@ export default function TerminalesView() {
                             </h2>
                             <p>{productInfo?.price}</p>
                         </div>
-                        <div className="flex flex-row justify-between">
+                        <div className="flex flex-row gap-10">
                             <button className="h-[47px] w-full text-primary-red border border-primary-red">
                                 FICHA TECNICA
                             </button>

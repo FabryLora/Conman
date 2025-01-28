@@ -10,15 +10,15 @@ export default function TerminalesyAccesorios() {
         (category) => category.name.toUpperCase() === "TERMINALES Y ACCESORIOS"
     );
 
-    const [selectedSubcategory, setSelectedSubcategory] = useState(null);
+    const [selectedSubcategory, setSelectedSubcategory] = useState("test 0");
 
     // Obtener los productos de la subcategoría seleccionada
     const filteredProducts = productInfo.filter(
-        (info) => info.category.name === selectedSubcategory
+        (info) => info.subCategory.name === selectedSubcategory
     );
 
     return (
-        <div className="flex flex-row w-full py-20 px-5 font-roboto-condensed">
+        <div className="flex flex-row w-full py-20 px-5 gap-10 font-roboto-condensed min-h-[526px]">
             {/* Lista de subcategorías */}
             <div className="w-[20%]">
                 {terminalesCategory?.subcategories.map((subcategory, index) => (
@@ -33,7 +33,7 @@ export default function TerminalesyAccesorios() {
             </div>
 
             {/* Lista de productos */}
-            <div className="flex flex-row justify-evenly w-[80%]">
+            <div className="flex flex-row justify-start w-[80%]">
                 {filteredProducts.map((product, index) => (
                     <DefaultCard
                         key={index}
