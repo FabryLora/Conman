@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\CategoryResource;
-use App\Models\Category;
+use App\Http\Resources\RealProductResource;
+use App\Models\RealProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
-class CategoryController extends Controller
+class RealProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return CategoryResource::collection(Category::with('subcategories', 'products')->get());
+        return RealProductResource::collection(RealProduct::with("product")->get());
     }
-
 
 
     /**
@@ -27,57 +26,64 @@ class CategoryController extends Controller
     {
         $data = $request->validate([
             "name" => "required|string",
-            "order_value" => "string",
+            "code" => "required|string",
+            "price" => "required|numeric",
+            "discount" => "required|integer",
             "image" => "string|nullable",
-            "destacado" => "boolean|nullable"
+            "product_id" => "required|exists:products,id",
         ]);
 
-        $category = Category::create($data);
-        return new CategoryResource($category);
+        if (isset($data["image"])) {
+            $realativePath = $this->saveImage($data["image"]);
+            $data["image"] = $realativePath;
+        }
+
+        $product = RealProduct::create($data);
+        return new RealProductResource($product);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show(RealProduct $realProduct)
     {
-        $category->load('subcategories', 'products');
-        return new CategoryResource($category);
+        $realProduct->load("product");
+        return new RealProductResource($realProduct);
     }
-
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, RealProduct $realProduct)
     {
         $data = $request->validate([
             "name" => "required|string",
-            "order_value" => "string",
+            "code" => "required|string",
+            "price" => "required|numeric",
+            "discount" => "required|integer",
             "image" => "string|nullable",
-            "destacado" => "boolean|nullable"
+
         ]);
 
         if (isset($data["image"])) {
             $relativePath = $this->saveImage($data["image"]);
             $data["image"] = $relativePath;
 
-            if ($category->image) {
-                $absolutePath = public_path($category->image);
+            if ($realProduct->image) {
+                $absolutePath = public_path($realProduct->image);
                 File::delete($absolutePath);
             }
         }
 
-        $category->update($data);
-        return new CategoryResource($category);
+        $realProduct->update($data);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(RealProduct $realProduct)
     {
-        $category->delete();
+        $realProduct->delete();
         return response('', 204);
     }
 

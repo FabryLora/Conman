@@ -4,9 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\URL;
 
-class SliderResource extends JsonResource
+class SliderImageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,12 +16,7 @@ class SliderResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "title" => $this->title,
-            "subtitle" => $this->subtitle,
-            "link" => $this->link,
-            "slider_id" => $this->slider_id,
-            "images" => SliderImageResource::collection($this->whenLoaded('images')),
-
+            'image_url' => url('storage/' . $this->image),
         ];
     }
 }

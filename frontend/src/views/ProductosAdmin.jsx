@@ -7,8 +7,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 export default function ProductosAdmin() {
     const [name, setName] = useState(""); // Nombre del producto
 
-    const [code, setCode] = useState("");
-    const [price, setPrice] = useState(""); // Precio
+    // Precio
     const [images, setImages] = useState([]); // Lista de archivos seleccionados
     const [categoryId, setCategoryId] = useState("");
     const [subCategoryId, setSubCategoryId] = useState(""); // ID de la subcategoría
@@ -29,8 +28,6 @@ export default function ProductosAdmin() {
             // 1. Crear el producto
             const productResponse = await axiosClient.post("/product", {
                 name,
-                code,
-                price,
                 sub_category_id: subCategoryId,
                 category_id: categoryId,
             });
@@ -104,27 +101,6 @@ export default function ProductosAdmin() {
 
                             <div className="col-span-full">
                                 <label
-                                    htmlFor="code"
-                                    className="block text-sm/6 font-medium text-gray-900"
-                                >
-                                    Codigo
-                                </label>
-                                <div className="mt-2">
-                                    <input
-                                        value={code}
-                                        onChange={(ev) =>
-                                            setCode(ev.target.value)
-                                        }
-                                        id="code"
-                                        name="code"
-                                        type="text"
-                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="col-span-full">
-                                <label
                                     htmlFor="name"
                                     className="block text-sm/6 font-medium text-gray-900"
                                 >
@@ -139,27 +115,6 @@ export default function ProductosAdmin() {
                                         id="name"
                                         name="name"
                                         type="text"
-                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="col-span-full">
-                                <label
-                                    htmlFor="price"
-                                    className="block text-sm/6 font-medium text-gray-900"
-                                >
-                                    Precio
-                                </label>
-                                <div className="mt-2">
-                                    <input
-                                        value={price}
-                                        onChange={(ev) =>
-                                            setPrice(ev.target.value)
-                                        }
-                                        id="price"
-                                        name="price"
-                                        type="number"
                                         className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                     />
                                 </div>
@@ -220,7 +175,7 @@ export default function ProductosAdmin() {
                                         {subCategoryInfo
                                             .filter(
                                                 (subcategory) =>
-                                                    subcategory.id ===
+                                                    subcategory.category_id ===
                                                     Number(categoryId)
                                             )
                                             .map((subcategory, index) => (
@@ -252,15 +207,11 @@ export default function ProductosAdmin() {
                         <th scope="col" className="px-6 py-3">
                             Imagenes
                         </th>
-                        <th scope="col" className="px-6 py-3">
-                            Codigo
-                        </th>
+
                         <th scope="col" className="px-6 py-3">
                             Nombre
                         </th>
-                        <th scope="col" className="px-6 py-3">
-                            Precio
-                        </th>
+
                         <th scope="col" className="px-6 py-3">
                             Categoria
                         </th>

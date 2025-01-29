@@ -6,10 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    
-    protected $fillable = [
-        'name', 'code', 'price', 'category_id', 'sub_category_id',
-    ];
+
+    protected $guarded = [];
 
     public function subCategory()
     {
@@ -24,5 +22,10 @@ class Product extends Model
     public function images()
     {
         return $this->hasMany(Image::class);
+    }
+
+    public function realProducts()
+    {
+        return $this->hasMany(RealProduct::class);
     }
 }

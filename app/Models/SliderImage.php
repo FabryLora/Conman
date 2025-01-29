@@ -4,13 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Slider extends Model
+class SliderImage extends Model
 {
-
     protected $guarded = [];
 
-    public function images()
+    public function slider()
     {
-        return $this->hasMany(SliderImage::class);
+        return $this->belongsTo(Slider::class);
     }
 }

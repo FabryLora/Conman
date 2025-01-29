@@ -47,6 +47,10 @@ export default function Administrator() {
             href: "#",
             subHref: [
                 { title: "Categorias", href: "/dashboard/categorias" },
+                {
+                    title: "Grupo de Productos",
+                    href: "/dashboard/grupo-de-productos",
+                },
                 { title: "Productos", href: "/dashboard/productos" },
             ],
         },

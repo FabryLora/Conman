@@ -8,12 +8,14 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\NosotrosFirstController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProvinciaController;
+use App\Http\Controllers\RealProductController;
 use App\Http\Controllers\SendContactInfoController;
 use App\Http\Controllers\SliderController;
+use App\Http\Controllers\SliderImageController;
 use App\Http\Controllers\SubCategoryController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth:sanctum')->group(function() {
+Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
@@ -25,9 +27,11 @@ Route::get('/allusers', [AuthController::class, 'index']);
 Route::apiResource('/contact-info', ContactInfoController::class);
 Route::apiResource('/nosotros-first', NosotrosFirstController::class);
 Route::apiResource('/slider', SliderController::class);
+Route::apiResource('/sliderimage', SliderImageController::class);
 Route::apiResource('/subcategory', SubCategoryController::class);
 Route::apiResource('/category', CategoryController::class);
 Route::apiResource('/product', controller: ProductController::class);
+Route::apiResource('/realproducts', controller: RealProductController::class);
 Route::get('/products/{id}', [ProductController::class, "show_products"]);
 
 Route::apiResource('/subcategory', SubCategoryController::class);

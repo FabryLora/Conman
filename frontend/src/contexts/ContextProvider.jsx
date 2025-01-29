@@ -14,7 +14,7 @@ const StateContext = createContext({
     fetchNosotrosFirstInfo: () => {},
     contactInfo: {},
     fetchContactInfo: () => {},
-    sliderInfo: [],
+    sliderInfo: {},
     fetchSliderInfo: () => {},
     categoryInfo: [],
     fetchCategoryInfo: () => {},
@@ -29,18 +29,21 @@ const StateContext = createContext({
     addToCart: () => {},
     removeFromCart: () => {},
     cart: [],
+    realProducts: [],
+    fetchRealProducts: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
     const [contactInfo, setContactInfo] = useState({});
     const [userInfo, setUserInfo] = useState({});
     const [adminInfo, setAdminInfo] = useState({});
-    const [sliderInfo, setSliderInfo] = useState([]);
+    const [sliderInfo, setSliderInfo] = useState({});
     const [categoryInfo, setCategoryInfo] = useState([]);
     const [productInfo, setProductInfo] = useState([]);
     const [subCategoryInfo, setSubCategoryInfo] = useState([]);
     const [provincias, setProvincias] = useState([]);
     const [allUsers, setAllUsers] = useState([]);
+    const [realProducts, setRealProducts] = useState([]);
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem("cart");
         return savedCart ? JSON.parse(savedCart) : [];
@@ -122,7 +125,7 @@ export const ContextProvider = ({ children }) => {
 
     const fetchSliderInfo = () => {
         axiosClient.get("/slider").then(({ data }) => {
-            setSliderInfo(data.data);
+            setSliderInfo(data.data[0]);
         });
     };
 
@@ -150,6 +153,12 @@ export const ContextProvider = ({ children }) => {
         });
     };
 
+    const fetchRealProducts = () => {
+        axiosClient.get("/realproducts").then(({ data }) => {
+            setRealProducts(data.data);
+        });
+    };
+
     useEffect(() => {
         fetchNosotrosFirstInfo();
         fetchContactInfo();
@@ -159,6 +168,7 @@ export const ContextProvider = ({ children }) => {
         fetchSubCategoryInfo();
         fetchProvincias();
         fetchAllUsers();
+        fetchRealProducts();
     }, []);
 
     useEffect(() => {
@@ -182,6 +192,8 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                realProducts,
+                fetchRealProducts,
                 cart,
                 removeFromCart,
                 addToCart,

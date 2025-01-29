@@ -8,6 +8,8 @@ export default function ProductRowAdmin({
     subCategory,
     categoryName,
 }) {
+    const { subCategoryInfo, fetchProductInfo, categoryInfo } =
+        useStateContext();
     const [editable, setEditable] = useState(false);
 
     // Precio
@@ -15,14 +17,9 @@ export default function ProductRowAdmin({
     const [principal, setPrincipal] = useState("0");
     const [submitData, setSubmitData] = useState({
         name: productObject?.name,
-        code: productObject?.code,
-        price: productObject?.price,
-        sub_category_id: productObject?.sub_category_id,
-        category_id: productObject?.category_id,
+        sub_category_id: productObject?.subCategory.id,
+        category_id: productObject?.category.id,
     });
-
-    const { subCategoryInfo, fetchProductInfo, categoryInfo } =
-        useStateContext();
 
     const handleFileChange = (e) => {
         setImages(e.target.files); // Almacena los archivos seleccionados
@@ -32,6 +29,8 @@ export default function ProductRowAdmin({
         e.preventDefault();
 
         const payload = { ...submitData };
+
+        console.log("Payload antes de enviar:", payload);
 
         try {
             // 1. Crear el producto
@@ -114,23 +113,7 @@ export default function ProductRowAdmin({
                     </div>
                 )}
             </td>
-            <td className="px-6 py-4">
-                {editable ? (
-                    <input
-                        type="text"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                        value={submitData?.code}
-                        onChange={(ev) =>
-                            setSubmitData({
-                                ...submitData,
-                                code: ev.target.value,
-                            })
-                        }
-                    />
-                ) : (
-                    productObject?.code
-                )}
-            </td>
+
             <td className="px-6 py-4">
                 {editable ? (
                     <input
@@ -148,35 +131,16 @@ export default function ProductRowAdmin({
                     productObject?.name
                 )}
             </td>
-            <td className="px-6 py-4">
-                {editable ? (
-                    <input
-                        type="number"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                        value={submitData?.price}
-                        onChange={(ev) =>
-                            setSubmitData({
-                                ...submitData,
-                                price: ev.target.value,
-                            })
-                        }
-                    />
-                ) : (
-                    productObject?.price
-                )}
-            </td>
+
             <td className="px-6 py-4">
                 {editable ? (
                     <div className="mt-2">
                         <select
                             value={submitData?.category_id}
                             onChange={(ev) => {
-                                const newCategoryId = ev.target.value;
-
                                 setSubmitData(() => ({
                                     ...submitData,
-                                    category_id: newCategoryId,
-                                    sub_category_id: "", // Reinicia el sub_category_id
+                                    category_id: ev.target.value,
                                 }));
                             }}
                             id="categoria"
@@ -219,12 +183,12 @@ export default function ProductRowAdmin({
                             {subCategoryInfo
                                 .filter(
                                     (subcategory) =>
-                                        subcategory.id ===
+                                        subcategory.category_id ===
                                         Number(submitData?.category_id)
                                 )
-                                .map((category, index) => (
-                                    <option key={index} value={category.id}>
-                                        {category.name}
+                                .map((subcategory, index) => (
+                                    <option key={index} value={subcategory.id}>
+                                        {subcategory.name}
                                     </option>
                                 ))}
                         </select>

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
-export default function TerminalesView() {
+export default function ProductosView() {
     const { realProducts } = useStateContext();
     const [productInfo, setProductInfo] = useState(null);
     const [currentImage, setCurrentImage] = useState("");

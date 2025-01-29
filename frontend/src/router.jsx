@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import AcoplesRapidos from "./views/AcoplesRapidos";
+import AcoplesRapidosView from "./views/AcoplesRapidosView";
 import Administrator from "./views/Administrator";
 import AdminLogin from "./views/AdminLogin";
 import Calidad from "./views/Calidad";
@@ -11,6 +12,7 @@ import Home from "./views/Home";
 import ListaDePrecios from "./views/ListaDePrecios";
 import Login from "./views/Login";
 import Mangueras from "./views/Mangueras";
+import ManguerasView from "./views/ManguerasView";
 import Nosotros from "./views/Nosotros";
 import NosotrosAdmin from "./views/NosotrosAdmin";
 import Novedades from "./views/Novedades";
@@ -19,6 +21,8 @@ import PrivateProducts from "./views/PrivateProducts";
 import PrivateZone from "./views/PrivateZone";
 import Productos from "./views/Productos";
 import ProductosAdmin from "./views/ProductosAdmin";
+import ProductosView from "./views/ProductosView";
+import RealProducts from "./views/RealProducts";
 import Signup from "./views/Signup";
 import SliderAdmin from "./views/SliderAdmin";
 import TerminalesView from "./views/TerminalesView";
@@ -55,6 +59,10 @@ const router = createBrowserRouter([
                 element: <AcoplesRapidos />,
             },
             {
+                path: "/inicio/acoples-rapidos-hidraulicos/:id",
+                element: <AcoplesRapidosView />,
+            },
+            {
                 path: "/inicio/terminales-y-accesorios",
                 element: <TerminalesyAccesorios />,
             },
@@ -68,8 +76,16 @@ const router = createBrowserRouter([
                 element: <Mangueras />,
             },
             {
+                path: "/inicio/mangueras/:id",
+                element: <ManguerasView />,
+            },
+            {
                 path: "/inicio/productos",
                 element: <Productos />,
+            },
+            {
+                path: "/inicio/productos/:id",
+                element: <ProductosView />,
             },
             {
                 path: "/inicio/calidad",
@@ -106,8 +122,12 @@ const router = createBrowserRouter([
                 element: <CategoriasAdmin />,
             },
             {
-                path: "/dashboard/productos",
+                path: "/dashboard/grupo-de-productos",
                 element: <ProductosAdmin />,
+            },
+            {
+                path: "/dashboard/productos",
+                element: <RealProducts />,
             },
             {
                 path: "/dashboard/contacto-admin",
