@@ -45,7 +45,7 @@ export default function TerminalesView() {
                                 <img
                                     src={image?.image_url}
                                     alt={image?.name}
-                                    className="object-cover"
+                                    className="object-cover w-full h-full"
                                 />
                             </button>
                         ))}

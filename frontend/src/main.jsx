@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { HelmetProvider } from "react-helmet-async";
 import { RouterProvider } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import { ContextProvider } from "./contexts/ContextProvider.jsx";
@@ -8,10 +9,12 @@ import router from "./router.jsx";
 
 createRoot(document.getElementById("root")).render(
     <StrictMode>
-        <ContextProvider>
-            <RouterProvider router={router}>
-                <ScrollToTop />
-            </RouterProvider>
-        </ContextProvider>
+        <HelmetProvider>
+            <ContextProvider>
+                <RouterProvider router={router}>
+                    <ScrollToTop />
+                </RouterProvider>
+            </ContextProvider>
+        </HelmetProvider>
     </StrictMode>
 );

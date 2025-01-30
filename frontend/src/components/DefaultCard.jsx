@@ -4,12 +4,12 @@ export default function DefaultCard({ cardObject, images }) {
     return (
         <div className="h-[366px] w-[288px] flex flex-col font-roboto-condensed border border-[#EAEAEA] shadow-sm">
             <Link
-                className="flex justify-center min-h-[287px]"
+                className="flex justify-center h-[287px]"
                 to={`/inicio/terminales-y-accesorios/${cardObject.id}`}
             >
                 {images ? (
                     <img
-                        className="object-cover"
+                        className="object-cover w-full h-full"
                         src={images[0].image_url}
                         alt=""
                     />

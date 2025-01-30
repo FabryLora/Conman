@@ -44,7 +44,7 @@ export default function TerminalesyAccesorios() {
             </div>
 
             {/* Lista de productos */}
-            <div className="flex flex-row justify-start w-[80%]">
+            <div className="flex flex-row justify-start w-[80%] gap-4">
                 {filteredProducts.map((product, index) => (
                     <DefaultCard
                         key={index}

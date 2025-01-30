@@ -30,11 +30,10 @@ Route::apiResource('/slider', SliderController::class);
 Route::apiResource('/sliderimage', SliderImageController::class);
 Route::apiResource('/subcategory', SubCategoryController::class);
 Route::apiResource('/category', CategoryController::class);
-Route::apiResource('/product', controller: ProductController::class);
-Route::apiResource('/realproducts', controller: RealProductController::class);
+Route::apiResource('/product', ProductController::class);
+Route::apiResource('/realproducts', RealProductController::class);
 Route::get('/products/{id}', [ProductController::class, "show_products"]);
 
-Route::apiResource('/subcategory', SubCategoryController::class);
 Route::apiResource('/provincia', ProvinciaController::class);
 Route::apiResource('/image', ImageController::class);
 

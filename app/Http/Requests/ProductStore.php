@@ -22,9 +22,8 @@ class ProductStore extends FormRequest
     public function rules(): array
     {
         return [
-            
+
             "name"  => "required|string",
-            
             "sub_category_id" => "required|exists:sub_categories,id",
             "category_id" => "required|exists:categories,id",
 

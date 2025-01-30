@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import quienes from "../assets/inicio/quienes.png";
 import mision from "../assets/nosotros/mision-icon.svg";
 import sustent from "../assets/nosotros/sustent-icon.svg";
@@ -28,6 +29,9 @@ export default function Nosotros() {
 
     return (
         <div>
+            <Helmet>
+                <title>Conman - Nosotros</title>
+            </Helmet>
             <div className="flex flex-col lg:flex-row items-center my-10 font-roboto-condensed justify-center w-full h-full">
                 {/* Imagen - 50% */}
                 <div className="w-full lg:w-1/2 flex justify-center items-center mb-6 lg:mb-0">
