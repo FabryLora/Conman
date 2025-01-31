@@ -10,7 +10,7 @@ class RealProductResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
-     *
+     *p
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array

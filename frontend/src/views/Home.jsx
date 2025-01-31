@@ -1,7 +1,7 @@
+import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 import shieldIcon from "../assets/icons/shield-icon.svg";
 import acoples from "../assets/inicio/acoples.png";
-import bannerHome from "../assets/inicio/banner-home.png";
 import mangueras from "../assets/inicio/mangueras.png";
 import novedades1 from "../assets/inicio/novedades-1.png";
 import novedades2 from "../assets/inicio/novedades-2.png";
@@ -62,36 +62,23 @@ export default function Home() {
         },
     ];
 
-    const carouselInfo = [
-        {
-            src: bannerHome,
-            title: "CONMAN",
-            description: "Productos de alta calidad y precicion",
-        },
-        {
-            src: novedades2,
-            title: "Prueba",
-            description: "Productosasdrecicion",
-        },
-        {
-            src: novedades3,
-            title: "Prueba2",
-            description: "Productos deasdecicion",
-        },
-    ];
-
     return (
         <>
             <Navbar />
             <div>
-                <Carousel images={carouselInfo} />
+                <Carousel />
 
                 {/* categorias */}
-                <div className="flex flex-col items-center w-[90%] mx-auto my-20 gap-3">
-                    <h2 className="font-bold text-[40px] font-roboto-condensed self-start">
+                <div className="flex flex-col items-center w-[90%] mx-auto my-20 gap-3 overflow-hidden max-lg:w-full">
+                    <h2 className="font-bold text-[40px] font-roboto-condensed self-start max-lg:pl-5">
                         Categorias
                     </h2>
-                    <div className="grid grid-cols-2 grid-rows-2 h-fit justify-items-center gap-5 w-full max-md:w-screen max-md:flex max-md:flex-row max-md:overflow-x-scroll max-md:scrollbar-hide">
+                    <motion.div
+                        initial={{ oapcity: 0, y: 200 }}
+                        whileInView={{ oapcity: 1, y: 0 }}
+                        transition={{ duration: 1.5 }}
+                        className="grid grid-cols-2 grid-rows-2 h-fit justify-items-center gap-5 w-full max-md:w-screen max-md:flex max-md:flex-row max-md:overflow-x-scroll max-md:scrollbar-hide"
+                    >
                         {categories.map((category, index) => (
                             <HomeCategory
                                 key={index}
@@ -99,26 +86,36 @@ export default function Home() {
                                 categoryTitle={category.name}
                             />
                         ))}
-                    </div>
+                    </motion.div>
                 </div>
 
                 {/* Quienes somos */}
-                <div className="max-md:relative max-md:h-[700px] flex flex-row lg:flex-row items-center lg:items-end my-10 font-roboto-condensed justify-center w-full h-full max-md:bg-primary-blue">
+                <div className="max-xl:relative max-xl:h-[700px] flex flex-row lg:flex-row items-center lg:items-end my-10 font-roboto-condensed justify-center w-full h-full max-xl:bg-primary-blue overflow-hidden">
                     {/* Imagen - 50% */}
                     <img
-                        className="absolute w-full h-full object-fill opacity-30 md:hidden"
+                        className="absolute w-full h-full object-fill opacity-30 xl:hidden"
                         src={quienes}
                         alt="¿Quiénes somos?"
                     />
-                    <div className="w-full lg:w-1/2 flex justify-center items-center max-md:hidden">
+                    <motion.div
+                        initial={{ oapcity: 0, x: -200 }}
+                        whileInView={{ oapcity: 1, x: 0 }}
+                        transition={{ duration: 1.2 }}
+                        className="w-full lg:w-1/2 flex justify-center items-center max-xl:hidden"
+                    >
                         <img
                             className="w-full h-auto lg:h-[678px] object-cover"
                             src={quienes}
                             alt="¿Quiénes somos?"
                         />
-                    </div>
+                    </motion.div>
                     {/* Texto - 50% */}
-                    <div className="max-md:py-5 max-md:items-center max-md:absolute max-md:z-10 flex flex-col gap-6 lg:gap-10 h-full w-full lg:w-1/2 px-6 lg:px-10 max-md:text-white">
+                    <motion.div
+                        initial={{ oapcity: 0, x: 200 }}
+                        whileInView={{ oapcity: 1, x: 0 }}
+                        transition={{ duration: 1.2 }}
+                        className="max-xl:py-5 max-xl:items-center max-xl:absolute max-xl:z-10 flex flex-col gap-6 lg:gap-10 h-full max-xl:w-full px-6 w-1/2 max-xl:text-white "
+                    >
                         <h2 className="text-[24px] sm:text-[32px] lg:text-[40px] font-bold text-center lg:text-left">
                             ¿Quiénes somos?
                         </h2>
@@ -157,12 +154,12 @@ export default function Home() {
                         <div className="mt-auto">
                             <Link
                                 to={"/inicio/nosotros"}
-                                className="bg-primary-red w-[289px] h-[47px] text-white flex justify-center items-center  mt-20 max-md:mt-0"
+                                className="bg-primary-red w-[289px] h-[47px] text-white flex justify-center items-center  mt-20 max-xl:mt-0"
                             >
                                 MÁS INFO
                             </Link>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
 
                 {/* Piloticas de calidad */}

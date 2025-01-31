@@ -5,7 +5,7 @@ export default function HomeCategory({ bgImage, categoryTitle }) {
     return (
         <Link
             to={"#"}
-            className="flex relative justify-center items-center bg-cover bg-no-repeat bg-center w-full h-[365px] overflow-hidden max-md:min-w-[365px]"
+            className="flex relative justify-center items-center bg-cover bg-no-repeat bg-center w-full h-[365px] overflow-hidden max-md:min-w-[365px] text-center"
             onMouseEnter={() => {}}
             onMouseLeave={() => {}}
         >

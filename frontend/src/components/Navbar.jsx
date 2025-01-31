@@ -19,6 +19,7 @@ import xmark from "../assets/icons/xmark-solid.svg";
 import conmanLogo from "../assets/logos/conman-logo.png";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
+import SearchCard from "./SearchCard";
 
 export default function Navbar() {
     const [tinyMenu, setTinyMenu] = useState(false);
@@ -26,8 +27,10 @@ export default function Navbar() {
     const [userLoged, setUserLoged] = useState(false);
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
+    const [search, setSearch] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
 
-    const { setUserToken, userToken, userInfo, contactInfo } =
+    const { setUserToken, userToken, userInfo, contactInfo, productInfo } =
         useStateContext();
 
     const onSubmit = (ev) => {
@@ -173,16 +176,88 @@ export default function Navbar() {
                     </div>
                 </div>
                 <div className="flex fle-row gap-4 h-full items-center">
-                    <div className="flex flex-row gap-4 h-[16px] items-center justify-center max-md:hidden">
-                        {socials.map((social, index) => (
-                            <Link key={index} to={social.href}>
-                                <img src={social.logo} alt="" />
-                            </Link>
-                        ))}
-                        <button>
-                            <img src={searchIcon} alt="" />
-                        </button>
+                    <div className="relative flex flex-row items-center gap-3">
+                        <AnimatePresence>
+                            <div
+                                className={`flex flex-row items-center gap-2 rounded-md ${
+                                    search ? "border px-2" : ""
+                                }`}
+                            >
+                                <motion.div
+                                    className={`flex items-center rounded-md overflow-hidden w-fit text-white
+                                }`}
+                                    animate={{ width: search ? 250 : 40 }} // Controla la expansión
+                                    initial={{ width: 40 }}
+                                    exit={{ width: 40 }}
+                                    transition={{
+                                        duration: 0.3,
+                                        ease: "easeInOut",
+                                    }}
+                                >
+                                    <input
+                                        type="text"
+                                        value={searchTerm}
+                                        onChange={(e) =>
+                                            setSearchTerm(e.target.value)
+                                        }
+                                        className={`bg-transparent outline-none w-full transition-opacity duration-300 text-base ${
+                                            search ? "opacity-100" : "opacity-0"
+                                        }`}
+                                        autoFocus={search}
+                                    />
+                                </motion.div>
 
+                                <button
+                                    onClick={() => {
+                                        setSearch(!search);
+                                        setSearchTerm("");
+                                    }}
+                                >
+                                    <img
+                                        src={searchIcon}
+                                        alt="Buscar"
+                                        className="h-[15px]"
+                                    />
+                                </button>
+                            </div>
+                        </AnimatePresence>
+                        <AnimatePresence>
+                            {search && searchTerm && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -8 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -8 }}
+                                    className="absolute flex flex-col top-8 bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-[439px] z-30"
+                                >
+                                    <h2 className="font-bold text-[24px] py-5">
+                                        Resultados de busqueda
+                                    </h2>
+                                    <div className="flex flex-col">
+                                        {productInfo
+                                            .filter((product) =>
+                                                product.name
+                                                    .toLowerCase()
+                                                    .includes(
+                                                        searchTerm.toLowerCase()
+                                                    )
+                                            )
+                                            .map((product, index) => (
+                                                <SearchCard
+                                                    key={index}
+                                                    searchObject={product}
+                                                />
+                                            ))}
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+                    {socials.map((social, index) => (
+                        <Link key={index} to={social.href}>
+                            <img src={social.logo} alt="" />
+                        </Link>
+                    ))}
+                    <div className="flex flex-row gap-4 h-[16px] items-center justify-center max-md:hidden">
                         {!userToken && (
                             <>
                                 <button onClick={() => setUserMenu(!userMenu)}>
@@ -319,7 +394,7 @@ export default function Navbar() {
                                 <img src={chevronDown} alt="Chevron" />
                             )}
                             {drop.open && drop.subHref && (
-                                <div className="absolute flex flex-col top-9 left-0 bg-[#CBCBCB] shadow-md font-roboto-condensed w-[200px] h-fit z-20">
+                                <div className="absolute flex flex-col top-9 left-0 bg-[#CBCBCB] shadow-md font-roboto-condensed w-[200px] h-fit z-30">
                                     {drop.subHref.map((sub) => (
                                         <Link
                                             className="flex flex-row items-center justify-between px-2 border-b border-white hover:text-gray-600"

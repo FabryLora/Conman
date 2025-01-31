@@ -1,17 +1,22 @@
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import axiosClient from "../axios";
+import SliderImageComponent from "../components/SliderImageComponent";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function SliderAdmin() {
-    const { sliderInfo, fetchSliderInfo } = useStateContext();
-    const [title, setTitle] = useState("");
-    const [subtitle, setSubtitle] = useState("");
-    const [link, setLink] = useState("");
+    const { sliderInfo, sliderImage, fetchSliderImage, fetchSliderInfo } =
+        useStateContext();
+    const [title, setTitle] = useState(sliderInfo.title);
+    const [subtitle, setSubtitle] = useState(sliderInfo.subtitle);
+    const [link, setLink] = useState(sliderInfo.link);
     const [images, setImages] = useState([]);
+    const [fileName, setFileName] = useState("");
 
     const handleFileChange = (e) => {
-        setImages(e.target.files); // Almacena los archivos seleccionados
+        setImages(e.target.files);
+        const file = e.target.files[0];
+        file && setFileName(file.name); // Almacena los archivos seleccionados
     };
 
     const handleSubmit = async (e) => {
@@ -25,36 +30,39 @@ export default function SliderAdmin() {
                 link,
             });
 
-            const sliderId = sliderResponse.data.data.id; // ID del producto recién creado
+            console.log("Producto e imágenes creadas:", sliderResponse);
+            alert("Producto creado con éxito.");
+            fetchSliderInfo();
+        } catch (error) {
+            console.error("Error al crear el producto:", error);
+            alert("Hubo un error al crear el producto.");
+        }
+    };
 
-            // 2. Subir imágenes
+    const handleImageSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
             const formData = new FormData();
 
             Array.from(images).forEach((file, index) => {
                 formData.append(`image`, file); // Agregar cada archivo al FormData
             });
 
-            formData.append("slider_id", sliderId);
+            formData.append("slider_id", 1);
 
-            const imageResponse = await axiosClient.post(
-                "/sliderimage",
-                formData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            );
+            const response = await axiosClient.post("/sliderimage", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
 
-            console.log(
-                "Producto e imágenes creadas:",
-                sliderResponse,
-                imageResponse
-            );
-            alert("Producto creado con éxito.");
+            fetchSliderImage();
+            fetchSliderInfo();
+
+            console.log("Imagenes subidas:", response);
         } catch (error) {
-            console.error("Error al crear el producto:", error);
-            alert("Hubo un error al crear el producto.");
+            console.error("Error al subir las imágenes:", error);
         }
     };
 
@@ -62,7 +70,7 @@ export default function SliderAdmin() {
         <>
             <form
                 onSubmit={handleSubmit}
-                className="p-5 flex flex-col justify-between h-screen"
+                className="p-5 flex flex-col justify-between h-fit"
             >
                 <div className="space-y-12">
                     <div className="border-b border-gray-900/10 pb-12">
@@ -135,68 +143,46 @@ export default function SliderAdmin() {
                                     />
                                 </div>
                             </div>
-
-                            <div className="col-span-full">
-                                <label
-                                    htmlFor="cover-photo"
-                                    className="block text-sm/6 font-medium text-gray-900"
-                                >
-                                    Imagen
-                                </label>
-                                <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 ">
-                                    <div className="h-fit">
-                                        <img src={""} alt="" />
-                                    </div>
-                                    <div className="flex items-center justify-center w-1/2">
-                                        <div className="text-center items-center h-fit self-center">
-                                            <PhotoIcon
-                                                aria-hidden="true"
-                                                className="mx-auto size-12 text-gray-300"
-                                            />
-                                            <div className="mt-4 flex text-sm/6 text-gray-600">
-                                                <label
-                                                    htmlFor="file-upload"
-                                                    className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                                                >
-                                                    <span>Cambiar Imagen</span>
-                                                    <input
-                                                        id="file-upload"
-                                                        name="file-upload"
-                                                        onChange={
-                                                            handleFileChange
-                                                        }
-                                                        type="file"
-                                                        className="sr-only"
-                                                    />
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div className="mt-6 flex items-center justify-end gap-x-6">
-                    <button
-                        type="submit"
-                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                        Guardar
-                    </button>
+                    <div className=" flex items-center justify-end gap-x-6">
+                        <button
+                            type="submit"
+                            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        >
+                            Guardar
+                        </button>
+                    </div>
                 </div>
             </form>
-            <div>
-                <div className="flex flex-row max-h-[200px] items-center justify-evenly pt-36">
-                    <img
-                        className="object-contain"
-                        src={sliderInfo.images[0].image_url}
-                        alt=""
-                    />
-                    <p>{sliderInfo.title}</p>
-                    <p>{sliderInfo.subtitle}</p>
-                    <p>{sliderInfo.link}</p>
+            <div className="flex flex-col gap-4 w-full col-span-full p-5">
+                <div className="col-span-full flex flex-row gap-3 items-center">
+                    {sliderImage.map((image, index) => (
+                        <SliderImageComponent key={index} image={image} />
+                    ))}
+                </div>
+                <div className="flex items-center gap-4 w-full">
+                    <label className="cursor-pointer rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        Elegir Imagen
+                        <input
+                            type="file"
+                            className="hidden"
+                            onChange={handleFileChange}
+                        />
+                    </label>
+                    {fileName && (
+                        <span className="text-sm text-gray-700">
+                            {fileName}
+                        </span>
+                    )}
+                </div>
+                <div>
+                    <button
+                        onClick={handleImageSubmit}
+                        className="cursor-pointer rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+                    >
+                        Subir Imagen
+                    </button>
                 </div>
             </div>
         </>

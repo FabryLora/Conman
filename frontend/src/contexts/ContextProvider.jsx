@@ -31,6 +31,8 @@ const StateContext = createContext({
     cart: [],
     realProducts: [],
     fetchRealProducts: () => {},
+    sliderImage: [],
+    fetchSliderImage: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -38,6 +40,7 @@ export const ContextProvider = ({ children }) => {
     const [userInfo, setUserInfo] = useState({});
     const [adminInfo, setAdminInfo] = useState({});
     const [sliderInfo, setSliderInfo] = useState({});
+    const [sliderImage, setSliderImage] = useState([]);
     const [categoryInfo, setCategoryInfo] = useState([]);
     const [productInfo, setProductInfo] = useState([]);
     const [subCategoryInfo, setSubCategoryInfo] = useState([]);
@@ -129,6 +132,12 @@ export const ContextProvider = ({ children }) => {
         });
     };
 
+    const fetchSliderImage = () => {
+        axiosClient.get("/sliderimage").then(({ data }) => {
+            setSliderImage(data.data);
+        });
+    };
+
     const fetchCategoryInfo = () => {
         axiosClient.get("/category").then(({ data }) => {
             setCategoryInfo(data.data);
@@ -169,6 +178,7 @@ export const ContextProvider = ({ children }) => {
         fetchProvincias();
         fetchAllUsers();
         fetchRealProducts();
+        fetchSliderImage();
     }, []);
 
     useEffect(() => {
@@ -192,6 +202,8 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                sliderImage,
+                fetchSliderImage,
                 realProducts,
                 fetchRealProducts,
                 cart,

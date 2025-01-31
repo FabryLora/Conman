@@ -28,7 +28,7 @@ class RealProductController extends Controller
             "name" => "required|string",
             "code" => "required|string",
             "price" => "required|numeric",
-            "discount" => "required|integer",
+            "discount" => "nullable|integer",
             "image" => "string|nullable",
             "product_id" => "required|exists:products,id",
         ]);
@@ -60,7 +60,7 @@ class RealProductController extends Controller
             "name" => "required|string",
             "code" => "required|string",
             "price" => "required|numeric",
-            "discount" => "required|integer",
+            "discount" => "nullable|integer",
             "image" => "string|nullable",
 
         ]);
@@ -76,6 +76,7 @@ class RealProductController extends Controller
         }
 
         $realProduct->update($data);
+        return new RealProductResource($realProduct);
     }
 
     /**

@@ -27,7 +27,7 @@ export default function TerminalesView() {
 
     return (
         <div className="font-roboto-condensed w-[80%] mx-auto py-20">
-            <div className="grid grid-cols-2 grid-rows-2 gap-4 gap-y-10">
+            <div className="grid grid-cols-2 grid-rows-2 gap-4 gap-y-10 max-lg:grid-cols-1 max-lg:grid-rows-4">
                 <div className="relative flex flex-row w-full gap-3">
                     <div className="absolute -left-24 flex flex-col h-[300px] w-fit  gap-y-3">
                         {productInfo.images.map((image, index) => (

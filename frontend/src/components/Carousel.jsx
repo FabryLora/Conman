@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { useStateContext } from "../contexts/ContextProvider";
 
-const Carousel = ({ images, autoScrollInterval = 5000 }) => {
+const Carousel = ({ autoScrollInterval = 5000 }) => {
+    const { sliderInfo } = useStateContext();
+
     const [currentIndex, setCurrentIndex] = useState(0);
 
     // Cambiar imagen automáticamente después de un intervalo
@@ -12,7 +16,11 @@ const Carousel = ({ images, autoScrollInterval = 5000 }) => {
     }, [currentIndex, autoScrollInterval]);
 
     const nextSlide = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+        if (sliderInfo.images) {
+            setCurrentIndex(
+                (prevIndex) => (prevIndex + 1) % sliderInfo.images.length
+            );
+        }
     };
 
     const goToSlide = (index) => {
@@ -21,59 +29,66 @@ const Carousel = ({ images, autoScrollInterval = 5000 }) => {
 
     return (
         <div className="relative w-full h-[750px] overflow-hidden">
+            <div className="absolute inset-0 bg-black opacity-30 z-20"></div>
             {/* Contenedor de imágenes con transición */}
             <div className="absolute inset-0">
-                {images.map((image, index) => (
-                    <img
-                        key={index}
-                        src={image.src}
-                        alt={image.alt}
-                        className={`absolute inset-0 w-full h-full object-cover object-bottom transition-opacity duration-700 ease-in-out ${
-                            index === currentIndex
-                                ? "opacity-100 z-10"
-                                : "opacity-0 z-0"
-                        }`}
-                    />
-                ))}
+                {sliderInfo.images &&
+                    sliderInfo.images.map((image, index) => (
+                        <img
+                            key={index}
+                            src={image.image_url}
+                            className={`absolute inset-0 w-full h-full object-cover object-bottom transition-opacity duration-700 ease-in-out ${
+                                index === currentIndex
+                                    ? "opacity-100 z-10"
+                                    : "opacity-0 z-0"
+                            }`}
+                        />
+                    ))}
             </div>
 
             {/* Contenido estático */}
-            <div className="absolute inset-0 flex flex-col justify-center gap-16 pl-16 text-white font-roboto z-20">
+            <div className="absolute inset-0 flex flex-col justify-center gap-16 pl-16 text-white font-roboto z-30">
                 <div>
                     <div className="relative text-6xl font-bold">
                         <span className="absolute bottom-[2px] text-primary-blue">
-                            {images[0].title}
+                            {sliderInfo.title}
                         </span>
-                        <span className="text-gray-700">{images[0].title}</span>
+                        <span className="text-gray-700">
+                            {sliderInfo.title}
+                        </span>
                     </div>
                     <div className="relative text-[25px]">
                         <span className="absolute bottom-[1px] text-primary-blue">
-                            {images[0].description}
+                            {sliderInfo.subtitle}
                         </span>
                         <span className="text-gray-700">
-                            {images[0].description}
+                            {sliderInfo.subtitle}
                         </span>
                     </div>
                 </div>
 
-                <button className="bg-primary-red text-white w-[172px] h-[47px] font-roboto-condensed">
+                <Link
+                    to={sliderInfo.link}
+                    className=" flex justify-center items-center bg-primary-red text-white w-[172px] h-[47px] font-roboto-condensed"
+                >
                     MAS INFO
-                </button>
+                </Link>
             </div>
 
             {/* Indicadores */}
             <div className="absolute bottom-16 left-16 flex space-x-2 z-30">
-                {images.map((_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => goToSlide(index)}
-                        className={`w-[37px] h-[8px] bg-white transition-opacity duration-300 ${
-                            index === currentIndex
-                                ? "opacity-100"
-                                : "opacity-50"
-                        }`}
-                    ></button>
-                ))}
+                {sliderInfo.images &&
+                    sliderInfo.images.map((_, index) => (
+                        <button
+                            key={index}
+                            onClick={() => goToSlide(index)}
+                            className={`w-[37px] h-[8px] bg-white transition-opacity duration-300 ${
+                                index === currentIndex
+                                    ? "opacity-100"
+                                    : "opacity-50"
+                            }`}
+                        ></button>
+                    ))}
             </div>
         </div>
     );

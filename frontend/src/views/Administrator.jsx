@@ -184,11 +184,12 @@ export default function Administrator() {
             <div className="w-full flex flex-col overflow-y-auto h-screen">
                 <div className="shadow-md py-3 flex flex-row justify-between px-4">
                     <h1 className="text-2xl pl-4 pt-2">
-                        {finalPath.charAt(0).toUpperCase() + finalPath.slice(1)}
+                        {finalPath.charAt(0).toUpperCase() +
+                            finalPath.slice(1) || "Bienvenido al Dashboard"}
                     </h1>
                     <div>
                         <button
-                            className="relative"
+                            className="relative "
                             onClick={() => setUserMenu(!userMenu)}
                         >
                             <FontAwesomeIcon color="#000" icon={faUser} />

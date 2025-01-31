@@ -37,6 +37,9 @@ export default function RealProductRowAdmin({ productObject }) {
         ev.preventDefault();
 
         const payload = { ...updateData };
+
+        console.log(payload);
+
         if (payload.image) {
             payload.image = payload.image_url;
         }
