@@ -1,4 +1,5 @@
 import {
+    faBars,
     faChevronUp,
     faHouse,
     faUser,
@@ -12,6 +13,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Administrator() {
     const { adminToken, setAdminToken, adminInfo } = useStateContext();
+    const [sidebar, setSidebar] = useState(true);
 
     const MotionFontAwesomeIcon = motion.create(FontAwesomeIcon);
     const MotionLink = motion.create(Link);
@@ -117,76 +119,102 @@ export default function Administrator() {
 
     return (
         <div className="flex flex-row font-roboto-condensed">
-            <div className="flex flex-col h-screen w-[300px] bg-primary-blue text-white">
-                <Link to={"/"} className="p-6">
-                    <img src={conmanWhiteLogo} alt="" />
-                </Link>
-                <nav className="">
-                    <ul className="">
-                        <AnimatePresence>
-                            {dropdowns.map((drop) => (
-                                <li key={drop.id}>
-                                    <button
-                                        onClick={() => toggleDropdown(drop.id)}
-                                        className="flex flex-row w-full justify-between items-center border-b p-4"
-                                    >
-                                        <div className="flex flex-row gap-2">
-                                            {/* <FontAwesomeIcon
+            <AnimatePresence>
+                {sidebar && (
+                    <motion.div
+                        initial={{ x: -300 }}
+                        animate={{ x: 0 }}
+                        exit={{ x: -300 }}
+                        transition={{ ease: "linear", duration: 0.2 }}
+                        className="flex flex-col h-screen w-[300px] bg-primary-blue text-white"
+                    >
+                        <Link to={"/"} className="p-6">
+                            <img src={conmanWhiteLogo} alt="" />
+                        </Link>
+                        <nav className="">
+                            <ul className="">
+                                <AnimatePresence>
+                                    {dropdowns.map((drop) => (
+                                        <li key={drop.id}>
+                                            <button
+                                                onClick={() =>
+                                                    toggleDropdown(drop.id)
+                                                }
+                                                className="flex flex-row w-full justify-between items-center border-b p-4"
+                                            >
+                                                <div className="flex flex-row gap-2">
+                                                    {/* <FontAwesomeIcon
                                                 size="lg"
                                                 icon={drop.icon}
                                             /> */}
-                                            <Link to={drop.href}>
-                                                {drop.title}
-                                            </Link>
-                                        </div>
-                                        <MotionFontAwesomeIcon
-                                            initial={{ rotate: 0 }}
-                                            animate={{
-                                                rotate: drop.open ? 180 : 0,
-                                            }}
-                                            exit={{ rotate: 0 }}
-                                            transition={{
-                                                ease: "linear",
-                                                duration: 0.2,
-                                            }}
-                                            size="lg"
-                                            icon={faChevronUp}
-                                        />
-                                    </button>
-                                    <AnimatePresence>
-                                        {drop.open && (
-                                            <ul className="flex flex-col gap-2 overflow-hidden py-2 h-fit">
-                                                {drop.subHref.map(
-                                                    (sub, index) => (
-                                                        <MotionLink
-                                                            className="pl-4"
-                                                            whileHover={{
-                                                                backgroundColor:
-                                                                    "#fff",
-                                                                color: "#000",
-                                                            }}
-                                                            key={index}
-                                                            to={sub.href}
-                                                        >
-                                                            {sub.title}
-                                                        </MotionLink>
-                                                    )
+                                                    <Link to={drop.href}>
+                                                        {drop.title}
+                                                    </Link>
+                                                </div>
+                                                <MotionFontAwesomeIcon
+                                                    initial={{ rotate: 0 }}
+                                                    animate={{
+                                                        rotate: drop.open
+                                                            ? 180
+                                                            : 0,
+                                                    }}
+                                                    exit={{ rotate: 0 }}
+                                                    transition={{
+                                                        ease: "linear",
+                                                        duration: 0.2,
+                                                    }}
+                                                    size="lg"
+                                                    icon={faChevronUp}
+                                                />
+                                            </button>
+                                            <AnimatePresence>
+                                                {drop.open && (
+                                                    <ul className="flex flex-col gap-2 overflow-hidden py-2 h-fit">
+                                                        {drop.subHref.map(
+                                                            (sub, index) => (
+                                                                <MotionLink
+                                                                    className="pl-4"
+                                                                    whileHover={{
+                                                                        backgroundColor:
+                                                                            "#fff",
+                                                                        color: "#000",
+                                                                    }}
+                                                                    key={index}
+                                                                    to={
+                                                                        sub.href
+                                                                    }
+                                                                >
+                                                                    {sub.title}
+                                                                </MotionLink>
+                                                            )
+                                                        )}
+                                                    </ul>
                                                 )}
-                                            </ul>
-                                        )}
-                                    </AnimatePresence>
-                                </li>
-                            ))}
-                        </AnimatePresence>
-                    </ul>
-                </nav>
-            </div>
+                                            </AnimatePresence>
+                                        </li>
+                                    ))}
+                                </AnimatePresence>
+                            </ul>
+                        </nav>
+                    </motion.div>
+                )}
+            </AnimatePresence>
             <div className="w-full flex flex-col overflow-y-auto h-screen">
-                <div className="shadow-md py-3 flex flex-row justify-between px-4">
-                    <h1 className="text-2xl pl-4 pt-2">
-                        {finalPath.charAt(0).toUpperCase() +
-                            finalPath.slice(1) || "Bienvenido al Dashboard"}
-                    </h1>
+                <div className="shadow-md py-3 flex flex-row justify-between items-center px-4">
+                    <div className="flex flex-row gap-3">
+                        <button onClick={() => setSidebar(!sidebar)}>
+                            <FontAwesomeIcon
+                                icon={faBars}
+                                size="lg"
+                                color="#000"
+                            />
+                        </button>
+                        <h1 className="text-2xl">
+                            {finalPath.charAt(0).toUpperCase() +
+                                finalPath.slice(1) || "Bienvenido al Dashboard"}
+                        </h1>
+                    </div>
+
                     <div>
                         <button
                             className="relative "

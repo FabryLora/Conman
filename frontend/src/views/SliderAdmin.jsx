@@ -1,5 +1,4 @@
-import { PhotoIcon } from "@heroicons/react/24/solid";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axiosClient from "../axios";
 import SliderImageComponent from "../components/SliderImageComponent";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -45,9 +44,7 @@ export default function SliderAdmin() {
         try {
             const formData = new FormData();
 
-            Array.from(images).forEach((file, index) => {
-                formData.append(`image`, file); // Agregar cada archivo al FormData
-            });
+            formData.append(`image`, images[0]);
 
             formData.append("slider_id", 1);
 
@@ -157,9 +154,10 @@ export default function SliderAdmin() {
             </form>
             <div className="flex flex-col gap-4 w-full col-span-full p-5">
                 <div className="col-span-full flex flex-row gap-3 items-center">
-                    {sliderImage.map((image, index) => (
-                        <SliderImageComponent key={index} image={image} />
-                    ))}
+                    {sliderInfo.images &&
+                        sliderInfo.images.map((info, index) => (
+                            <SliderImageComponent key={index} image={info} />
+                        ))}
                 </div>
                 <div className="flex items-center gap-4 w-full">
                     <label className="cursor-pointer rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">

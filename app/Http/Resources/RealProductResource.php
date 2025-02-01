@@ -18,11 +18,13 @@ class RealProductResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->name,
-            "price" => $this->price,
             "code" => $this->code,
-            "product" => new ProductResource($this->whenLoaded('product')),
+            "price" => $this->price,
             'image_url' => $this->image ? URL::to($this->image) : null,
-            "discount" => $this->discount
+            "discount" => $this->discount,
+            "product" => new ProductResource($this->whenLoaded('product')),
+
+
         ];
     }
 }

@@ -13,7 +13,6 @@ export default function RealProductRowAdmin({ productObject }) {
         price: productObject?.price,
         discount: productObject?.discount,
         image: productObject?.image,
-        image_url: productObject?.image_url,
         product_id: productObject?.product.id,
     });
 
@@ -33,23 +32,17 @@ export default function RealProductRowAdmin({ productObject }) {
         reader.readAsDataURL(file);
     };
 
-    const update = (ev) => {
-        ev.preventDefault();
-
+    const update = (e) => {
+        e.preventDefault();
         const payload = { ...updateData };
-
-        console.log(payload);
-
         if (payload.image) {
             payload.image = payload.image_url;
         }
         delete payload.image_url;
-
         axiosClient
             .put(`/realproducts/${productObject.id}`, payload)
-            .then(() => {
+            .then((res) => {
                 fetchRealProducts();
-                setEditable(false);
             });
     };
 

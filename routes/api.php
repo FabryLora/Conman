@@ -27,7 +27,7 @@ Route::get('/allusers', [AuthController::class, 'index']);
 Route::apiResource('/contact-info', ContactInfoController::class);
 Route::apiResource('/nosotros-first', NosotrosFirstController::class);
 Route::apiResource('/slider', SliderController::class);
-Route::apiResource('/sliderimage', SliderImageController::class);
+
 Route::apiResource('/subcategory', SubCategoryController::class);
 Route::apiResource('/category', CategoryController::class);
 Route::apiResource('/product', ProductController::class);
@@ -36,7 +36,7 @@ Route::get('/products/{id}', [ProductController::class, "show_products"]);
 
 Route::apiResource('/provincia', ProvinciaController::class);
 Route::apiResource('/image', ImageController::class);
-
+Route::apiResource('/sliderimage', SliderImageController::class);
 
 
 

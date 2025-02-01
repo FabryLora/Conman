@@ -49,6 +49,9 @@ class SliderController extends Controller
      */
     public function destroy(Slider $slider)
     {
+        $slider->images->each(function ($image) {
+            $image->delete();
+        });
         $slider->delete();
 
 

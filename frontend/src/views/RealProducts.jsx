@@ -42,7 +42,7 @@ export default function RealProducts() {
         }
         delete payload.image_url;
 
-        axiosClient.post("/realproducts", payload).then(() => {
+        axiosClient.post("realproducts", payload).then((res) => {
             fetchRealProducts();
         });
     };
@@ -250,9 +250,13 @@ export default function RealProducts() {
                     </tr>
                 </thead>
                 <tbody>
-                    {realProducts.map((info, index) => (
-                        <RealProductRowAdmin key={index} productObject={info} />
-                    ))}
+                    {realProducts &&
+                        realProducts.map((info, index) => (
+                            <RealProductRowAdmin
+                                key={index}
+                                productObject={info}
+                            />
+                        ))}
                 </tbody>
             </table>
         </div>

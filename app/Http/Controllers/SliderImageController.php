@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\SliderImageResource;
 use App\Models\SliderImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -14,9 +13,8 @@ class SliderImageController extends Controller
      */
     public function index()
     {
-        return SliderImageResource::collection(SliderImage::all());
+        return response()->json(SliderImage::all());
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -24,9 +22,8 @@ class SliderImageController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            "image" => "required|file|mimes:jpg,jpeg,png,gif", // Para imágenes cargadas como archivos
+            "image" => "required|file|mimes:jpg,jpeg,png,gif",
             "slider_id" => "required|exists:sliders,id"
-
         ]);
 
         // Guardar la imagen en el sistema de archivos
@@ -34,29 +31,38 @@ class SliderImageController extends Controller
         $data["image"] = $imagePath;
 
         // Crear el registro de la imagen
-        $image = SliderImage::create($data);
+        $sliderImage = SliderImage::create($data);
 
-        return new SliderImageResource($image);
+        return response()->json($sliderImage, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(SliderImage $sliderImage)
+    public function show($id)
     {
-        return new SliderImageResource($sliderImage);
+        $sliderImage = SliderImage::find($id);
+
+        if (!$sliderImage) {
+            return response()->json(["error" => "Imagen no encontrada"], 404);
+        }
+
+        return response()->json($sliderImage);
     }
-
-
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SliderImage $sliderImage)
+    public function update(Request $request, $id)
     {
-        $data = $request->validate([
-            "image" => "file|mimes:jpg,jpeg,png,gif|nullable", // Imagen opcional
+        $sliderImage = SliderImage::find($id);
 
+        if (!$sliderImage) {
+            return response()->json(["error" => "Imagen no encontrada"], 404);
+        }
+
+        $data = $request->validate([
+            "image" => "file|mimes:jpg,jpeg,png,gif|nullable",
         ]);
 
         if ($request->hasFile('image')) {
@@ -76,14 +82,20 @@ class SliderImageController extends Controller
         // Actualizar el registro de la imagen
         $sliderImage->update($data);
 
-        return new SliderImageResource($sliderImage);
+        return response()->json($sliderImage);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SliderImage $sliderImage)
+    public function destroy($id)
     {
+        $sliderImage = SliderImage::find($id);
+
+        if (!$sliderImage) {
+            return response()->json(["error" => "Imagen no encontrada"], 404);
+        }
+
         if ($sliderImage->image) {
             $absolutePath = public_path('storage/' . $sliderImage->image);
             if (File::exists($absolutePath)) {
@@ -94,6 +106,6 @@ class SliderImageController extends Controller
         // Eliminar el registro de la imagen
         $sliderImage->delete();
 
-        return response('', 204);
+        return response()->json(["message" => "Imagen eliminada"], 200);
     }
 }

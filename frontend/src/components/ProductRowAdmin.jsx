@@ -1,3 +1,5 @@
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import axiosClient from "../axios";
@@ -68,6 +70,7 @@ export default function ProductRowAdmin({
                     productResponse,
                     imageResponse
                 );
+                setImages([]);
             }
 
             fetchProductInfo();
@@ -80,31 +83,70 @@ export default function ProductRowAdmin({
         }
     };
 
+    const deleteImage = async (imageId) => {
+        try {
+            const response = await axiosClient.delete(`/image/${imageId}`);
+            fetchProductInfo();
+            console.log("Imagen eliminada:", response);
+        } catch (error) {
+            console.error("Error al eliminar la imagen:", error);
+        }
+    };
+
+    const deleteGroup = async (groupid) => {
+        try {
+            await axiosClient.delete(`/product/${groupid}`);
+            fetchProductInfo();
+        } catch (error) {
+            console.error("Error al eliminar la imagen:", error);
+        }
+    };
+
     return (
         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 h-[134px]">
-            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[340px] overflow-x-auto">
                 {editable ? (
-                    <div className="text-center items-center h-fit self-center flex flex-row justify-start gap-3">
+                    <div className="text-center items-center h-fit self-center flex flex-col justify-start gap-3">
                         <PhotoIcon
                             aria-hidden="true"
                             className="mx-auto size-12 text-gray-300"
                         />
                         <div className=" flex text-sm/6 text-gray-600">
+                            <label
+                                className="text-white cursor-pointer bg-blue-500 py-2 px-4 rounded"
+                                htmlFor="fileInput"
+                            >
+                                Agregar una imagen
+                            </label>
                             <input
                                 accept="image/*"
-                                id="file-upload"
+                                id="fileInput"
                                 name="file-upload"
                                 type="file"
+                                className="hidden"
                                 onChange={handleFileChange}
                             />
                         </div>
                     </div>
                 ) : (
-                    <div className="flex flex-row overflow-x-auto scrollbar-hide gap-2">
+                    <div className="flex flex-row gap-2 w-[340px]">
                         {productObject?.images.map((image, index) => (
-                            <div key={index}>
+                            <div
+                                className="relative flex justify-between items-center h-[100px]"
+                                key={index}
+                            >
+                                <button
+                                    onClick={() => deleteImage(image.id)}
+                                    className="absolute right-0 top-0 w-full h-full bg-[rgba(0,0,0,0.5)] text-white  flex items-center justify-center"
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faTrash}
+                                        size="lg"
+                                        color="#ef4444"
+                                    />
+                                </button>
                                 <img
-                                    className="w-20"
+                                    className="w-full h-full object-cover"
                                     src={image.image_url}
                                     alt=""
                                 />
@@ -199,14 +241,31 @@ export default function ProductRowAdmin({
             </td>
             <td>
                 {editable ? (
-                    <div className="flex flex-row gap-2">
-                        <button onClick={() => setEditable(false)}>
+                    <div className="flex flex-col gap-2">
+                        <button
+                            className="bg-blue-500 rounded-md text-white py-2"
+                            onClick={() => setEditable(false)}
+                        >
                             Cancelar
                         </button>
-                        <button onClick={handleSubmit}>Guardar</button>
+                        <button
+                            className="bg-green-500 rounded-md text-white py-2"
+                            onClick={handleSubmit}
+                        >
+                            Guardar
+                        </button>
+                        <button
+                            className="bg-red-500 rounded-md text-white py-2"
+                            onClick={() => deleteGroup(productObject.id)}
+                        >
+                            Eliminar
+                        </button>
                     </div>
                 ) : (
-                    <button onClick={() => setEditable(true)} className="">
+                    <button
+                        className="bg-blue-500 rounded-md text-white py-2 px-6"
+                        onClick={() => setEditable(true)}
+                    >
                         Editar
                     </button>
                 )}

@@ -29,17 +29,18 @@ class RealProductController extends Controller
             "code" => "required|string",
             "price" => "required|numeric",
             "discount" => "nullable|integer",
-            "image" => "string|nullable",
+            'image' => "nullable|string",
             "product_id" => "required|exists:products,id",
         ]);
+
 
         if (isset($data["image"])) {
             $realativePath = $this->saveImage($data["image"]);
             $data["image"] = $realativePath;
         }
 
-        $product = RealProduct::create($data);
-        return new RealProductResource($product);
+        $realProduct = RealProduct::create($data);
+        return new RealProductResource($realProduct);
     }
 
     /**
@@ -56,12 +57,14 @@ class RealProductController extends Controller
      */
     public function update(Request $request, RealProduct $realProduct)
     {
+        dd($request->all());
+
         $data = $request->validate([
             "name" => "required|string",
             "code" => "required|string",
             "price" => "required|numeric",
-            "discount" => "nullable|integer",
-            "image" => "string|nullable",
+            "discount" => "nullable|numeric",
+            'image' => "nullable|string",
 
         ]);
 
@@ -76,6 +79,7 @@ class RealProductController extends Controller
         }
 
         $realProduct->update($data);
+
         return new RealProductResource($realProduct);
     }
 
@@ -85,6 +89,11 @@ class RealProductController extends Controller
     public function destroy(RealProduct $realProduct)
     {
         $realProduct->delete();
+        if ($realProduct->image) {
+            $absolutePath = public_path("storage/" . $realProduct->image);
+            File::delete($absolutePath);
+        }
+
         return response('', 204);
     }
 
@@ -103,7 +112,7 @@ class RealProductController extends Controller
             throw new \Exception("did not match data URI with image data");
         }
 
-        $dir = "images/";
+        $dir = "storage/images/";
         $file = Str::random() . "." . $type;
         $absolutePath = public_path($dir);
         $relativePath = $dir . $file;

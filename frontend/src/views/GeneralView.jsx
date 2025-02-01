@@ -2,23 +2,24 @@ import { useState } from "react";
 import DefaultCard from "../components/DefaultCard";
 import { useStateContext } from "../contexts/ContextProvider.jsx";
 
-export default function Mangueras() {
+export default function GeneralView({ categoryName }) {
     const { categoryInfo, productInfo } = useStateContext();
 
-    // Obtener la categoría principal "TERMINALES Y ACCESORIOS"
-    const manguerasCategory = categoryInfo.find(
-        (category) => category.name.toUpperCase() === "MANGUERAS"
+    const filteredCategory = categoryInfo.find(
+        (category) => category.name.toUpperCase() === categoryName.toUpperCase()
     );
 
     const [selectedSubcategory, setSelectedSubcategory] = useState("");
-
-    // Obtener los productos de la subcategoría seleccionada
 
     const filteredProducts = selectedSubcategory
         ? productInfo.filter(
               (info) => info.subCategory.name === selectedSubcategory
           )
-        : productInfo.filter((info) => info.category.name === "mangueras");
+        : productInfo.filter(
+              (info) =>
+                  info.category.name.toUpperCase() ===
+                  categoryName.toUpperCase()
+          );
 
     return (
         <div className="flex flex-row w-full py-20 px-5 gap-10 font-roboto-condensed min-h-[526px]">
@@ -30,7 +31,7 @@ export default function Mangueras() {
                 >
                     Todos los productos
                 </button>
-                {manguerasCategory?.subcategories.map((subcategory, index) => (
+                {filteredCategory?.subcategories.map((subcategory, index) => (
                     <button
                         key={index}
                         onClick={() => setSelectedSubcategory(subcategory.name)}
@@ -42,7 +43,7 @@ export default function Mangueras() {
             </div>
 
             {/* Lista de productos */}
-            <div className="flex flex-row justify-start w-[80%]">
+            <div className="flex flex-row justify-start w-[80%] gap-4">
                 {filteredProducts.map((product, index) => (
                     <DefaultCard
                         key={index}

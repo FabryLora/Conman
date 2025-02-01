@@ -1,6 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import AcoplesRapidos from "./views/AcoplesRapidos";
-import AcoplesRapidosView from "./views/AcoplesRapidosView";
 import Administrator from "./views/Administrator";
 import AdminLogin from "./views/AdminLogin";
 import Calidad from "./views/Calidad";
@@ -8,25 +7,21 @@ import CategoriasAdmin from "./views/CategoriasAdmin";
 import Contacto from "./views/Contacto";
 import ContactoAdmin from "./views/ContactoAdmin";
 import DefaultLayout from "./views/DefaultLayout";
+import GeneralView from "./views/GeneralView";
 import Home from "./views/Home";
 import ListaDePrecios from "./views/ListaDePrecios";
 import Login from "./views/Login";
-import Mangueras from "./views/Mangueras";
-import ManguerasView from "./views/ManguerasView";
+import MultipleView from "./views/MultipleView";
 import Nosotros from "./views/Nosotros";
 import NosotrosAdmin from "./views/NosotrosAdmin";
 import Novedades from "./views/Novedades";
 import Pedidos from "./views/Pedidos";
 import PrivateProducts from "./views/PrivateProducts";
 import PrivateZone from "./views/PrivateZone";
-import Productos from "./views/Productos";
 import ProductosAdmin from "./views/ProductosAdmin";
-import ProductosView from "./views/ProductosView";
 import RealProducts from "./views/RealProducts";
 import Signup from "./views/Signup";
 import SliderAdmin from "./views/SliderAdmin";
-import TerminalesView from "./views/TerminalesView";
-import TerminalesyAccesorios from "./views/TerminalesyAccesorios";
 import UsuariosAdmin from "./views/UsuariosAdmin";
 
 const router = createBrowserRouter([
@@ -60,32 +55,34 @@ const router = createBrowserRouter([
             },
             {
                 path: "/inicio/acoples-rapidos-hidraulicos/:id",
-                element: <AcoplesRapidosView />,
+                element: <MultipleView />,
             },
             {
                 path: "/inicio/terminales-y-accesorios",
-                element: <TerminalesyAccesorios />,
+                element: (
+                    <GeneralView categoryName={"terminales y accesorios"} />
+                ),
             },
             {
                 path: "/inicio/terminales-y-accesorios/:id",
-                element: <TerminalesView />,
+                element: <MultipleView />,
             },
 
             {
                 path: "/inicio/mangueras",
-                element: <Mangueras />,
+                element: <GeneralView categoryName={"mangueras"} />,
             },
             {
                 path: "/inicio/mangueras/:id",
-                element: <ManguerasView />,
+                element: <MultipleView />,
             },
             {
                 path: "/inicio/productos",
-                element: <Productos />,
+                element: <GeneralView categoryName={"productos"} />,
             },
             {
                 path: "/inicio/productos/:id",
-                element: <ProductosView />,
+                element: <MultipleView />,
             },
             {
                 path: "/inicio/calidad",
