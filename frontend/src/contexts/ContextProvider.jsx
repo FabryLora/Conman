@@ -35,6 +35,8 @@ const StateContext = createContext({
     fetchSliderImage: () => {},
     pdfInfo: [],
     fetchPdfInfo: () => {},
+    linkInfo: "",
+    setLinkInfo: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -50,28 +52,43 @@ export const ContextProvider = ({ children }) => {
     const [allUsers, setAllUsers] = useState([]);
     const [realProducts, setRealProducts] = useState([]);
     const [pdfInfo, setPdfInfo] = useState([]);
+    const [linkInfo, setLinkInfo] = useState("");
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem("cart");
         return savedCart ? JSON.parse(savedCart) : [];
     });
 
-    const addToCart = (product) => {
+    const addToCart = (product, additionalInfo) => {
         const exists = cart.find((item) => item.id === product.id);
         let updatedCart;
+
         if (exists) {
             updatedCart = cart.map((item) =>
                 item.id === product.id
-                    ? { ...item, quantity: item.quantity + 1 }
+                    ? {
+                          ...item,
+                          quantity: item.quantity + 1,
+                          additionalInfo: {
+                              ...item.additionalInfo,
+                              ...additionalInfo,
+                          },
+                      }
                     : item
             );
         } else {
-            updatedCart = [...cart, { ...product, quantity: 1 }];
+            updatedCart = [
+                ...cart,
+                { ...product, quantity: 1, additionalInfo },
+            ];
         }
+
         setCart(updatedCart);
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
     };
 
     const removeFromCart = (productId) => {
         const updatedCart = cart.filter((item) => item.id !== productId);
+
         setCart(updatedCart);
     };
 
@@ -212,6 +229,8 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                linkInfo,
+                setLinkInfo,
                 pdfInfo,
                 fetchPdfInfo,
                 sliderImage,

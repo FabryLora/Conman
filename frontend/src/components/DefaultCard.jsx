@@ -16,7 +16,7 @@ export default function DefaultCard({ cardObject, images }) {
                 {images ? (
                     <img
                         className="object-cover w-full h-full"
-                        src={images[0].image_url}
+                        src={images[0]?.image_url}
                         alt=""
                     />
                 ) : (

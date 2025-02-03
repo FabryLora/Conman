@@ -20,4 +20,9 @@ class RealProduct extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function subCategories()
+    {
+        return $this->belongsTo(SubCategory::class);
+    }
 }

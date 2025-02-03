@@ -69,7 +69,6 @@ const router = createBrowserRouter([
                 path: "/inicio/terminales-y-accesorios/:id",
                 element: <MultipleView />,
             },
-
             {
                 path: "/inicio/mangueras",
                 element: <GeneralView categoryName={"mangueras"} />,

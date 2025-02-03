@@ -1,9 +1,11 @@
 import { useState } from "react";
+import ReactDOMServer from "react-dom/server";
 import letterIcon from "../assets/icons/letter-red-icon.svg";
 import locationIcon from "../assets/icons/location-red-icon.svg";
 import phoneIcon from "../assets/icons/phone-red-icon.svg";
 import whatsappIcon from "../assets/icons/whatsapp-red-icon.svg";
 import axiosClient from "../axios";
+import EmailTemplate from "../components/EmailTemplate";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Contacto() {
@@ -39,30 +41,22 @@ export default function Contacto() {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = async (e) => {
+    const sendEmail = async (e) => {
         e.preventDefault();
-        setIsSubmitting(true);
-        setErrors({});
+
+        const payload = { ...formData };
+
+        const htmlContent = ReactDOMServer.renderToString(
+            <EmailTemplate info={payload} />
+        );
 
         try {
-            await axiosClient.post("/sendcontact", formData);
-            alert("¡Mensaje enviado exitosamente!");
-            setFormData({
-                name: "",
-                phone: "",
-                email: "",
-                company: "",
-                message: "",
+            const response = await axiosClient.post("/sendcontact", {
+                html: htmlContent,
             });
+            console.log("Correo enviado:", response.data);
         } catch (error) {
-            if (error.response?.status === 422) {
-                // Muestra errores de validación enviados por Laravel
-                setErrors(error.response.data.errors || {});
-            } else {
-                alert("Hubo un error al enviar el mensaje.");
-            }
-        } finally {
-            setIsSubmitting(false);
+            console.error("Error al enviar el correo:", error);
         }
     };
 
@@ -93,7 +87,7 @@ export default function Contacto() {
                     <div className="w-1/2 flex justify-end">
                         <form
                             className="w-fit flex flex-col gap-10"
-                            onSubmit={handleSubmit}
+                            onSubmit={sendEmail}
                         >
                             <div className="grid grid-cols-2 grid-rows-2 gap-5 items-center justify-center w-fit">
                                 {inputInfo.map((info, index) => (
@@ -161,6 +155,7 @@ export default function Contacto() {
                         </form>
                     </div>
                 </div>
+
                 <div className="flex justify-center">
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3281.4647215277473!2d-58.4196176234808!3d-34.66821886090883!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bccc7fe2a9ac01%3A0xd6121cc1d8cbb189!2sConman%20Argentina!5e0!3m2!1ses-419!2sar!4v1737124645441!5m2!1ses-419!2sar"

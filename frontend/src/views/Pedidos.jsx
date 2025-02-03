@@ -1,4 +1,6 @@
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import ProductRow from "../components/ProductRow";
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -19,11 +21,11 @@ export default function Pedidos() {
 
     return (
         <div className="w-[80%] mx-auto py-20 grid grid-cols-2 gap-10">
-            <div className="grid  w-full border items-start col-span-2">
+            <div className="grid  w-full  items-start col-span-2">
                 <div className="grid grid-cols-8 items-center justify-center bg-[#F5F5F5] h-[52px] text-center font-semibold">
                     <p></p>
-                    <p>Codigo</p>
-                    <p>Producto</p>
+                    <p className="text-left">Codigo</p>
+                    <p className="text-left">Producto</p>
                     <p>Precio x un.</p>
                     <p>Descuento</p>
                     <p>Precio con %</p>
@@ -31,17 +33,28 @@ export default function Pedidos() {
                     <p></p>
                 </div>
 
-                <div className="">
-                    {cart.map((prod, index) => (
-                        <ProductRow key={index} product={prod} />
-                    ))}
+                <div className="h-[300px] overflow-y-auto">
+                    <AnimatePresence>
+                        {cart.map((prod, index) => (
+                            <motion.div
+                                exit={{ opacity: 0, x: -20 }}
+                                transition={{ duration: 0.3 }}
+                                key={index}
+                            >
+                                <ProductRow product={prod} />
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
                 </div>
             </div>
             <div className="col-span-2">
                 <div className="">
-                    <button className="h-[47px] border border-primary-red text-primary-red font-semibold px-5">
+                    <Link
+                        to={"/privado/productos"}
+                        className="h-[47px] border border-primary-red text-primary-red font-semibold py-2 px-5"
+                    >
                         SEGUIR COMPRANDO
-                    </button>
+                    </Link>
                 </div>
             </div>
             <div className="h-[206px] border">
@@ -77,7 +90,7 @@ export default function Pedidos() {
                                 }`}
                             >
                                 {selected === "retiro" && (
-                                    <div className="w-[9px] h-[9px] bg-red-500 rounded-full"></div>
+                                    <div className="w-[10px] h-[10px] bg-red-500 rounded-full"></div>
                                 )}
                             </div>
                             <label className="cursor-pointer">
@@ -103,7 +116,7 @@ export default function Pedidos() {
                                 }`}
                             >
                                 {selected === "reparto" && (
-                                    <div className="w-[9px] h-[9px] bg-red-500 rounded-full"></div>
+                                    <div className="w-[10px] h-[10px] bg-red-500 rounded-full"></div>
                                 )}
                             </div>
                             <label className="cursor-pointer">
@@ -126,7 +139,7 @@ export default function Pedidos() {
                                 }`}
                             >
                                 {selected === "acon" && (
-                                    <div className="w-[9px] h-[9px] bg-red-500 rounded-full"></div>
+                                    <div className="w-[10px] h-[10px] bg-red-500 rounded-full"></div>
                                 )}
                             </div>
                             <label className="cursor-pointer">A Convenir</label>

@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import barsIcon from "../assets/icons/bars-solid.svg";
 import chevronDownWhite from "../assets/icons/chevron-down-white.svg";
@@ -17,6 +17,14 @@ export default function NavbarPrivado() {
     const [userLoged, setUserLoged] = useState(false);
     const [selectedLink, setSelectedLink] = useState("Productos");
     const { userToken, userInfo, contactInfo } = useStateContext();
+
+    const { cart } = useStateContext();
+
+    const [cartProd, setCartProd] = useState(cart.length);
+
+    useEffect(() => {
+        setCartProd(cart.length);
+    }, [cart]);
 
     const socials = [
         { logo: fbIcon, href: "#" },
@@ -98,9 +106,16 @@ export default function NavbarPrivado() {
                 <ul className="flex flex-row gap-5 w-full justify-end pr-10 max-lg:hidden">
                     {links.map((linkInfo) => (
                         <li
+                            className="relative"
                             onClick={() => setSelectedLink(linkInfo.title)}
                             key={linkInfo.title}
                         >
+                            {linkInfo.title === "Pedido" &&
+                                cart.length !== 0 && (
+                                    <div className="absolute -top-2 -right-2 text-sm bg-primary-red text-white w-[17px] h-[18px] flex justify-center items-center rounded-full">
+                                        <p>{cartProd}</p>
+                                    </div>
+                                )}
                             <Link
                                 className={`${
                                     linkInfo.title === selectedLink

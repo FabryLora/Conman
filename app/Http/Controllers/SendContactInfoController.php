@@ -2,41 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request;
 
 class SendContactInfoController extends Controller
 {
-    public function sendContactEmail(Request $request)
+    public function sendReactEmail(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'message' => 'required|string',
-            'phone' => 'nullable|string|max:100',
-            'company' => 'nullable|string|max:100',
-        ]);
+        $htmlContent = $request->input('html'); // Recibe el HTML renderizado
 
-        // Enviar el correo
-        $htmlContent = "
-        <h2>Nuevo mensaje de contacto</h2>
-        <p><strong>Nombre:</strong> {$validated['name']}</p>
-        <p><strong>Email:</strong> {$validated['email']}</p>
-        <p><strong>Teléfono:</strong> {$validated['phone']}</p>
-        <p><strong>Empresa:</strong> {$validated['company']}</p>
-        <p><strong>Mensaje:</strong></p>
-        <p>{$validated['message']}</p>
-    ";
+        Mail::send([], [], function ($message) use ($htmlContent) {
+            $message->to('fabriloco2002@gmail.com')
+                ->subject('Correo con Vista en React')
+                ->html($htmlContent);
+        });
 
-    // Enviar el correo utilizando el método adecuado
-    Mail::send([], [], function ($message) use ($validated, $htmlContent) {
-        $message->to('fabriloco2002@gmail.com') // Cambia por tu correo de destino
-                ->subject('Nuevo mensaje de contacto')
-                ->from($validated['email'], $validated['name'])
-                ->html($htmlContent); // Usamos `html()` en lugar de `setBody()`
-    });
-
-        return response()->json(['message' => 'Mensaje enviado exitosamente.'], 200);
+        return response()->json(['message' => 'Correo enviado con éxito']);
     }
 }
-

@@ -19,6 +19,7 @@ import xmark from "../assets/icons/xmark-solid.svg";
 import conmanLogo from "../assets/logos/conman-logo.png";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
+import DropdownButton from "./DropdownButton";
 import SearchCard from "./SearchCard";
 
 export default function Navbar() {
@@ -30,6 +31,8 @@ export default function Navbar() {
     const [search, setSearch] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const containerRef = useRef(null);
+
+    const { setLinkInfo } = useStateContext();
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -291,7 +294,7 @@ export default function Navbar() {
                                     />
                                 </button>
                                 {userMenu && (
-                                    <div className="absolute flex flex-col top-10 right-10 bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-[439px] z-30">
+                                    <div className="absolute flex flex-col top-10 right-10 bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-[439px] z-40">
                                         <h2 className="font-bold text-[24px] py-5">
                                             Iniciar sesion
                                         </h2>
@@ -396,10 +399,15 @@ export default function Navbar() {
                 </div>
             </div>
             <nav className="flex relative flex-row items-center pl-10 gap-20 w-full h-[85px] shadow-sm max-lg:justify-center">
-                <Link className="w-[267px] h-[57px]" to={"/"}>
-                    <img src={conmanLogo} alt="Logo" className="w-full" />
+                <Link className="" to={"/"}>
+                    <img
+                        src={conmanLogo}
+                        alt="Logo"
+                        className="min-w-[218px] min-h-[47px] object-contain"
+                    />
                 </Link>
-                <ul className="flex flex-row gap-5 w-full max-lg:hidden">
+
+                <ul className="flex flex-row gap-5 w-full max-xl:hidden">
                     {dropdowns.map((drop) => (
                         <div
                             onMouseEnter={() => toggleDropdown(drop.id)}
@@ -408,7 +416,8 @@ export default function Navbar() {
                             key={drop.id}
                         >
                             <Link
-                                className="hover:text-gray-600"
+                                onClick={() => setLinkInfo("")}
+                                className="hover:text-gray-600 whitespace-nowrap"
                                 to={drop.href}
                             >
                                 {drop.id}
@@ -420,9 +429,14 @@ export default function Navbar() {
                                 <div className="absolute flex flex-col top-9 left-0 bg-[#CBCBCB] shadow-md font-roboto-condensed w-[200px] h-fit z-30">
                                     {drop.subHref.map((sub) => (
                                         <Link
+                                            onClick={() =>
+                                                setLinkInfo(sub.title)
+                                            }
                                             className="flex flex-row items-center justify-between px-2 border-b border-white hover:text-gray-600"
                                             key={sub.title}
-                                            to={sub.href}
+                                            to={
+                                                "/inicio/terminales-y-accesorios"
+                                            }
                                         >
                                             {sub.title}
                                             <FontAwesomeIcon

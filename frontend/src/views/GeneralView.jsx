@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DefaultCard from "../components/DefaultCard";
 import { useStateContext } from "../contexts/ContextProvider.jsx";
 
 export default function GeneralView({ categoryName }) {
-    const { categoryInfo, productInfo } = useStateContext();
+    const { categoryInfo, productInfo, linkInfo } = useStateContext();
 
     const filteredCategory = categoryInfo.find(
         (category) => category.name.toUpperCase() === categoryName.toUpperCase()
     );
 
-    const [selectedSubcategory, setSelectedSubcategory] = useState("");
+    useEffect(() => {
+        setSelectedSubcategory(linkInfo.toLowerCase());
+    }, [linkInfo]);
+    const [selectedSubcategory, setSelectedSubcategory] = useState(
+        linkInfo.toLowerCase()
+    );
 
     const filteredProducts = selectedSubcategory
         ? productInfo.filter(
@@ -52,7 +57,7 @@ export default function GeneralView({ categoryName }) {
             </div>
 
             {/* Lista de productos */}
-            <div className="flex flex-row justify-start w-[80%] gap-4">
+            <div className="flex flex-row flex-wrap justify-start w-[80%] gap-4">
                 {filteredProducts.map((product, index) => (
                     <DefaultCard
                         key={index}

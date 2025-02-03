@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
-Route::post('/sendcontact', [SendContactInfoController::class, 'sendContactEmail']);
+Route::post('/sendcontact', [SendContactInfoController::class, 'sendReactEmail']);
 Route::put('/users/{id}', [AuthController::class, 'updateProfile']);
 Route::delete('/users/{id}', [AuthController::class, 'destroy']);
 Route::get('/me-admin', [AdminController::class, 'me']);
