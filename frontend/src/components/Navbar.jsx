@@ -4,7 +4,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import barsIcon from "../assets/icons/bars-solid.svg";
 import chevronDownWhite from "../assets/icons/chevron-down-white.svg";
@@ -29,6 +29,23 @@ export default function Navbar() {
     const [password, setPassword] = useState("");
     const [search, setSearch] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
+    const containerRef = useRef(null);
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (
+                containerRef.current &&
+                !containerRef.current.contains(event.target)
+            ) {
+                setSearch(false); // Cierra el contenedor si se hace clic fuera
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     const { setUserToken, userToken, userInfo, contactInfo, productInfo } =
         useStateContext();
@@ -176,7 +193,10 @@ export default function Navbar() {
                     </div>
                 </div>
                 <div className="flex fle-row gap-4 h-full items-center">
-                    <div className="relative flex flex-row items-center gap-3">
+                    <div
+                        ref={containerRef}
+                        className="relative flex flex-row items-center gap-3"
+                    >
                         <AnimatePresence>
                             <div
                                 className={`flex flex-row items-center gap-2 rounded-md ${
@@ -195,6 +215,7 @@ export default function Navbar() {
                                     }}
                                 >
                                     <input
+                                        id="searchid"
                                         type="text"
                                         value={searchTerm}
                                         onChange={(e) =>
@@ -207,7 +228,9 @@ export default function Navbar() {
                                     />
                                 </motion.div>
 
-                                <button
+                                <label
+                                    className="cursor-pointer"
+                                    htmlFor="searchid"
                                     onClick={() => {
                                         setSearch(!search);
                                         setSearchTerm("");
@@ -218,7 +241,7 @@ export default function Navbar() {
                                         alt="Buscar"
                                         className="h-[15px]"
                                     />
-                                </button>
+                                </label>
                             </div>
                         </AnimatePresence>
                         <AnimatePresence>
@@ -227,7 +250,7 @@ export default function Navbar() {
                                     initial={{ opacity: 0, y: -8 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -8 }}
-                                    className="absolute flex flex-col top-8 bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-[439px] z-30"
+                                    className="absolute flex flex-col top-8 bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-[439px] z-40"
                                 >
                                     <h2 className="font-bold text-[24px] py-5">
                                         Resultados de busqueda

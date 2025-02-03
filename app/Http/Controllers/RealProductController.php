@@ -29,15 +29,13 @@ class RealProductController extends Controller
             "code" => "required|string",
             "price" => "required|numeric",
             "discount" => "nullable|integer",
-            'image' => "nullable|string",
+            "image" => "required|file|mimes:jpg,jpeg,png,gif",
             "product_id" => "required|exists:products,id",
         ]);
 
 
-        if (isset($data["image"])) {
-            $realativePath = $this->saveImage($data["image"]);
-            $data["image"] = $realativePath;
-        }
+        $imagePath = $request->file('image')->store('images', 'public');
+        $data["image"] = $imagePath;
 
         $realProduct = RealProduct::create($data);
         return new RealProductResource($realProduct);
@@ -55,72 +53,56 @@ class RealProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, RealProduct $realProduct)
+    public function update(Request $request, $id)
     {
-        dd($request->all());
+        $realProduct = RealProduct::find($id);
 
         $data = $request->validate([
             "name" => "required|string",
             "code" => "required|string",
             "price" => "required|numeric",
-            "discount" => "nullable|numeric",
-            'image' => "nullable|string",
-
+            "discount" => "nullable|integer",
+            "image" => "nullable|file|mimes:jpg,jpeg,png,gif",
+            "product_id" => "required|exists:products,id",
         ]);
 
-        if (isset($data["image"])) {
-            $relativePath = $this->saveImage($data["image"]);
-            $data["image"] = $relativePath;
 
+        if ($request->hasFile('image')) {
+            // Eliminar la imagen existente del sistema de archivos
             if ($realProduct->image) {
-                $absolutePath = public_path($realProduct->image);
-                File::delete($absolutePath);
+                $absolutePath = public_path('storage/' . $realProduct->image);
+                if (File::exists($absolutePath)) {
+                    File::delete($absolutePath);
+                }
             }
+
+            // Guardar la nueva imagen
+            $imagePath = $request->file('image')->store('images', 'public');
+            $data["image"] = $imagePath;
         }
 
         $realProduct->update($data);
 
-        return new RealProductResource($realProduct);
+        return response()->json($realProduct, 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(RealProduct $realProduct)
+    public function destroy($id)
     {
-        $realProduct->delete();
+
+        $realProduct = RealProduct::find($id);
+
         if ($realProduct->image) {
-            $absolutePath = public_path("storage/" . $realProduct->image);
-            File::delete($absolutePath);
-        }
-
-        return response('', 204);
-    }
-
-    private function saveImage($image)
-    {
-        if (preg_match('/^data:image\/(\w+);base64,/', $image, $type)) {
-            $image = substr($image, strpos($image, ",") + 1);
-            $type = strtolower($type[1]);
-
-            if (!in_array($type, ["jpg", "jpeg", "gif", "png"])) {
-                throw new \Exception("invalid image type");
+            $absolutePath = public_path('storage/' . $realProduct->image);
+            if (File::exists($absolutePath)) {
+                File::delete($absolutePath);
             }
-            $image = str_replace(" ", "+", $image);
-            $image = base64_decode($image);
-        } else {
-            throw new \Exception("did not match data URI with image data");
         }
+        $realProduct->delete();
 
-        $dir = "storage/images/";
-        $file = Str::random() . "." . $type;
-        $absolutePath = public_path($dir);
-        $relativePath = $dir . $file;
-        if (!File::exists($absolutePath)) {
-            File::makeDirectory($absolutePath, 0755, true);
-        }
-        file_put_contents($relativePath, $image);
 
-        return $relativePath;
+        return response()->json('', 204);
     }
 }

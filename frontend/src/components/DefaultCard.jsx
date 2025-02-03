@@ -1,8 +1,14 @@
+import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 
 export default function DefaultCard({ cardObject, images }) {
     return (
-        <div className="h-[366px] w-[288px] flex flex-col font-roboto-condensed border border-[#EAEAEA] shadow-sm">
+        <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="h-[366px] w-[288px] flex flex-col font-roboto-condensed border border-[#EAEAEA] shadow-sm"
+        >
             <Link
                 className="flex justify-center h-[287px]"
                 to={`/inicio/terminales-y-accesorios/${cardObject.id}`}
@@ -20,6 +26,6 @@ export default function DefaultCard({ cardObject, images }) {
                 )}
             </Link>
             <h3 className="text-[16px] pl-4 pt-4">{cardObject.name}</h3>
-        </div>
+        </motion.div>
     );
 }

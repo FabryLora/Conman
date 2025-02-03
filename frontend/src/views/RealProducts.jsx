@@ -7,44 +7,39 @@ import { useStateContext } from "../contexts/ContextProvider";
 export default function RealProducts() {
     const { productInfo, fetchRealProducts, realProducts } = useStateContext();
 
-    const [submitData, setSubmitData] = useState({
-        name: "",
-        code: "",
-        price: "",
-        discount: "",
-        image: null,
-        image_url: null,
-        product_id: "",
-    });
+    const [name, setName] = useState("");
+    const [code, setCode] = useState("");
+    const [price, setPrice] = useState("");
+    const [discount, setDiscount] = useState("");
+    const [image, setImage] = useState(null);
+    const [productid, setProductId] = useState("");
 
-    const onImageChange = (ev) => {
-        const file = ev.target.files[0];
-
-        const reader = new FileReader();
-        reader.onload = () => {
-            console.log(reader.result);
-            setSubmitData({
-                ...submitData,
-                image: file,
-                image_url: reader.result,
-            });
-            ev.target.value = "";
-        };
-        reader.readAsDataURL(file);
+    const handleFileChange = (e) => {
+        setImage(e.target.files[0]);
     };
 
-    const onSubmit = (ev) => {
+    const onSubmit = async (ev) => {
         ev.preventDefault();
 
-        const payload = { ...submitData };
-        if (payload.image) {
-            payload.image = payload.image_url;
-        }
-        delete payload.image_url;
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("code", code);
+        formData.append("price", price);
+        formData.append("discount", discount);
+        formData.append("image", image);
+        formData.append("product_id", productid);
 
-        axiosClient.post("realproducts", payload).then((res) => {
+        try {
+            const response = await axiosClient.post("realproducts", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
             fetchRealProducts();
-        });
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -71,11 +66,18 @@ export default function RealProducts() {
                                                 className="mx-auto size-12 text-gray-300"
                                             />
                                             <div className=" flex text-sm/6 text-gray-600">
+                                                <label
+                                                    className="cursor-pointer text-white bg-blue-500 px-4 py-2 rounded-md "
+                                                    htmlFor="file-upload"
+                                                >
+                                                    Elegir imagen
+                                                </label>
                                                 <input
                                                     id="file-upload"
                                                     name="file-upload"
                                                     type="file"
-                                                    onChange={onImageChange}
+                                                    onChange={handleFileChange}
+                                                    className="hidden"
                                                 />
                                             </div>
                                         </div>
@@ -92,12 +94,9 @@ export default function RealProducts() {
                                 </label>
                                 <div className="mt-2">
                                     <input
-                                        value={submitData.name}
+                                        value={name}
                                         onChange={(ev) => {
-                                            setSubmitData({
-                                                ...submitData,
-                                                name: ev.target.value,
-                                            });
+                                            setName(ev.target.value);
                                         }}
                                         id="name"
                                         name="name"
@@ -116,12 +115,9 @@ export default function RealProducts() {
                                 </label>
                                 <div className="mt-2">
                                     <input
-                                        value={submitData.code}
+                                        value={code}
                                         onChange={(ev) => {
-                                            setSubmitData({
-                                                ...submitData,
-                                                code: ev.target.value,
-                                            });
+                                            setCode(ev.target.value);
                                         }}
                                         id="code"
                                         name="code"
@@ -139,12 +135,9 @@ export default function RealProducts() {
                                 </label>
                                 <div className="mt-2">
                                     <input
-                                        value={submitData.price}
+                                        value={price}
                                         onChange={(ev) => {
-                                            setSubmitData({
-                                                ...submitData,
-                                                price: ev.target.value,
-                                            });
+                                            setPrice(ev.target.value);
                                         }}
                                         id="price"
                                         name="price"
@@ -163,12 +156,9 @@ export default function RealProducts() {
                                 </label>
                                 <div className="mt-2">
                                     <input
-                                        value={submitData.discount}
+                                        value={discount}
                                         onChange={(ev) => {
-                                            setSubmitData({
-                                                ...submitData,
-                                                discount: ev.target.value,
-                                            });
+                                            setDiscount(ev.target.value);
                                         }}
                                         id="discount"
                                         name="discount"
@@ -187,12 +177,9 @@ export default function RealProducts() {
                                 </label>
                                 <div className="mt-2">
                                     <select
-                                        value={submitData.product_id}
+                                        value={productid}
                                         onChange={(ev) => {
-                                            setSubmitData({
-                                                ...submitData,
-                                                product_id: ev.target.value,
-                                            });
+                                            setProductId(ev.target.value);
                                         }}
                                         id="categoria"
                                         name="categoria"
@@ -216,40 +203,28 @@ export default function RealProducts() {
                             type="submit"
                             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         >
-                            Guardar
+                            Crear producto
                         </button>
                     </div>
                 </div>
             </form>
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" className="px-6 py-3">
-                            Imagen
-                        </th>
+            <div className="table w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <div className="table-header-group text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <div className="table-row">
+                        <div className="table-cell px-6 py-3">Imagen</div>
 
-                        <th scope="col" className="px-6 py-3">
-                            Nombre
-                        </th>
+                        <div className="table-cell px-6 py-3">Nombre</div>
 
-                        <th scope="col" className="px-6 py-3">
-                            Codigo
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                            Precio
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                            Descuento
-                        </th>
-                        <th scope="col" className="px-6 py-3">
+                        <div className="table-cell px-6 py-3">Codigo</div>
+                        <div className="table-cell px-6 py-3">Precio</div>
+                        <div className="table-cell px-6 py-3">Descuento</div>
+                        <div className="table-cell px-6 py-3">
                             Grupo de productos
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                            Editar
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
+                        </div>
+                        <div className="table-cell py-3">Operaciones</div>
+                    </div>
+                </div>
+                <div className="table-row-group">
                     {realProducts &&
                         realProducts.map((info, index) => (
                             <RealProductRowAdmin
@@ -257,8 +232,8 @@ export default function RealProducts() {
                                 productObject={info}
                             />
                         ))}
-                </tbody>
-            </table>
+                </div>
+            </div>
         </div>
     );
 }

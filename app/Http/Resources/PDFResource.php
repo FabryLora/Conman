@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\URL;
 
-class RealProductResource extends JsonResource
+class PDFResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
-     *p
+     *
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array
@@ -18,13 +18,7 @@ class RealProductResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->name,
-            "code" => $this->code,
-            "price" => $this->price,
-            "image_url" => $this->image ? url("storage/" . $this->image) : null,
-            "discount" => $this->discount,
-            "product" => new ProductResource($this->whenLoaded('product')),
-
-
+            "pdf_url" => $this->pdf ? url("storage/" . $this->pdf) : null,
         ];
     }
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -70,9 +70,12 @@ export default function MultipleView() {
                             <button className="h-[47px] w-full text-primary-red border border-primary-red">
                                 FICHA TECNICA
                             </button>
-                            <button className="h-[47px] w-full bg-primary-red text-white">
+                            <Link
+                                to={"/inicio/contacto"}
+                                className="h-[47px] w-full bg-primary-red text-white flex items-center justify-center"
+                            >
                                 CONSULTAR
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>

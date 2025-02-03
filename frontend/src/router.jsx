@@ -1,8 +1,8 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import AcoplesRapidos from "./views/AcoplesRapidos";
 import Administrator from "./views/Administrator";
 import AdminLogin from "./views/AdminLogin";
 import Calidad from "./views/Calidad";
+import CalidadAdmin from "./views/CalidadAdmin";
 import CategoriasAdmin from "./views/CategoriasAdmin";
 import Contacto from "./views/Contacto";
 import ContactoAdmin from "./views/ContactoAdmin";
@@ -51,7 +51,9 @@ const router = createBrowserRouter([
             },
             {
                 path: "/inicio/acoples-rapidos-hidraulicos",
-                element: <AcoplesRapidos />,
+                element: (
+                    <GeneralView categoryName={"acoples rapidos hidraulicos"} />
+                ),
             },
             {
                 path: "/inicio/acoples-rapidos-hidraulicos/:id",
@@ -133,6 +135,10 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/usuarios",
                 element: <UsuariosAdmin />,
+            },
+            {
+                path: "/dashboard/archivos",
+                element: <CalidadAdmin />,
             },
         ],
     },

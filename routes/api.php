@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactInfoController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\NosotrosFirstController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProvinciaController;
 use App\Http\Controllers\RealProductController;
@@ -26,6 +27,9 @@ Route::get('/me-admin', [AdminController::class, 'me']);
 Route::get('/allusers', [AuthController::class, 'index']);
 Route::apiResource('/contact-info', ContactInfoController::class);
 Route::apiResource('/nosotros-first', NosotrosFirstController::class);
+Route::post('/upload-pdf', [PDFController::class, 'uploadPDF']);
+Route::get('/download-pdf/{filename}', [PDFController::class, 'downloadPDF']);
+Route::apiResource('/pdf', PDFController::class);
 Route::apiResource('/slider', SliderController::class);
 
 Route::apiResource('/subcategory', SubCategoryController::class);
@@ -37,6 +41,13 @@ Route::get('/products/{id}', [ProductController::class, "show_products"]);
 Route::apiResource('/provincia', ProvinciaController::class);
 Route::apiResource('/image', ImageController::class);
 Route::apiResource('/sliderimage', SliderImageController::class);
+
+
+
+
+
+
+
 
 
 

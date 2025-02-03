@@ -13,7 +13,10 @@ export default function GeneralView({ categoryName }) {
 
     const filteredProducts = selectedSubcategory
         ? productInfo.filter(
-              (info) => info.subCategory.name === selectedSubcategory
+              (info) =>
+                  info.subCategory.name === selectedSubcategory &&
+                  info.category.name.toUpperCase() ===
+                      categoryName.toUpperCase()
           )
         : productInfo.filter(
               (info) =>
@@ -27,7 +30,9 @@ export default function GeneralView({ categoryName }) {
             <div className="w-[20%]">
                 <button
                     onClick={() => setSelectedSubcategory("")}
-                    className="font-bold text-[16px] border-y border-[#EAEAEA] py-2 w-full text-left"
+                    className={` text-[16px] border-y border-[#EAEAEA] py-2 w-full text-left ${
+                        !selectedSubcategory ? "font-bold" : ""
+                    }`}
                 >
                     Todos los productos
                 </button>
@@ -35,9 +40,13 @@ export default function GeneralView({ categoryName }) {
                     <button
                         key={index}
                         onClick={() => setSelectedSubcategory(subcategory.name)}
-                        className="font-bold text-[16px] border-y border-[#EAEAEA] py-2 w-full text-left"
+                        className={`text-[16px] border-y border-[#EAEAEA] py-2 w-full text-left ${
+                            subcategory.name === selectedSubcategory
+                                ? "font-bold"
+                                : ""
+                        }`}
                     >
-                        {subcategory.name}
+                        {subcategory.name.toUpperCase()}
                     </button>
                 ))}
             </div>

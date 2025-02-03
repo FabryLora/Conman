@@ -33,6 +33,8 @@ const StateContext = createContext({
     fetchRealProducts: () => {},
     sliderImage: [],
     fetchSliderImage: () => {},
+    pdfInfo: [],
+    fetchPdfInfo: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -47,6 +49,7 @@ export const ContextProvider = ({ children }) => {
     const [provincias, setProvincias] = useState([]);
     const [allUsers, setAllUsers] = useState([]);
     const [realProducts, setRealProducts] = useState([]);
+    const [pdfInfo, setPdfInfo] = useState([]);
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem("cart");
         return savedCart ? JSON.parse(savedCart) : [];
@@ -168,6 +171,12 @@ export const ContextProvider = ({ children }) => {
         });
     };
 
+    const fetchPdfInfo = () => {
+        axiosClient.get("/pdf").then(({ data }) => {
+            setPdfInfo(data.data);
+        });
+    };
+
     useEffect(() => {
         fetchNosotrosFirstInfo();
         fetchContactInfo();
@@ -179,6 +188,7 @@ export const ContextProvider = ({ children }) => {
         fetchAllUsers();
         fetchRealProducts();
         fetchSliderImage();
+        fetchPdfInfo();
     }, []);
 
     useEffect(() => {
@@ -202,6 +212,8 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                pdfInfo,
+                fetchPdfInfo,
                 sliderImage,
                 fetchSliderImage,
                 realProducts,

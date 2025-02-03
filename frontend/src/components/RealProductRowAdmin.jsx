@@ -7,48 +7,61 @@ export default function RealProductRowAdmin({ productObject }) {
     const { productInfo, fetchRealProducts } = useStateContext();
     const [editable, setEditable] = useState(false);
 
-    const [updateData, setUpdateData] = useState({
-        name: productObject?.name,
-        code: productObject?.code,
-        price: productObject?.price,
-        discount: productObject?.discount,
-        image: productObject?.image,
-        product_id: productObject?.product.id,
-    });
+    const [name, setName] = useState(productObject.name);
+    const [code, setCode] = useState(productObject.code);
+    const [price, setPrice] = useState(productObject.price);
+    const [discount, setDiscount] = useState(productObject.discount);
+    const [image, setImage] = useState(productObject.image_url);
+    const [productid, setProductId] = useState(productObject.product.id);
 
-    const onImageChange = (ev) => {
-        const file = ev.target.files[0];
-
-        const reader = new FileReader();
-        reader.onload = () => {
-            console.log(reader.result);
-            setUpdateData({
-                ...updateData,
-                image: file,
-                image_url: reader.result,
-            });
-            ev.target.value = "";
-        };
-        reader.readAsDataURL(file);
+    const handleFileChange = (e) => {
+        setImage(e.target.files[0]);
+        console.log(image);
     };
 
-    const update = (e) => {
+    const update = async (e) => {
         e.preventDefault();
-        const payload = { ...updateData };
-        if (payload.image) {
-            payload.image = payload.image_url;
+
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("code", code);
+        formData.append("price", price);
+        formData.append("discount", discount);
+        formData.append("image", image);
+        formData.append("product_id", productid);
+
+        try {
+            await axiosClient.post(
+                `/realproducts/${productObject.id}?_method=PUT`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+            fetchRealProducts();
+        } catch (error) {
+            console.error("Error al actualizar:", error);
         }
-        delete payload.image_url;
-        axiosClient
-            .put(`/realproducts/${productObject.id}`, payload)
-            .then((res) => {
-                fetchRealProducts();
-            });
+    };
+
+    const deleteProduct = async () => {
+        try {
+            await axiosClient.delete(`/realproducts/${productObject.id}`);
+            fetchRealProducts();
+        } catch (error) {
+            console.error("Error al eliminar el producto:", error);
+        }
     };
 
     return (
-        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 h-[134px]">
-            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+        <form
+            method="POST"
+            onSubmit={update}
+            className="table-row bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 h-[134px]"
+        >
+            <div className="table-cell px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white align-middle">
                 {editable ? (
                     <div className="text-center items-center h-fit self-center flex flex-row justify-start gap-3">
                         <PhotoIcon
@@ -56,110 +69,88 @@ export default function RealProductRowAdmin({ productObject }) {
                             className="mx-auto size-12 text-gray-300"
                         />
                         <div className=" flex text-sm/6 text-gray-600">
+                            <label
+                                htmlFor="file-upload"
+                                className="cursor-pointer text-white bg-blue-500 p-2 rounded-md"
+                            >
+                                Seleccionar imagen
+                            </label>
                             <input
-                                onChange={onImageChange}
+                                onChange={handleFileChange}
                                 id="file-upload"
                                 name="file-upload"
                                 type="file"
+                                className="hidden"
                             />
                         </div>
                     </div>
                 ) : (
                     <div className="flex flex-row overflow-x-auto scrollbar-hide gap-2">
                         <div>
-                            <img
-                                className="w-20"
-                                src={productObject?.image_url}
-                                alt=""
-                            />
+                            <img className="w-20" src={image} alt="" />
                         </div>
                     </div>
                 )}
-            </td>
+            </div>
 
-            <td className="px-6 py-4">
+            <div className="table-cell px-6 py-4 align-middle">
                 {editable ? (
                     <input
                         type="text"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                        value={updateData?.name}
-                        onChange={(ev) => {
-                            setUpdateData({
-                                ...updateData,
-                                name: ev.target.value,
-                            });
-                        }}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-black"
+                        value={name}
+                        onChange={(ev) => setName(ev.target.value)}
                     />
                 ) : (
-                    productObject?.name
+                    name
                 )}
-            </td>
+            </div>
 
-            <td className="px-6 py-4">
+            <div className="table-cell px-6 py-4 align-middle">
                 {editable ? (
                     <input
                         type="text"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                        value={updateData?.code}
-                        onChange={(ev) =>
-                            setUpdateData({
-                                ...updateData,
-                                code: ev.target.value,
-                            })
-                        }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-black"
+                        value={code}
+                        onChange={(ev) => setCode(ev.target.value)}
                     />
                 ) : (
-                    productObject?.code
+                    code
                 )}
-            </td>
+            </div>
 
-            <td className="px-6 py-4">
+            <div className="table-cell px-6 py-4 align-middle">
                 {editable ? (
                     <input
                         type="text"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                        value={updateData?.price}
-                        onChange={(ev) =>
-                            setUpdateData({
-                                ...updateData,
-                                price: ev.target.value,
-                            })
-                        }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-black"
+                        value={price}
+                        onChange={(ev) => setPrice(ev.target.value)}
                     />
                 ) : (
-                    productObject?.price
+                    price
                 )}
-            </td>
+            </div>
 
-            <td className="px-6 py-4">
+            <div className="table-cell px-6 py-4 align-middle">
                 {editable ? (
                     <input
-                        type="text"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                        value={updateData?.discount}
-                        onChange={(ev) =>
-                            setUpdateData({
-                                ...updateData,
-                                discount: ev.target.value,
-                            })
-                        }
+                        type="number"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-black"
+                        value={discount}
+                        onChange={(ev) => setDiscount(ev.target.value)}
                     />
                 ) : (
-                    productObject?.discount
+                    discount
                 )}
-            </td>
+            </div>
 
-            <td className="px-6 py-4">
+            <div className="table-cell px-6 py-4 align-middle">
                 {editable ? (
                     <div className="mt-2">
                         <select
-                            value={updateData?.product_id}
-                            onChange={(ev) =>
-                                setUpdateData({
-                                    ...updateData,
-                                    product_id: ev.target.value,
-                                })
-                            }
+                            value={productid}
+                            onChange={(ev) => setProductId(ev.target.value)}
                             id="categoria"
                             name="categoria"
                             className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
@@ -177,22 +168,39 @@ export default function RealProductRowAdmin({ productObject }) {
                 ) : (
                     productObject.product.name
                 )}
-            </td>
+            </div>
 
-            <td>
+            <div className="table-cell align-middle text-white w-[150px]">
                 {editable ? (
-                    <div className="flex flex-row gap-2">
-                        <button onClick={() => setEditable(false)}>
+                    <div className="flex flex-col gap-2">
+                        <button
+                            className="bg-blue-500 rounded-md py-2"
+                            onClick={() => setEditable(false)}
+                        >
                             Cancelar
                         </button>
-                        <button onClick={update}>Guardar</button>
+                        <button
+                            className="bg-green-500 rounded-md py-2"
+                            type="submit"
+                        >
+                            Actualizar
+                        </button>
+                        <div
+                            className="bg-red-500 rounded-md py-2 cursor-pointer flex justify-center items-center"
+                            onClick={deleteProduct}
+                        >
+                            Eliminar
+                        </div>
                     </div>
                 ) : (
-                    <button onClick={() => setEditable(true)} className="">
+                    <button
+                        onClick={() => setEditable(true)}
+                        className="bg-blue-500 rounded-md px-4 py-2"
+                    >
                         Editar
                     </button>
                 )}
-            </td>
-        </tr>
+            </div>
+        </form>
     );
 }

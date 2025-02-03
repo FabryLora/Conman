@@ -7,7 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class RealProduct extends Model
 {
 
-    protected $guarded = [];
+    protected $fillable = [
+        'product_id',
+        'name',
+        'code',
+        'price',
+        'discount',
+        'image',
+    ];
 
     public function product()
     {

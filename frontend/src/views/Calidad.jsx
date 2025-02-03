@@ -4,8 +4,11 @@ import conmanLogo from "../assets/logos/conman-logo.png";
 import iqnetLogo from "../assets/logos/iqnet-logo.png";
 import iramLogo from "../assets/logos/iram-logo.png";
 import FileComponent from "../components/FileComponent";
+import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Calidad() {
+    const { pdfInfo } = useStateContext();
+
     const itemList = [
         "Satisfacer las necesidades de nuestros clients actuales y potenciales, con productos innovadores y de alta calidad, que hagan que nuestros clientes nos valoren y distingan, reconociendo en nuestra forma de trabajo, un modelo de comportamiento distintivo.",
         "Reconocer al personal como el activo principal de nuestra empresa, fomentando un clima que favorezca el compromiso, la formación, el involucramiento y la iniciativa.",
@@ -65,7 +68,7 @@ export default function Calidad() {
                     </div>
                 </div>
                 <div className="flex flex-row justify-evenly">
-                    {fileInfoList.map((fileObject, index) => (
+                    {pdfInfo.map((fileObject, index) => (
                         <FileComponent key={index} fileObject={fileObject} />
                     ))}
                 </div>
