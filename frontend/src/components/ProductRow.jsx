@@ -11,8 +11,9 @@ export default function ProductRow({ product }) {
     const [cantidad, setCantidad] = useState(0);
     const [extraInfo, setExtraInfo] = useState({
         cantidad: 0,
-        descuento:
-            product.price + product.price * (product.discount / 100) || 0,
+        descuento: product.discount
+            ? product.price - product.price * (product.discount / 100)
+            : product.price,
     });
     const handleChange = (value) => {
         if (value >= 0) setCantidad(value);

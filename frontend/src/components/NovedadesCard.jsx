@@ -27,14 +27,16 @@ export default function NovedadesCard({ newsObject }) {
                         alt=""
                     />
                 </div>
-                <div className="flex flex-col w-full">
-                    <h2 className="text-[24px] font-medium">
-                        {newsObject.title}
-                    </h2>
-                    <p className="text-[16px]">{newsObject.description}</p>
+                <div className="flex flex-col w-full h-full justify-between">
+                    <div>
+                        <h2 className="text-[24px] font-medium">
+                            {newsObject.title}
+                        </h2>
+                        <p className="text-[16px]">{newsObject.description}</p>
+                    </div>
                     <button
                         onClick={() => setIsOpen(!isOpen)}
-                        className="absolute bottom-2 w-fit font-medium mt-auto"
+                        className=" w-fit font-medium mt-auto"
                     >
                         {isOpen ? "Cerrar" : "Leer más"}
                     </button>

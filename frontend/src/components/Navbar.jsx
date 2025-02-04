@@ -509,7 +509,7 @@ export default function Navbar() {
                 </ul>
                 <button
                     onClick={() => setTinyMenu(!tinyMenu)}
-                    className="w-[24px] h-[24px] absolute left-10 xl:hidden"
+                    className="w-[20px] h-[20px] absolute left-10 xl:hidden"
                 >
                     <img src={barsIcon} alt="" />
                 </button>

@@ -152,24 +152,24 @@ export default function Administrator() {
                                                     </Link>
                                                 </div>
                                                 <MotionFontAwesomeIcon
-                                                    initial={{ rotate: 0 }}
-                                                    animate={{
-                                                        rotate: drop.open
-                                                            ? 180
-                                                            : 0,
-                                                    }}
-                                                    exit={{ rotate: 0 }}
-                                                    transition={{
-                                                        ease: "linear",
-                                                        duration: 0.2,
-                                                    }}
                                                     size="lg"
                                                     icon={faChevronUp}
                                                 />
                                             </button>
                                             <AnimatePresence>
                                                 {drop.open && (
-                                                    <ul className="flex flex-col gap-2 overflow-hidden py-2 h-fit">
+                                                    <motion.ul
+                                                        initial={{ height: 0 }}
+                                                        animate={{
+                                                            height: "fit-content",
+                                                        }}
+                                                        exit={{ height: 0 }}
+                                                        transition={{
+                                                            ease: "linear",
+                                                            duration: 0.2,
+                                                        }}
+                                                        className="flex flex-col gap-2 overflow-hidden py-2 h-fit"
+                                                    >
                                                         {drop.subHref.map(
                                                             (sub, index) => (
                                                                 <MotionLink
@@ -188,7 +188,7 @@ export default function Administrator() {
                                                                 </MotionLink>
                                                             )
                                                         )}
-                                                    </ul>
+                                                    </motion.ul>
                                                 )}
                                             </AnimatePresence>
                                         </li>

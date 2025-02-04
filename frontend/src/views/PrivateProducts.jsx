@@ -3,7 +3,7 @@ import ProductRow from "../components/ProductRow";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function PrivateProducts() {
-    const { realProducts, categoryInfo, productInfo } = useStateContext();
+    const { realProducts, productInfo } = useStateContext();
     const [categoria, setCategoria] = useState("");
     const [nombre, setNombre] = useState("");
     const [codigo, setCodigo] = useState("");

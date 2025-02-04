@@ -1,4 +1,6 @@
 import { Helmet } from "react-helmet-async";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import quienes from "../assets/inicio/quienes.png";
 import mision from "../assets/nosotros/mision-icon.svg";
 import sustent from "../assets/nosotros/sustent-icon.svg";

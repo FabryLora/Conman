@@ -163,7 +163,7 @@ export default function Home() {
                 </div>
 
                 {/* Piloticas de calidad */}
-                <div className="flex relative h-[460px] w-full items-center justify-around bg-primary-blue mt-10 font-roboto-condensed text-white max-sm:flex-col max-sm:h-fit max-sm:py-10">
+                <div className="flex relative h-[460px]  w-full items-center justify-around bg-primary-blue mt-10 font-roboto-condensed text-white max-sm:flex-col max-sm:h-fit max-sm:pb-32 max-sm:py-10">
                     <img
                         className="absolute w-full h-full opacity-50"
                         src={bannerCalidad}
@@ -187,14 +187,14 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div className="flex flex-col gap-14 self-start pt-20 w-[242px] max-sm:self-center">
+                    <div className="relative flex flex-col gap-14 self-start pt-20 w-[242px] max-sm:self-center">
                         <div className="flex flex-row justify-between">
                             <img src={iramLogo} alt="" />
                             <img src={iqnetLogo} alt="" />
                         </div>
                         <Link
                             to={"/inicio/calidad"}
-                            className="w-full h-[47px] border border-white flex justify-center items-center"
+                            className="absolute w-full h-[47px] -bottom-20 border border-white flex justify-center items-center"
                         >
                             MAS INFO
                         </Link>
@@ -202,7 +202,7 @@ export default function Home() {
                 </div>
 
                 {/* Ultimas novedades */}
-                <div className="bg-special-white flex flex-col items-center">
+                <div className="bg-special-white flex flex-col items-center md:pb-10">
                     <div className="flex flex-col w-[90%] gap-3">
                         <div className="flex flex-row items-center justify-between max-sm:flex-col max-sm:gap-6 py-10">
                             <h2 className="text-[40px] font-bold font-roboto-condensed max-sm:text-center">
@@ -216,7 +216,7 @@ export default function Home() {
                             </Link>
                         </div>
 
-                        <div className="flex relative flex-row flex-wrap gap-5 justify-between">
+                        <div className="flex relative flex-row flex-wrap gap-5 justify-between max-md:justify-center">
                             {novedades.map((novedad, index) => (
                                 <NovedadesCard
                                     key={index}

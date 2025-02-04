@@ -43,7 +43,7 @@ export default function NavbarPrivado() {
 
     return (
         <div className="flex flex-col items-center justify-center font-roboto-condensed">
-            <div className="bg-primary-blue h-[40px] w-full flex items-center justify-between pl-20 pr-10">
+            <div className="bg-primary-blue h-[40px] w-full flex items-center justify-between pl-11 pr-10">
                 <div className="flex gap-4 items-center text-[14px] text-white h-[16px]">
                     <div className="flex gap-2 items-center">
                         <img className="h-[16px]" src={letterIcon} alt="" />

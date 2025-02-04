@@ -37,6 +37,9 @@ const StateContext = createContext({
     fetchPdfInfo: () => {},
     linkInfo: "",
     setLinkInfo: () => {},
+    clearCart: () => {},
+    pedidos: [],
+    fetchPedidos: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -53,6 +56,7 @@ export const ContextProvider = ({ children }) => {
     const [realProducts, setRealProducts] = useState([]);
     const [pdfInfo, setPdfInfo] = useState([]);
     const [linkInfo, setLinkInfo] = useState("");
+    const [pedidos, setPedidos] = useState([]);
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem("cart");
         return savedCart ? JSON.parse(savedCart) : [];
@@ -90,6 +94,11 @@ export const ContextProvider = ({ children }) => {
         const updatedCart = cart.filter((item) => item.id !== productId);
 
         setCart(updatedCart);
+    };
+
+    const clearCart = () => {
+        setCart([]); // Vaciar el estado del carrito
+        localStorage.removeItem("cart"); // Eliminar el carrito del localStorage
     };
 
     useEffect(() => {
@@ -194,6 +203,12 @@ export const ContextProvider = ({ children }) => {
         });
     };
 
+    const fetchPedidos = () => {
+        axiosClient.get("/pedidos").then(({ data }) => {
+            setPedidos(data.data);
+        });
+    };
+
     useEffect(() => {
         fetchNosotrosFirstInfo();
         fetchContactInfo();
@@ -206,6 +221,7 @@ export const ContextProvider = ({ children }) => {
         fetchRealProducts();
         fetchSliderImage();
         fetchPdfInfo();
+        fetchPedidos();
     }, []);
 
     useEffect(() => {
@@ -229,6 +245,9 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                pedidos,
+                fetchPedidos,
+                clearCart,
                 linkInfo,
                 setLinkInfo,
                 pdfInfo,

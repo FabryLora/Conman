@@ -79,7 +79,7 @@ export default function Footer() {
                 </div>
 
                 {/* contact info */}
-                <div className="flex flex-col gap-3 order-3 max-sm:px-8">
+                <div className="flex flex-col gap-3 order-3 max-sm:px-8 max-sm:pb-4">
                     <h2 className="text-xl font-semibold">Datos de Contacto</h2>
                     <div className="flex flex-col gap-3">
                         {contactoInfo.map((item, index) => (

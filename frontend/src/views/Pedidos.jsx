@@ -1,21 +1,159 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import ReactDOMServer from "react-dom/server";
+
+import { Link, useLocation } from "react-router-dom";
+import axiosClient from "../axios";
+import PedidoTemplate from "../components/PedidoTemplate";
 import ProductRow from "../components/ProductRow";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Pedidos() {
-    const { cart } = useStateContext();
+    const { cart, clearCart, userInfo } = useStateContext();
 
     const [selected, setSelected] = useState("retiro");
     const [fileName, setFileName] = useState("Seleccionar archivo");
+    const [subtotal, setSubtotal] = useState();
+    const [subtotalDescuento, setSubtotalDescuento] = useState();
+    const [descuento, setDescuento] = useState();
+    const [iva, setIva] = useState();
+    const [totalFinal, setTotalFinal] = useState();
+    const [mensaje, setMensaje] = useState("");
+    const [archivo, setArchivo] = useState(null);
+    const [tipo_entrega, setTipo_entrega] = useState("retiro cliente");
+
+    const loacation = useLocation();
+
+    console.log(location);
+
+    useEffect(() => {
+        const total = cart.reduce((acc, prod) => {
+            return acc + prod.price * prod.additionalInfo.cantidad;
+        }, 0);
+        setSubtotal(total.toFixed(2));
+
+        const condescuento = total * 0.97;
+        setSubtotalDescuento(condescuento.toFixed(2));
+        const iva = condescuento * 0.21;
+        setIva(iva.toFixed(2));
+        const descuento = total * 0.03;
+        setDescuento(descuento.toFixed(2));
+        const totalFinal = condescuento + iva;
+        setTotalFinal(totalFinal.toFixed(2));
+    }, [cart]);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
             setFileName(file.name);
+            setArchivo(file);
+            console.log(file);
         } else {
             setFileName("Seleccionar archivo");
+        }
+    };
+
+    const sendEmail = async (e) => {
+        e.preventDefault();
+
+        const payload = { ...formData };
+
+        const htmlContent = ReactDOMServer.renderToString(
+            <PedidoTemplate info={payload} />
+        );
+
+        try {
+            const response = await axiosClient.post("/sendpedido", {
+                html: htmlContent,
+            });
+            console.log("Correo enviado:", response.data);
+        } catch (error) {
+            console.error("Error al enviar el correo:", error);
+        }
+    };
+
+    useEffect(() => {
+        setArchivo(archivo);
+        setMensaje(mensaje);
+        setTipo_entrega(tipo_entrega);
+    }, [archivo, mensaje, tipo_entrega]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append("mensaje", mensaje);
+        if (archivo !== null) {
+            formData.append("archivo", archivo);
+        }
+
+        formData.append("tipo_entrega", tipo_entrega);
+        formData.append("subtotal", subtotal);
+        formData.append("descuento", descuento);
+        formData.append("subtotaldescuento", subtotalDescuento);
+        formData.append("iva", iva);
+        formData.append("total", totalFinal);
+
+        try {
+            const response = await axiosClient.post("/pedidos", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+
+            const pedidoId = response.data.data.id;
+
+            cart.forEach((prod) => {
+                const formProds = new FormData();
+                formProds.append(
+                    "image",
+                    prod.image_url.split("http://localhost:8000/storage/")[1]
+                );
+                // Para producción
+                /* formProds.append(
+                    "image",
+                    prod.image_url.split(`${location.origin}/storage/`)[1]
+                ); */
+                formProds.append("name", prod.name);
+                formProds.append("price", prod.price);
+                formProds.append("cantidad", prod.additionalInfo.cantidad);
+                formProds.append("code", prod.code);
+                formProds.append("discount", prod.discount);
+                formProds.append(
+                    "price_discount",
+                    prod.additionalInfo.descuento
+                );
+                formProds.append("pedido_id", pedidoId);
+
+                axiosClient.post(`/prodpedidos`, formProds, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                });
+            });
+
+            const htmlContent = ReactDOMServer.renderToString(
+                <PedidoTemplate
+                    cart={cart}
+                    extraInfo={{
+                        mensaje: mensaje,
+                        tipo_entrega: tipo_entrega,
+                        subtotal: subtotal,
+                        descuento: descuento,
+                        subtotalDescuento: subtotalDescuento,
+                        iva: iva,
+                        total: totalFinal,
+                    }}
+                    user={userInfo}
+                />
+            );
+
+            const responseMail = await axiosClient.post("/sendpedido", {
+                html: htmlContent,
+            });
+            console.log(responseMail);
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -57,6 +195,7 @@ export default function Pedidos() {
                     </Link>
                 </div>
             </div>
+
             <div className="h-[206px] border">
                 <div className="bg-[#EAEAEA]">
                     <h2 className="p-3 text-xl font-bold">
@@ -79,7 +218,10 @@ export default function Pedidos() {
                     {/* Opción: Retiro Cliente */}
                     <div
                         className={`flex items-center justify-between p-3 rounded-lg  cursor-pointer`}
-                        onClick={() => setSelected("retiro")}
+                        onClick={() => {
+                            setSelected("retiro");
+                            setTipo_entrega("retiro cliente");
+                        }}
                     >
                         <div className="flex items-center gap-3">
                             <div
@@ -105,7 +247,10 @@ export default function Pedidos() {
                     {/* Opción: Reparto Conman */}
                     <div
                         className={`flex items-center p-3 rounded-lg  cursor-pointer`}
-                        onClick={() => setSelected("reparto")}
+                        onClick={() => {
+                            setSelected("reparto");
+                            setTipo_entrega("Reparto Conman");
+                        }}
                     >
                         <div className="flex items-center gap-3">
                             <div
@@ -128,7 +273,10 @@ export default function Pedidos() {
                     {/* Opción: A convenir */}
                     <div
                         className={`flex items-center p-3 rounded-lg  cursor-pointer`}
-                        onClick={() => setSelected("acon")}
+                        onClick={() => {
+                            setSelected("acon");
+                            setTipo_entrega("A Convenir");
+                        }}
                     >
                         <div className="flex items-center gap-3">
                             <div
@@ -154,6 +302,11 @@ export default function Pedidos() {
                     </h2>
                 </div>
                 <textarea
+                    value={mensaje}
+                    onChange={(e) => {
+                        setMensaje(e.target.value);
+                        console.log(mensaje);
+                    }}
                     className="border h-[222px] w-full p-3"
                     name=""
                     id=""
@@ -167,19 +320,19 @@ export default function Pedidos() {
                 <div className="flex flex-col justify-between px-4 text-xl gap-2 border-b py-2">
                     <div className="flex flex-row justify-between w-full">
                         <p>Subtotal {"(sin descuento)"}</p>
-                        <p>$10.020,92</p>
+                        <p>${subtotal}</p>
                     </div>
                     <div className="flex flex-row justify-between w-full">
                         <p>Descuento {"(3%)"}</p>
-                        <p className="text-green-600">-$10.020,92</p>
+                        <p className="text-green-600">-${descuento}</p>
                     </div>
                     <div className="flex flex-row justify-between w-full">
                         <p>Subtotal</p>
-                        <p>$10.020,92</p>
+                        <p>${subtotalDescuento}</p>
                     </div>
                     <div className="flex flex-row justify-between w-full">
                         <p>IVA 21%</p>
-                        <p>$10.020,92</p>
+                        <p>${iva}</p>
                     </div>
                 </div>
                 <div className="flex flex-row justify-between p-3">
@@ -187,7 +340,7 @@ export default function Pedidos() {
                         Total{" "}
                         <span className="text-base">{"(IVA incluido)"}</span>
                     </p>
-                    <p className="text-2xl">$121312</p>
+                    <p className="text-2xl">${totalFinal}</p>
                 </div>
             </div>
             <div className="flex flex-col gap-3">
@@ -209,10 +362,16 @@ export default function Pedidos() {
                 </div>
             </div>
             <div className="flex flex-row gap-3 w-full">
-                <button className="h-[47px] w-full border border-primary-red text-primary-red">
+                <button
+                    onClick={clearCart}
+                    className="h-[47px] w-full border border-primary-red text-primary-red"
+                >
                     CANCELAR PEDIDO
                 </button>
-                <button className="h-[47px] w-full bg-primary-red  text-white">
+                <button
+                    onClick={handleSubmit}
+                    className="h-[47px] w-full bg-primary-red  text-white"
+                >
                     REALIZAR PEDIDO
                 </button>
             </div>
