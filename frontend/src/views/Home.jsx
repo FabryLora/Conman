@@ -163,20 +163,20 @@ export default function Home() {
                 </div>
 
                 {/* Piloticas de calidad */}
-                <div className="flex relative h-[460px] w-full items-center justify-around bg-primary-blue mt-10 font-roboto-condensed text-white">
+                <div className="flex relative h-[460px] w-full items-center justify-around bg-primary-blue mt-10 font-roboto-condensed text-white max-sm:flex-col max-sm:h-fit max-sm:py-10">
                     <img
                         className="absolute w-full h-full opacity-50"
                         src={bannerCalidad}
                         alt=""
                     />
-                    <div className="flex flex-col items-start justify-center w-[60%] h-full">
+                    <div className="flex flex-col items-start justify-center w-[60%] h-full max-sm:w-full max-sm:items-center max-sm:justify-center">
                         <div className="w-[50px] h-[50px]">
                             <img className="" src={shieldIcon} alt="" />
                         </div>
                         <h2 className="font-bold text-[40px]">
                             Politicas de Calidad
                         </h2>
-                        <p className="text-[16px]">
+                        <p className="text-[16px] max-sm:px-5 max-sm:text-center">
                             La Dirección de CONMAN se compromete a cumplir la
                             presente Política de la Calidad, mejorando en forma
                             contínua el Sistema de Gestión de Calidad en
@@ -187,7 +187,7 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div className="flex flex-col gap-14 self-start pt-20 w-[242px]">
+                    <div className="flex flex-col gap-14 self-start pt-20 w-[242px] max-sm:self-center">
                         <div className="flex flex-row justify-between">
                             <img src={iramLogo} alt="" />
                             <img src={iqnetLogo} alt="" />
@@ -202,10 +202,10 @@ export default function Home() {
                 </div>
 
                 {/* Ultimas novedades */}
-                <div className="bg-special-white flex flex-col items-center py-20">
+                <div className="bg-special-white flex flex-col items-center">
                     <div className="flex flex-col w-[90%] gap-3">
-                        <div className="flex flex-row items-center justify-between">
-                            <h2 className="text-[40px] font-bold font-roboto-condensed">
+                        <div className="flex flex-row items-center justify-between max-sm:flex-col max-sm:gap-6 py-10">
+                            <h2 className="text-[40px] font-bold font-roboto-condensed max-sm:text-center">
                                 Enterate de nuestra ultimas novedades
                             </h2>
                             <Link

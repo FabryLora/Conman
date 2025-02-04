@@ -30,17 +30,33 @@ export default function Navbar() {
     const [password, setPassword] = useState("");
     const [search, setSearch] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
-    const containerRef = useRef(null);
+    const searchBarRef = useRef(null);
+    const tinyMenuRef = useRef(null);
+    const loginRef = useRef(null);
 
     const { setLinkInfo } = useStateContext();
 
     useEffect(() => {
         function handleClickOutside(event) {
             if (
-                containerRef.current &&
-                !containerRef.current.contains(event.target)
+                searchBarRef.current &&
+                !searchBarRef.current.contains(event.target)
             ) {
                 setSearch(false); // Cierra el contenedor si se hace clic fuera
+            }
+            if (
+                // Cierra el menú si se hace clic fuera
+                tinyMenuRef.current &&
+                !tinyMenuRef.current.contains(event.target)
+            ) {
+                setTinyMenu(false);
+            }
+            if (
+                // Cierra el menú si se hace clic fuera
+                loginRef.current &&
+                !loginRef.current.contains(event.target)
+            ) {
+                setUserMenu(false);
             }
         }
 
@@ -73,6 +89,16 @@ export default function Navbar() {
         );
     };
 
+    const toggleChevronAnimation = (id) => {
+        setDropdowns((prevDropdowns) =>
+            prevDropdowns.map((drop) =>
+                drop.id === id
+                    ? { ...drop, chevronAnimation: !drop.chevronAnimation }
+                    : drop
+            )
+        );
+    };
+
     const socials = [
         { logo: fbIcon, href: "#" },
         { logo: igIcon, href: "#" },
@@ -84,12 +110,14 @@ export default function Navbar() {
             open: false,
             href: "/inicio/nosotros",
             chevron: false,
+            chevronAnimation: false,
         },
         {
             id: "Terminales y accesorios",
             open: false,
             href: "/inicio/terminales-y-accesorios",
             chevron: true,
+            chevronAnimation: false,
             subHref: [
                 { title: "Terminales", href: "/inicio/terminales" },
                 { title: "Accesorios", href: "/inicio/accesorios" },
@@ -100,6 +128,7 @@ export default function Navbar() {
             open: false,
             href: "/inicio/mangueras",
             chevron: true,
+            chevronAnimation: false,
             subHref: [
                 { title: "SAE 100", href: "/inicio/mangueras-hidraulicas" },
                 {
@@ -129,6 +158,7 @@ export default function Navbar() {
             open: false,
             href: "/inicio/acoples-rapidos-hidraulicos",
             chevron: true,
+            chevronAnimation: false,
             subHref: [
                 {
                     title: "Acople rapido hidraulico",
@@ -145,6 +175,7 @@ export default function Navbar() {
             open: false,
             href: "/inicio/productos",
             chevron: true,
+            chevronAnimation: false,
             subHref: [
                 {
                     title: "Articulos de lubricacion",
@@ -167,25 +198,28 @@ export default function Navbar() {
             open: false,
             href: "/inicio/calidad",
             chevron: false,
+            chevronAnimation: false,
         },
         {
             id: "Novedades",
             open: false,
             href: "/inicio/novedades",
             chevron: false,
+            chevronAnimation: false,
         },
         {
             id: "Contacto",
             open: false,
             href: "/inicio/contacto",
             chevron: false,
+            chevronAnimation: false,
         },
     ]);
 
     return (
         <div className="flex flex-col items-center justify-center font-roboto-condensed">
-            <div className="bg-primary-blue h-[40px] w-full flex items-center justify-between pl-20 pr-10">
-                <div className="flex gap-4 items-center text-[14px] text-white h-[16px] max-md:hidden">
+            <div className="bg-primary-blue h-[40px] w-full flex items-center justify-between pl-11 pr-4 max-sm:pl-0 max-sm:justify-end">
+                <div className="flex gap-4 items-center text-[14px] text-white h-[16px] max-sm:hidden">
                     <div className="flex gap-2 items-center">
                         <img className="h-[16px]" src={letterIcon} alt="" />
                         <p>{contactInfo?.mail}</p>
@@ -197,7 +231,7 @@ export default function Navbar() {
                 </div>
                 <div className="flex fle-row gap-4 h-full items-center">
                     <div
-                        ref={containerRef}
+                        ref={searchBarRef}
                         className="relative flex flex-row items-center gap-3"
                     >
                         <AnimatePresence>
@@ -283,7 +317,7 @@ export default function Navbar() {
                             <img src={social.logo} alt="" />
                         </Link>
                     ))}
-                    <div className="flex flex-row gap-4 h-[16px] items-center justify-center max-md:hidden">
+                    <div className="flex flex-row gap-4 h-[16px] items-center justify-center ">
                         {!userToken && (
                             <>
                                 <button onClick={() => setUserMenu(!userMenu)}>
@@ -293,71 +327,85 @@ export default function Navbar() {
                                         alt=""
                                     />
                                 </button>
-                                {userMenu && (
-                                    <div className="absolute flex flex-col top-10 right-10 bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-[439px] z-40">
-                                        <h2 className="font-bold text-[24px] py-5">
-                                            Iniciar sesion
-                                        </h2>
-                                        <form
-                                            onSubmit={onSubmit}
-                                            className="w-full h-full flex flex-col justify-around gap-3"
-                                            action=""
+                                <AnimatePresence>
+                                    {userMenu && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: -20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -20 }}
+                                            transition={{
+                                                duration: 0.2,
+                                                ease: "linear",
+                                            }}
+                                            ref={loginRef}
+                                            className="absolute flex flex-col top-10 right-10 bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-[439px] z-40 border"
                                         >
-                                            <div>
-                                                <div className="flex flex-col gap-2">
-                                                    <label htmlFor="user">
-                                                        Usuario
-                                                    </label>
-                                                    <input
-                                                        value={user}
-                                                        onChange={(ev) =>
-                                                            setUser(
-                                                                ev.target.value
-                                                            )
-                                                        }
-                                                        className="w-[328px] h-[45px] border pl-2"
-                                                        type="text"
-                                                        name="user"
-                                                        id="user"
-                                                    />
+                                            <h2 className="font-bold text-[24px] py-5">
+                                                Iniciar sesion
+                                            </h2>
+                                            <form
+                                                onSubmit={onSubmit}
+                                                className="w-full h-full flex flex-col justify-around gap-3"
+                                                action=""
+                                            >
+                                                <div>
+                                                    <div className="flex flex-col gap-2">
+                                                        <label htmlFor="user">
+                                                            Usuario
+                                                        </label>
+                                                        <input
+                                                            value={user}
+                                                            onChange={(ev) =>
+                                                                setUser(
+                                                                    ev.target
+                                                                        .value
+                                                                )
+                                                            }
+                                                            className="w-[328px] h-[45px] border pl-2"
+                                                            type="text"
+                                                            name="user"
+                                                            id="user"
+                                                        />
+                                                    </div>
+                                                    <div className="flex flex-col gap-2">
+                                                        <label htmlFor="password">
+                                                            Contraseña
+                                                        </label>
+                                                        <input
+                                                            value={password}
+                                                            onChange={(ev) =>
+                                                                setPassword(
+                                                                    ev.target
+                                                                        .value
+                                                                )
+                                                            }
+                                                            className="w-[328px] h-[45px] border pl-2"
+                                                            type="password"
+                                                            name="password"
+                                                            id="password"
+                                                        />
+                                                    </div>
                                                 </div>
-                                                <div className="flex flex-col gap-2">
-                                                    <label htmlFor="password">
-                                                        Contraseña
-                                                    </label>
-                                                    <input
-                                                        value={password}
-                                                        onChange={(ev) =>
-                                                            setPassword(
-                                                                ev.target.value
-                                                            )
-                                                        }
-                                                        className="w-[328px] h-[45px] border pl-2"
-                                                        type="password"
-                                                        name="password"
-                                                        id="password"
-                                                    />
-                                                </div>
-                                            </div>
 
-                                            <button
-                                                className="w-[325px] h-[47px] bg-primary-red text-white self-center"
-                                                type="submit"
-                                            >
-                                                INICIAR SESION
-                                            </button>
-                                        </form>
-                                        <div className="flex flex-col items-center">
-                                            <p>¿No tenes usuario?</p>
-                                            <Link
-                                                className="text-primary-red"
-                                                to={"/registro"}
-                                            >
-                                                REGISTRATE
-                                            </Link>
-                                        </div>
-                                    </div>
-                                )}
+                                                <button
+                                                    className="w-[325px] h-[47px] bg-primary-red text-white self-center"
+                                                    type="submit"
+                                                >
+                                                    INICIAR SESION
+                                                </button>
+                                            </form>
+                                            <div className="flex flex-col items-center">
+                                                <p>¿No tenes usuario?</p>
+                                                <Link
+                                                    className="text-primary-red"
+                                                    to={"/registro"}
+                                                >
+                                                    REGISTRATE
+                                                </Link>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
                             </>
                         )}
                     </div>
@@ -398,7 +446,7 @@ export default function Navbar() {
                     )}
                 </div>
             </div>
-            <nav className="flex relative flex-row items-center pl-10 gap-20 w-full h-[85px] shadow-sm max-lg:justify-center">
+            <nav className="flex relative flex-row items-center pl-10 gap-20 w-full h-[85px] shadow-sm max-xl:justify-center">
                 <Link className="" to={"/"}>
                     <img
                         src={conmanLogo}
@@ -412,12 +460,14 @@ export default function Navbar() {
                         <div
                             onMouseEnter={() => toggleDropdown(drop.id)}
                             onMouseLeave={() => toggleDropdown(drop.id)}
-                            className="relative flex gap-1 max-xl:text-sm items-center hover:bg-[#CBCBCB] p-2"
+                            className={`relative flex gap-1 max-xl:text-sm items-center p-2 ${
+                                drop.chevron ? "hover:bg-[#CBCBCB]" : ""
+                            }`}
                             key={drop.id}
                         >
                             <Link
                                 onClick={() => setLinkInfo("")}
-                                className="hover:text-gray-600 whitespace-nowrap"
+                                className="hover:text-gray-500 whitespace-nowrap"
                                 to={drop.href}
                             >
                                 {drop.id}
@@ -425,47 +475,55 @@ export default function Navbar() {
                             {drop.chevron && (
                                 <img src={chevronDown} alt="Chevron" />
                             )}
-                            {drop.open && drop.subHref && (
-                                <div className="absolute flex flex-col top-9 left-0 bg-[#CBCBCB] shadow-md font-roboto-condensed w-[200px] h-fit z-30">
-                                    {drop.subHref.map((sub) => (
-                                        <Link
-                                            onClick={() =>
-                                                setLinkInfo(sub.title)
-                                            }
-                                            className="flex flex-row items-center justify-between px-2 border-b border-white hover:text-gray-600"
-                                            key={sub.title}
-                                            to={
-                                                "/inicio/terminales-y-accesorios"
-                                            }
-                                        >
-                                            {sub.title}
-                                            <FontAwesomeIcon
-                                                icon={faChevronRight}
-                                                color={"#000"}
-                                            />
-                                        </Link>
-                                    ))}
-                                </div>
-                            )}
+                            <AnimatePresence>
+                                {drop.open && drop.subHref && (
+                                    <motion.div
+                                        initial={{ height: 0 }}
+                                        animate={{ height: "fit-content" }}
+                                        exit={{ height: 0 }}
+                                        className="absolute flex flex-col top-9 left-0 bg-[#CBCBCB] shadow-md font-roboto-condensed w-[200px] h-fit z-40 overflow-hidden"
+                                    >
+                                        {drop.subHref.map((sub) => (
+                                            <Link
+                                                onClick={() =>
+                                                    setLinkInfo(sub.title)
+                                                }
+                                                className="flex flex-row items-center justify-between px-2 border-b border-white hover:text-gray-700"
+                                                key={sub.title}
+                                                to={
+                                                    "/inicio/terminales-y-accesorios"
+                                                }
+                                            >
+                                                {sub.title}
+                                                <FontAwesomeIcon
+                                                    icon={faChevronRight}
+                                                    color={"#000"}
+                                                />
+                                            </Link>
+                                        ))}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </div>
                     ))}
                 </ul>
                 <button
                     onClick={() => setTinyMenu(!tinyMenu)}
-                    className="w-[24px] h-[24px] absolute left-10 lg:hidden"
+                    className="w-[24px] h-[24px] absolute left-10 xl:hidden"
                 >
                     <img src={barsIcon} alt="" />
                 </button>
             </nav>
             <AnimatePresence>
                 {tinyMenu && (
-                    <div className="absolute top-0 left-0 w-screen h-screen bg-[rgba(0,0,0,0.5)] z-20">
+                    <div className="absolute top-0 left-0 w-screen h-screen bg-[rgba(0,0,0,0.5)] z-40">
                         <motion.div
+                            ref={tinyMenuRef}
                             initial={{ x: "-100%" }}
                             animate={{ x: 0 }}
                             exit={{ x: "-100%" }}
                             transition={{ duration: 0.5 }}
-                            className="flex flex-col absolute top-0 left-0 h-screen w-1/2 bg-primary-blue"
+                            className="flex flex-col absolute top-0 left-0 h-screen w-1/2 bg-primary-blue max-sm:w-[80%]"
                         >
                             <button
                                 onClick={() => setTinyMenu(false)}
@@ -474,19 +532,84 @@ export default function Navbar() {
                                 <img src={xmark} alt="" />
                             </button>
                             <ul className="flex flex-col gap-5 p-10 text-white w-full">
-                                {links.map((link) => (
+                                {dropdowns.map((drop) => (
                                     <div
-                                        className="flex gap-1 justify-between items-center"
-                                        key={link.title}
+                                        className="relative flex-col justify-between gap-1 items-center p-2"
+                                        key={drop.id}
                                     >
-                                        <Link to={link.href}>{link.title}</Link>
-                                        {link.chevron && (
-                                            <img
-                                                className="w-[16px] h-[16px]"
-                                                src={chevronDownWhite}
-                                                alt="Chevron"
-                                            />
-                                        )}
+                                        <div className="flex flex-row justify-between w-full items-center border-b">
+                                            <Link
+                                                onClick={() => setLinkInfo("")}
+                                                className="hover:text-gray-600 whitespace-nowrap"
+                                                to={drop.href}
+                                            >
+                                                {drop.id}
+                                            </Link>
+                                            {drop.chevron && (
+                                                <motion.button
+                                                    animate={{
+                                                        rotateZ:
+                                                            drop.chevronAnimation
+                                                                ? 180
+                                                                : 0,
+                                                    }}
+                                                    transition={{
+                                                        ease: "linear",
+                                                    }}
+                                                    onClick={() => {
+                                                        toggleDropdown(drop.id);
+                                                        toggleChevronAnimation(
+                                                            drop.id
+                                                        );
+                                                    }}
+                                                    className="h-5 w-5"
+                                                >
+                                                    <img
+                                                        src={chevronDownWhite}
+                                                        alt=""
+                                                    />
+                                                </motion.button>
+                                            )}
+                                        </div>
+                                        <AnimatePresence>
+                                            {drop.open &&
+                                                drop.subHref &&
+                                                tinyMenu && (
+                                                    <motion.div
+                                                        initial={{ height: 0 }}
+                                                        animate={{
+                                                            height: "fit-content",
+                                                        }}
+                                                        transition={{
+                                                            duration: 0.2,
+                                                            ease: "linear",
+                                                        }}
+                                                        exit={{ height: 0 }}
+                                                        className=" flex flex-col w-full font-roboto-condensed gap-1 pt-2 overflow-hidden"
+                                                    >
+                                                        {drop.subHref.map(
+                                                            (sub) => (
+                                                                <Link
+                                                                    onClick={() =>
+                                                                        setLinkInfo(
+                                                                            sub.title
+                                                                        )
+                                                                    }
+                                                                    className="flex flex-row items-center justify-between pl-5 hover:text-gray-600"
+                                                                    key={
+                                                                        sub.title
+                                                                    }
+                                                                    to={
+                                                                        "/inicio/terminales-y-accesorios"
+                                                                    }
+                                                                >
+                                                                    {sub.title}
+                                                                </Link>
+                                                            )
+                                                        )}
+                                                    </motion.div>
+                                                )}
+                                        </AnimatePresence>
                                     </div>
                                 ))}
                             </ul>

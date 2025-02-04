@@ -14,7 +14,7 @@ export default function MultipleView() {
             .get(`/products/${id}`)
             .then(({ data }) => {
                 setProductInfo(data.data);
-                setCurrentImage(productInfo.images[0].image_url);
+                setCurrentImage(data.data.images[0].image_url);
             })
             .catch((error) => {
                 console.error("Error fetching product data:", error);

@@ -43,11 +43,11 @@ export default function Footer() {
         { icon: whatsappIcon, text: contactInfo?.wp },
     ];
     return (
-        <footer className="bg-primary-blue h-[402px] font-roboto-condensed text-white flex flex-col justify-between">
-            <div className="flex flex-row gap-10 justify-evenly items-center h-full">
+        <footer className="bg-primary-blue h-[402px] max-sm:h-fit font-roboto-condensed text-white flex flex-col justify-between">
+            <div className="flex flex-row flex-wrap gap-10 justify-evenly max-sm:justify-start items-center h-full order-1">
                 {/* logos y redes */}
-                <div className="flex flex-col justify-center items-center gap-8">
-                    <div className="flex flex-col">
+                <div className="flex flex-col justify-center items-center gap-8 order-1 max-sm:mx-auto">
+                    <div className="flex flex-col max-sm:py-5">
                         <img src={cosmanWhiteLogo} alt="" />
                     </div>
                     <div className="flex flex-row gap-4">
@@ -63,7 +63,7 @@ export default function Footer() {
                 </div>
 
                 {/* footer nav */}
-                <div className="flex flex-col gap-7">
+                <div className="flex flex-col gap-7 order-2 max-sm:px-8">
                     <h2 className="text-xl font-semibold">Secciones</h2>
                     <div className="grid grid-cols-2 grid-rows-4 gap-4">
                         {links.map((item, index) => (
@@ -79,7 +79,7 @@ export default function Footer() {
                 </div>
 
                 {/* contact info */}
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3 order-3 max-sm:px-8">
                     <h2 className="text-xl font-semibold">Datos de Contacto</h2>
                     <div className="flex flex-col gap-3">
                         {contactoInfo.map((item, index) => (
@@ -102,7 +102,7 @@ export default function Footer() {
             </div>
 
             {/* copy y derechos */}
-            <div className="h-[60px] flex flex-row justify-between items-center px-5 text-[14px] bg-primary-blue-dark">
+            <div className="h-[60px] flex flex-row justify-between items-center px-5 text-[14px] bg-primary-blue-dark order-2">
                 <p>
                     © Copyright 2024{" "}
                     <span className="font-semibold">Conman</span>. Todos los

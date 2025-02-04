@@ -13,11 +13,11 @@ export default function DefaultBanner({ title, href, bannerImage }) {
                     <Link to={"/"}>Inicio</Link>
                     <p>{">"}</p>
                     <Link to={href}>
-                        {title.charAt(0).toUpperCase() + title.slice(1)}
+                        {title?.charAt(0).toUpperCase() + title?.slice(1)}
                     </Link>
                 </div>
                 <h2 className="text-[42px] font-bold pb-10">
-                    {title.charAt(0).toUpperCase() + title.slice(1)}
+                    {title?.charAt(0).toUpperCase() + title?.slice(1)}
                 </h2>
             </div>
         </div>

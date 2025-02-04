@@ -21,7 +21,7 @@ export default function DefaultLayout() {
         cleanPathname.length > 2
             ? categoryInfo
                   .find((category) => category.name === cleanPathname[1])
-                  .products.find(
+                  ?.products.find(
                       (product) => product.id === Number(cleanPathname[2])
                   ).name
             : cleanPathname[1];
