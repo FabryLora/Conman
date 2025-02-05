@@ -1,9 +1,12 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
+import Administradores from "./views/Administradores";
 import Administrator from "./views/Administrator";
 import AdminLogin from "./views/AdminLogin";
 import Calidad from "./views/Calidad";
 import CalidadAdmin from "./views/CalidadAdmin";
+import CalidadInicioAdmin from "./views/CalidadInicioAdmin";
 import CategoriasAdmin from "./views/CategoriasAdmin";
+import CategoriasInicioAdmin from "./views/CategoriasInicioAdmin";
 import Contacto from "./views/Contacto";
 import ContactoAdmin from "./views/ContactoAdmin";
 import DefaultLayout from "./views/DefaultLayout";
@@ -14,6 +17,7 @@ import Login from "./views/Login";
 import MultipleView from "./views/MultipleView";
 import Nosotros from "./views/Nosotros";
 import NosotrosAdmin from "./views/NosotrosAdmin";
+import NosotrosInicioAdmin from "./views/NosotrosInicioAdmin";
 import Novedades from "./views/Novedades";
 import Pedidos from "./views/Pedidos";
 import PrivateProducts from "./views/PrivateProducts";
@@ -138,6 +142,22 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/archivos",
                 element: <CalidadAdmin />,
+            },
+            {
+                path: "/dashboard/categorias-inicio",
+                element: <CategoriasInicioAdmin />,
+            },
+            {
+                path: "/dashboard/nosotros-inicio",
+                element: <NosotrosInicioAdmin />,
+            },
+            {
+                path: "/dashboard/calidad-inicio",
+                element: <CalidadInicioAdmin />,
+            },
+            {
+                path: "/dashboard/administradores",
+                element: <Administradores />,
             },
         ],
     },

@@ -40,6 +40,14 @@ const StateContext = createContext({
     clearCart: () => {},
     pedidos: [],
     fetchPedidos: () => {},
+    categoryInicio: [],
+    fetchCategoriasInicio: () => {},
+    nosotrosInicio: {},
+    fetchNosotrosInicio: () => {},
+    calidadInicio: {},
+    fetchCalidadInicio: () => {},
+    allAdmins: [],
+    fetchAllAdmins: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -57,6 +65,10 @@ export const ContextProvider = ({ children }) => {
     const [pdfInfo, setPdfInfo] = useState([]);
     const [linkInfo, setLinkInfo] = useState("");
     const [pedidos, setPedidos] = useState([]);
+    const [categoryInicio, setCategoryInicio] = useState([]);
+    const [nosotrosInicio, setNosotrosInicio] = useState({});
+    const [calidadInicio, setCalidadInicio] = useState({});
+    const [allAdmins, setAllAdmins] = useState([]);
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem("cart");
         return savedCart ? JSON.parse(savedCart) : [];
@@ -209,6 +221,30 @@ export const ContextProvider = ({ children }) => {
         });
     };
 
+    const fetchCategoriasInicio = () => {
+        axiosClient.get("/categoriasinicio").then(({ data }) => {
+            setCategoryInicio(data.data);
+        });
+    };
+
+    const fetchNosotrosInicio = () => {
+        axiosClient.get("/nosotrosinicio").then(({ data }) => {
+            setNosotrosInicio(data.data[0]);
+        });
+    };
+
+    const fetchCalidadInicio = () => {
+        axiosClient.get("/calidadinicio").then(({ data }) => {
+            setCalidadInicio(data.data[0]);
+        });
+    };
+
+    const fetchAllAdmins = () => {
+        axiosClient.get("/alladmins").then(({ data }) => {
+            setAllAdmins(data.data);
+        });
+    };
+
     useEffect(() => {
         fetchNosotrosFirstInfo();
         fetchContactInfo();
@@ -222,6 +258,10 @@ export const ContextProvider = ({ children }) => {
         fetchSliderImage();
         fetchPdfInfo();
         fetchPedidos();
+        fetchCategoriasInicio();
+        fetchNosotrosInicio();
+        fetchCalidadInicio();
+        fetchAllAdmins();
     }, []);
 
     useEffect(() => {
@@ -245,6 +285,14 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                allAdmins,
+                fetchAllAdmins,
+                calidadInicio,
+                fetchCalidadInicio,
+                nosotrosInicio,
+                fetchNosotrosInicio,
+                categoryInicio,
+                fetchCategoriasInicio,
                 pedidos,
                 fetchPedidos,
                 clearCart,

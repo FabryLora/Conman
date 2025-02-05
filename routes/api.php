@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CalidadInicioController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CategoryInicioController;
 use App\Http\Controllers\ContactInfoController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\NosotrosFirstController;
+use App\Http\Controllers\NosotrosInicioController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductController;
@@ -35,26 +38,21 @@ Route::post('/upload-pdf', [PDFController::class, 'uploadPDF']);
 Route::get('/download-pdf/{filename}', [PDFController::class, 'downloadPDF']);
 Route::apiResource('/pdf', PDFController::class);
 Route::apiResource('/slider', SliderController::class);
-
 Route::apiResource('/subcategory', SubCategoryController::class);
 Route::apiResource('/category', CategoryController::class);
 Route::apiResource('/product', ProductController::class);
 Route::apiResource('/realproducts', RealProductController::class);
 Route::get('/products/{id}', [ProductController::class, "show_products"]);
-
 Route::apiResource('/provincia', ProvinciaController::class);
 Route::apiResource('/image', ImageController::class);
 Route::apiResource('/sliderimage', SliderImageController::class);
-
 Route::apiResource('/pedidos', PedidoController::class);
-
 Route::apiResource('/prodpedidos', ProductosPedidosController::class);
-
-
-
-
-
+Route::apiResource('/categoriasinicio', CategoryInicioController::class);
+Route::apiResource('/nosotrosinicio', NosotrosInicioController::class);
+Route::apiResource('/calidadinicio', CalidadInicioController::class);
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/login-admin', [AdminController::class, 'login']);
 Route::post('/signup-admin', [AdminController::class, 'signup']);
+Route::get('/alladmins', [AdminController::class, 'index']);

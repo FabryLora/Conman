@@ -45,7 +45,7 @@ export default function Nosotros() {
                 </div>
                 {/* Texto - dinámico */}
                 <div className="flex flex-col gap-6 h-full px-6 w-full lg:w-1/2 max-lg:max-w-full max-w-[90%] sm:max-w-[80%] md:max-w-full lg:max-w-none items-center">
-                    <div className="flex flex-col gap-6 text-[14px] max-lg:max-w-full max-w-[90%] text-justify items-start leading-relaxed overflow-y-auto">
+                    <div className="flex flex-col gap-6 text-[14px] max-lg:max-w-full max-w-[90%]  items-start leading-relaxed overflow-y-auto">
                         <h2 className="text-[24px] sm:text-[32px] lg:text-[40px] font-bold text-left max-lg:text-center w-full">
                             {nosotrosFirstInfo?.title}
                         </h2>

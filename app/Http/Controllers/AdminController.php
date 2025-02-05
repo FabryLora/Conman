@@ -4,16 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginAdminRequest;
 use Illuminate\Http\Request;
-use App\Http\Requests\SignupRequest;
-use App\Http\Requests\LoginRequest;
+
+use App\Http\Requests\SignupAdminRequest;
+use App\Http\Resources\AdminResource;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
 
-    public function login(LoginAdminRequest $request) {
-        
+    public function index(Request $request)
+    {
+        return AdminResource::collection(Admin::all());
+    }
+
+    public function show(Request $request, $id)
+    {
+        return response()->json(Admin::find($id));
+    }
+
+    public function login(LoginAdminRequest $request)
+    {
+
         $credentials = $request->validated();
         $remember = $credentials['remember'] ?? false;
         unset($credentials['remember']);
@@ -26,17 +38,17 @@ class AdminController extends Controller
         /**  @var \App\Models\Admin $admin */
         $admin = Auth::user();
         $adminToken = $admin->createToken('main')->plainTextToken;
-    
+
         return response([
             'user' => $admin,
             'adminToken' => $adminToken
         ]);
     }
 
-    
-    public function me(Request $request) {
+
+    public function me(Request $request)
+    {
         return response()->json(Admin::all());
-        
     }
 
     /* public function updateProfile(Request $request)
@@ -59,4 +71,21 @@ class AdminController extends Controller
 
         return response()->json($user);
     } */
+
+    public function signup(SignupAdminRequest $request)
+    {
+        $data = $request->validated();
+
+        /**  @var \App\Models\Admin $admin */
+        $admin = Admin::create([
+            'name' => $data['name'],
+            'password' => bcrypt($data['password'])
+        ]);
+        $adminToken = $admin->createToken('main')->plainTextToken;
+
+        return response([
+            'user' => $admin,
+            'adminToken' => $adminToken
+        ]);
+    }
 }

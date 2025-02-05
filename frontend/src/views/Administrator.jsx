@@ -39,7 +39,18 @@ export default function Administrator() {
             title: "Inicio",
             icon: faHouse,
             href: "#",
-            subHref: [{ title: "Slider", href: "/dashboard/slider" }],
+            subHref: [
+                { title: "Slider", href: "/dashboard/slider" },
+                {
+                    title: "Categorias Inicio",
+                    href: "/dashboard/categorias-inicio",
+                },
+                {
+                    title: "Nosotros Inicio",
+                    href: "/dashboard/nosotros-inicio",
+                },
+                { title: "Calidad Inicio", href: "/dashboard/calidad-inicio" },
+            ],
         },
         {
             id: "catalogo",
@@ -94,7 +105,13 @@ export default function Administrator() {
             title: "Usuarios",
             icon: faHouse,
             href: "#",
-            subHref: [{ title: "Usuarios", href: "/dashboard/usuarios" }],
+            subHref: [
+                { title: "Usuarios", href: "/dashboard/usuarios" },
+                {
+                    title: "Administradores",
+                    href: "/dashboard/administradores",
+                },
+            ],
         },
     ]);
 

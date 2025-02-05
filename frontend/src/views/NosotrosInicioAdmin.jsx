@@ -3,87 +3,70 @@ import { useEffect, useState } from "react";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
-export default function NosotrosAdmin() {
-    const { nosotrosFirstInfo, fetchNosotrosFirstInfo } = useStateContext();
+export default function NosotrosInicioAdmin() {
+    const { nosotrosInicio, fetchNosotrosInicio } = useStateContext();
+
+    const [title, setTitle] = useState();
+    const [text, setText] = useState();
+    const [image, setImage] = useState();
+    console.log(image);
 
     useEffect(() => {
-        fetchNosotrosFirstInfo();
-    }, []);
+        setTitle(nosotrosInicio.title);
+        setText(nosotrosInicio.text);
+    }, [nosotrosInicio]);
 
-    useEffect(() => {
-        setNosotrosFirst({
-            title: nosotrosFirstInfo?.title,
-            text: nosotrosFirstInfo?.text,
-            image: nosotrosFirstInfo?.image,
-            image_url: nosotrosFirstInfo?.image_url,
-        });
-    }, [nosotrosFirstInfo]);
-
-    const [nosotrosFirst, setNosotrosFirst] = useState({});
     const [error, setError] = useState(false);
     const [succ, setSucc] = useState(false);
 
-    const onImageChange = (ev) => {
-        const file = ev.target.files[0];
-
-        const reader = new FileReader();
-        reader.onload = () => {
-            setNosotrosFirst({
-                ...nosotrosFirst,
-                image: file,
-                image_url: reader.result,
-            });
-            ev.target.value = "";
-        };
-        reader.readAsDataURL(file);
+    const handleImageChange = (e) => {
+        setImage(e.target.files[0]);
     };
 
-    const update = (e) => {
+    const update = async (e) => {
         e.preventDefault();
-        const payload = { ...nosotrosFirst };
-        if (payload.image) {
-            payload.image = payload.image_url;
-        }
-        delete payload.image_url;
-        axiosClient
-            .put(`/nosotros-first/1`, payload)
-            .then(() => {
-                fetchNosotrosFirstInfo();
-                setSucc(true);
-            })
-            .catch((err) => {
-                if (err && err.response) {
-                    const errorMessages = err.response.data.errors;
-                    const messagesArray = [];
 
-                    Object.values(errorMessages).forEach(
-                        (messagesArrayField) => {
-                            messagesArrayField.forEach((message) => {
-                                let translatedMessage = message;
-                                if (
-                                    message === "The title field is required."
-                                ) {
-                                    translatedMessage =
-                                        "El campo título no puede estar vacío.";
-                                } else if (
-                                    message === "The text field is required."
-                                ) {
-                                    translatedMessage =
-                                        "El campo texto no puede estar vacío.";
-                                } else if (
-                                    message === "The image field is required."
-                                ) {
-                                    translatedMessage =
-                                        "El campo imagen no puede estar vacío.";
-                                }
-                                messagesArray.push(translatedMessage);
-                            });
-                        }
-                    );
-                    setSucc(false);
-                    setError(messagesArray);
-                }
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("text", text);
+        if (image !== undefined) {
+            formData.append("image", image);
+        }
+
+        try {
+            await axiosClient.post(`/nosotrosinicio/1?_method=PUT`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
             });
+
+            fetchNosotrosInicio();
+            setSucc(true);
+        } catch (err) {
+            if (err && err.response) {
+                const errorMessages = err.response.data.errors;
+                const messagesArray = [];
+
+                Object.values(errorMessages).forEach((messagesArrayField) => {
+                    messagesArrayField.forEach((message) => {
+                        let translatedMessage = message;
+                        if (message === "The title field is required.") {
+                            translatedMessage =
+                                "El campo título no puede estar vacío.";
+                        } else if (message === "The text field is required.") {
+                            translatedMessage =
+                                "El campo texto no puede estar vacío.";
+                        } else if (message === "The image field is required.") {
+                            translatedMessage =
+                                "El campo imagen no puede estar vacío.";
+                        }
+                        messagesArray.push(translatedMessage);
+                    });
+                });
+                setSucc(false);
+                setError(messagesArray);
+            }
+        }
     };
 
     useEffect(() => {
@@ -137,13 +120,10 @@ export default function NosotrosAdmin() {
                                     <div className="flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
                                         <div className="shrink-0 select-none text-base text-gray-500 sm:text-sm/6"></div>
                                         <input
-                                            value={nosotrosFirst?.title}
-                                            onChange={(ev) => {
-                                                setNosotrosFirst({
-                                                    ...nosotrosFirst,
-                                                    title: ev.target.value,
-                                                });
-                                            }}
+                                            value={title}
+                                            onChange={(e) =>
+                                                setTitle(e.target.value)
+                                            }
                                             id="username"
                                             name="username"
                                             type="text"
@@ -162,13 +142,10 @@ export default function NosotrosAdmin() {
                                 </label>
                                 <div className="mt-2">
                                     <textarea
-                                        value={nosotrosFirst?.text}
-                                        onChange={(ev) => {
-                                            setNosotrosFirst({
-                                                ...nosotrosFirst,
-                                                text: ev.target.value,
-                                            });
-                                        }}
+                                        value={text}
+                                        onChange={(e) =>
+                                            setText(e.target.value)
+                                        }
                                         id="about"
                                         name="about"
                                         rows={10}
@@ -188,7 +165,7 @@ export default function NosotrosAdmin() {
                                     <div className=" w-1/2">
                                         <img
                                             className="w-full h-full object-contain"
-                                            src={nosotrosFirstInfo?.image_url}
+                                            src={nosotrosInicio?.image_url}
                                             alt=""
                                         />
                                     </div>
@@ -207,7 +184,9 @@ export default function NosotrosAdmin() {
                                                     <input
                                                         id="file-upload"
                                                         name="file-upload"
-                                                        onChange={onImageChange}
+                                                        onChange={
+                                                            handleImageChange
+                                                        }
                                                         type="file"
                                                         className="sr-only"
                                                     />

@@ -1,15 +1,12 @@
 import { motion } from "motion/react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import shieldIcon from "../assets/icons/shield-icon.svg";
-import acoples from "../assets/inicio/acoples.png";
-import mangueras from "../assets/inicio/mangueras.png";
 import novedades1 from "../assets/inicio/novedades-1.png";
 import novedades2 from "../assets/inicio/novedades-2.png";
 import novedades3 from "../assets/inicio/novedades-3.png";
 import bannerCalidad from "../assets/inicio/pdc-banner.png";
-import productos from "../assets/inicio/productos.png";
 import quienes from "../assets/inicio/quienes.png";
-import termales from "../assets/inicio/termales.png";
 import iqnetLogo from "../assets/logos/iqnet-logo.png";
 import iramLogo from "../assets/logos/iram-logo.png";
 import Carousel from "../components/Carousel";
@@ -17,26 +14,15 @@ import Footer from "../components/Footer";
 import HomeCategory from "../components/HomeCategory";
 import Navbar from "../components/Navbar";
 import NovedadesCard from "../components/NovedadesCard";
+import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Home() {
-    const categories = [
-        {
-            name: "Terminales y accesorios",
-            image: termales,
-        },
-        {
-            name: "Mangueras",
-            image: mangueras,
-        },
-        {
-            name: "Acoples rapidos hidraulicos",
-            image: acoples,
-        },
-        {
-            name: "Productos",
-            image: productos,
-        },
-    ];
+    const { nosotrosInicio, fetchNosotrosInicio, categoryInicio } =
+        useStateContext();
+
+    useEffect(() => {
+        fetchNosotrosInicio();
+    }, []);
 
     const novedades = [
         {
@@ -79,18 +65,17 @@ export default function Home() {
                         transition={{ duration: 1.5 }}
                         className="grid grid-cols-2 grid-rows-2 h-fit justify-items-center gap-5 w-full max-md:w-screen max-md:flex max-md:flex-row max-md:overflow-x-scroll max-md:scrollbar-hide"
                     >
-                        {categories.map((category, index) => (
+                        {categoryInicio.map((category, index) => (
                             <HomeCategory
                                 key={index}
-                                bgImage={category.image}
-                                categoryTitle={category.name}
+                                categoryObject={category}
                             />
                         ))}
                     </motion.div>
                 </div>
 
                 {/* Quienes somos */}
-                <div className="max-xl:relative max-xl:h-[700px] flex flex-row items-center lg:items-end my-10 font-roboto-condensed justify-center w-full h-full max-xl:bg-primary-blue overflow-hidden">
+                <div className="max-xl:relative max-xl:h-[700px] flex flex-row my-10 font-roboto-condensed justify-center w-full h-full max-xl:bg-primary-blue overflow-hidden">
                     {/* Imagen - 50% */}
                     <img
                         className="absolute w-full h-full object-fill opacity-30 xl:hidden"
@@ -105,7 +90,7 @@ export default function Home() {
                     >
                         <img
                             className="w-full h-auto lg:h-[678px] object-cover"
-                            src={quienes}
+                            src={nosotrosInicio?.image_url}
                             alt="¿Quiénes somos?"
                         />
                     </motion.div>
@@ -114,74 +99,14 @@ export default function Home() {
                         initial={{ oapcity: 0, x: 200 }}
                         whileInView={{ oapcity: 1, x: 0 }}
                         transition={{ duration: 1.2 }}
-                        className="max-xl:py-5 max-xl:items-center max-xl:absolute max-xl:z-10 flex flex-col gap-6 lg:gap-10 h-screen max-xl:w-full px-6 w-1/2 max-xl:text-white overflow-hidden max-h-[680px]"
+                        className="max-xl:py-5 max-xl:items-center max-xl:absolute max-xl:z-10 flex flex-col gap-6 lg:gap-10  max-xl:w-full px-6 w-1/2 max-xl:text-white overflow-hidden"
                     >
-                        <div className="flex flex-col gap-6 text-[14px] sm:text-[16px] text-justify max-w-[90%]">
+                        <div className="flex flex-col gap-6 text-[14px] sm:text-[16px] text-justify max-w-[90%] whitespace-pre-line h-fit">
                             <h2 className="text-[24px] sm:text-[32px] lg:text-[40px] font-bold text-center xl:text-left">
-                                ¿Quiénes somos?
+                                {nosotrosInicio?.title}
                             </h2>
-                            <p className="max-h-[430px] overflow-hidden whitespace-pre">
-                                Conman es una empresa con una gran trayectoria y
-                                experiencia en la fabricación y venta de
-                                terminales y accesorios para todo tipo de
-                                instalaciones óleo-hidráulicas y neumáticas,
-                                equipada para tal fin con tecnología de última
-                                generación. Conman es una empresa con una gran
-                                trayectoria y experiencia en la fabricación y
-                                venta de terminales y accesorios para todo tipo
-                                de instalaciones óleo-hidráulicas y neumáticas,
-                                equipada para tal fin con tecnología de última
-                                generación. Conman es una empresa con una gran
-                                trayectoria y experiencia en la fabricación y
-                                venta de terminales y accesorios para todo tipo
-                                de instalaciones óleo-hidráulicas y neumáticas,
-                                equipada para tal fin con tecnología de última
-                                generación. Conman es una empresa con una gran
-                                trayectoria y experiencia en la fabricación y
-                                venta de terminales y accesorios para todo tipo
-                                de instalaciones óleo-hidráulicas y neumáticas,
-                                equipada para tal fin con tecnología de última
-                                generación. Conman es una empresa con una gran
-                                trayectoria y experiencia en la fabricación y
-                                venta de terminales y accesorios para todo tipo
-                                de instalaciones óleo-hidráulicas y neumáticas,
-                                equipada para tal fin con tecnología de última
-                                generación.Conman es una empresa con una gran
-                                trayectoria y experiencia en la fabricación y
-                                venta de terminales y accesorios para todo tipo
-                                de instalaciones óleo-hidráulicas y neumáticas,
-                                equipada para tal fin con tecnología de última
-                                generación.Conman es una empresa con una gran
-                                trayectoria y experiencia en la fabricación y
-                                venta de terminales y accesorios para todo tipo
-                                de instalaciones óleo-hidráulicas y neumáticas,
-                                equipada para tal fin con tecnología de última
-                                generación.Conman es una empresa con una gran
-                                trayectoria y experiencia en la fabricación y
-                                venta de terminales y accesorios para todo tipo
-                                de instalaciones óleo-hidráulicas y neumáticas,
-                                equipada para tal fin con tecnología de última
-                                generación.Conman es una empresa con una gran
-                                trayectoria y experiencia en la fabricación y
-                                venta de terminales y accesorios para todo tipo
-                                de instalaciones óleo-hidráulicas y neumáticas,
-                                equipada para tal fin con tecnología de última
-                                generación.Conman es una empresa con una gran
-                                trayectoria y experiencia en la fabricación y
-                                venta de terminales y accesorios para todo tipo
-                                de instalaciones óleo-hidráulicas y neumáticas,
-                                equipada para tal fin con tecnología de última
-                                generación.Conman es una empresa con una gran
-                                trayectoria y experiencia en la fabricación y
-                                venta de terminales y accesorios para todo tipo
-                                de instalaciones óleo-hidráulicas y neumáticas,
-                                equipada para tal fin con tecnología de última
-                                generación.Conman es una empresa con una gran
-                                trayectoria y experiencia en la fabricación y
-                                venta de terminales y accesorios para todo tipo
-                                de instalaciones óleo-hidráulicas y neumáticas,
-                                equipada para tal fin con tecnología de última
-                                generación.
+                            <p className="max-h-[430px] text-base break-words ">
+                                {nosotrosInicio?.text}
                             </p>
                         </div>
                         <div className="mt-auto">

@@ -12,11 +12,13 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
 
-    public function index() {
+    public function index()
+    {
         return UserResource::collection(User::all());
     }
 
-    public function signup(SignupRequest $request) {
+    public function signup(SignupRequest $request)
+    {
         $data = $request->validated();
 
         /** @var \App\Models\User $user */
@@ -38,11 +40,11 @@ class AuthController extends Controller
             'user' => $user,
             'token' => $token
         ]);
-        
     }
 
-    public function login(LoginRequest $request) {
-        
+    public function login(LoginRequest $request)
+    {
+
         $credentials = $request->validated();
         $remember = $credentials['remember'] ?? false;
         unset($credentials['remember']);
@@ -55,14 +57,15 @@ class AuthController extends Controller
         /**  @var \App\Models\User $user */
         $user = Auth::user();
         $token = $user->createToken('main')->plainTextToken;
-    
+
         return response([
             'user' => $user,
             'token' => $token
         ]);
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         /**
          * @var User $user
          */
@@ -74,15 +77,15 @@ class AuthController extends Controller
         ]);
     }
 
-    public function me(Request $request) {
+    public function me(Request $request)
+    {
         return $request->user();
-        
     }
 
     public function updateProfile(Request $request)
     {
         $user = $request->user();
-        
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,

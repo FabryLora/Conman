@@ -217,7 +217,7 @@ export default function Navbar() {
     ]);
 
     return (
-        <div className="flex flex-col items-center justify-center font-roboto-condensed">
+        <div className="sticky top-0 z-50 flex flex-col items-center justify-center font-roboto-condensed">
             <div className="bg-primary-blue h-[40px] w-full flex items-center justify-between pl-11 pr-4 max-sm:pl-0 max-sm:justify-end">
                 <div className="flex gap-4 items-center text-[14px] text-white h-[16px] max-sm:hidden">
                     <div className="flex gap-2 items-center">
@@ -446,7 +446,7 @@ export default function Navbar() {
                     )}
                 </div>
             </div>
-            <nav className="flex relative flex-row items-center pl-10 gap-20 w-full h-[85px] shadow-sm max-xl:justify-center">
+            <nav className="flex bg-white relative flex-row items-center pl-10 gap-20 w-full h-[85px] shadow-sm max-xl:justify-center">
                 <Link className="" to={"/"}>
                     <img
                         src={conmanLogo}
