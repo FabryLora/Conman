@@ -21,10 +21,11 @@ export default function Pedidos() {
     const [mensaje, setMensaje] = useState("");
     const [archivo, setArchivo] = useState(null);
     const [tipo_entrega, setTipo_entrega] = useState("retiro cliente");
-
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState(false);
+    const [succ, setSucc] = useState(false);
+    const [succID, setSuccID] = useState();
     const loacation = useLocation();
-
-    console.log(location);
 
     useEffect(() => {
         const total = cart.reduce((acc, prod) => {
@@ -47,28 +48,8 @@ export default function Pedidos() {
         if (file) {
             setFileName(file.name);
             setArchivo(file);
-            console.log(file);
         } else {
             setFileName("Seleccionar archivo");
-        }
-    };
-
-    const sendEmail = async (e) => {
-        e.preventDefault();
-
-        const payload = { ...formData };
-
-        const htmlContent = ReactDOMServer.renderToString(
-            <PedidoTemplate info={payload} />
-        );
-
-        try {
-            const response = await axiosClient.post("/sendpedido", {
-                html: htmlContent,
-            });
-            console.log("Correo enviado:", response.data);
-        } catch (error) {
-            console.error("Error al enviar el correo:", error);
         }
     };
 
@@ -80,7 +61,7 @@ export default function Pedidos() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setIsSubmitting(true);
         const formData = new FormData();
         formData.append("mensaje", mensaje);
         if (archivo !== null) {
@@ -92,7 +73,9 @@ export default function Pedidos() {
         formData.append("descuento", descuento);
         formData.append("subtotaldescuento", subtotalDescuento);
         formData.append("iva", iva);
-        formData.append("total", totalFinal);
+        if (totalFinal > 0) {
+            formData.append("total", totalFinal);
+        }
 
         try {
             const response = await axiosClient.post("/pedidos", formData, {
@@ -102,6 +85,8 @@ export default function Pedidos() {
             });
 
             const pedidoId = response.data.data.id;
+
+            setSuccID(pedidoId);
 
             cart.forEach((prod) => {
                 const formProds = new FormData();
@@ -152,13 +137,64 @@ export default function Pedidos() {
                 html: htmlContent,
             });
             console.log(responseMail);
+            clearCart();
+            setSucc(true);
         } catch (error) {
+            setError(true);
             console.log(error);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => {
+                setError(null);
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [error]);
+
     return (
         <div className="w-[80%] mx-auto py-20 grid grid-cols-2 gap-10">
+            <AnimatePresence>
+                {error && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3 }}
+                        className="fixed left-[45%] top-10 bg-red-500 text-white p-3 rounded-lg"
+                    >
+                        <p>Error al enviar el pedido</p>
+                    </motion.div>
+                )}
+                {succ && (
+                    <div>
+                        <div className="fixed w-screen h-screen bg-black opacity-50 top-0 left-0"></div>
+                        <div className="fixed transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-[642px] h-[343px] bg-white text-black shadow-lg flex flex-col items-center justify-evenly">
+                            <h1 className="font-bold text-[32px]">
+                                Pedido confirmado
+                            </h1>
+                            <div className="flex flex-col gap-8 items-center">
+                                <p className="text-[#515A53] text-center w-[90%]">
+                                    Su pedido #{succID} está en proceso y te
+                                    avisaremos por email cuando esté listo. Si
+                                    tienes alguna pregunta, no dudes en
+                                    contactarnos.
+                                </p>
+                                <Link
+                                    to={"/privado/productos"}
+                                    className="bg-primary-red text-white flex items-center justify-center h-[47px] w-[253px]"
+                                >
+                                    VOLVER A PRODUCTOS
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </AnimatePresence>
             <div className="grid  w-full  items-start col-span-2">
                 <div className="grid grid-cols-8 items-center justify-center bg-[#F5F5F5] h-[52px] text-center font-semibold">
                     <p></p>
@@ -305,7 +341,6 @@ export default function Pedidos() {
                     value={mensaje}
                     onChange={(e) => {
                         setMensaje(e.target.value);
-                        console.log(mensaje);
                     }}
                     className="border h-[222px] w-full p-3"
                     name=""
@@ -370,9 +405,11 @@ export default function Pedidos() {
                 </button>
                 <button
                     onClick={handleSubmit}
-                    className="h-[47px] w-full bg-primary-red  text-white"
+                    className={`w-full h-[47px] text-white ${
+                        isSubmitting ? "bg-gray-400" : "bg-primary-red"
+                    }`}
                 >
-                    REALIZAR PEDIDO
+                    {isSubmitting ? "Enviando pedido..." : "REALIZAR PEDIDO"}
                 </button>
             </div>
         </div>

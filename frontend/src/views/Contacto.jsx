@@ -43,6 +43,7 @@ export default function Contacto() {
 
     const sendEmail = async (e) => {
         e.preventDefault();
+        setIsSubmitting(true); // Inicia el estado de carga
 
         const payload = { ...formData };
 
@@ -57,6 +58,8 @@ export default function Contacto() {
             console.log("Correo enviado:", response.data);
         } catch (error) {
             console.error("Error al enviar el correo:", error);
+        } finally {
+            setIsSubmitting(false); // Restablece el estado después de la petición
         }
     };
 

@@ -90,7 +90,7 @@ export default function Home() {
                 </div>
 
                 {/* Quienes somos */}
-                <div className="max-xl:relative max-xl:h-[700px] flex flex-row lg:flex-row items-center lg:items-end my-10 font-roboto-condensed justify-center w-full h-full max-xl:bg-primary-blue overflow-hidden">
+                <div className="max-xl:relative max-xl:h-[700px] flex flex-row items-center lg:items-end my-10 font-roboto-condensed justify-center w-full h-full max-xl:bg-primary-blue overflow-hidden">
                     {/* Imagen - 50% */}
                     <img
                         className="absolute w-full h-full object-fill opacity-30 xl:hidden"
@@ -114,41 +114,74 @@ export default function Home() {
                         initial={{ oapcity: 0, x: 200 }}
                         whileInView={{ oapcity: 1, x: 0 }}
                         transition={{ duration: 1.2 }}
-                        className="max-xl:py-5 max-xl:items-center max-xl:absolute max-xl:z-10 flex flex-col gap-6 lg:gap-10 h-full max-xl:w-full px-6 w-1/2 max-xl:text-white "
+                        className="max-xl:py-5 max-xl:items-center max-xl:absolute max-xl:z-10 flex flex-col gap-6 lg:gap-10 h-screen max-xl:w-full px-6 w-1/2 max-xl:text-white overflow-hidden max-h-[680px]"
                     >
-                        <h2 className="text-[24px] sm:text-[32px] lg:text-[40px] font-bold text-center lg:text-left">
-                            ¿Quiénes somos?
-                        </h2>
                         <div className="flex flex-col gap-6 text-[14px] sm:text-[16px] text-justify max-w-[90%]">
-                            <p>
+                            <h2 className="text-[24px] sm:text-[32px] lg:text-[40px] font-bold text-center xl:text-left">
+                                ¿Quiénes somos?
+                            </h2>
+                            <p className="max-h-[430px] overflow-hidden whitespace-pre">
                                 Conman es una empresa con una gran trayectoria y
                                 experiencia en la fabricación y venta de
                                 terminales y accesorios para todo tipo de
                                 instalaciones óleo-hidráulicas y neumáticas,
                                 equipada para tal fin con tecnología de última
+                                generación. Conman es una empresa con una gran
+                                trayectoria y experiencia en la fabricación y
+                                venta de terminales y accesorios para todo tipo
+                                de instalaciones óleo-hidráulicas y neumáticas,
+                                equipada para tal fin con tecnología de última
+                                generación. Conman es una empresa con una gran
+                                trayectoria y experiencia en la fabricación y
+                                venta de terminales y accesorios para todo tipo
+                                de instalaciones óleo-hidráulicas y neumáticas,
+                                equipada para tal fin con tecnología de última
+                                generación. Conman es una empresa con una gran
+                                trayectoria y experiencia en la fabricación y
+                                venta de terminales y accesorios para todo tipo
+                                de instalaciones óleo-hidráulicas y neumáticas,
+                                equipada para tal fin con tecnología de última
+                                generación. Conman es una empresa con una gran
+                                trayectoria y experiencia en la fabricación y
+                                venta de terminales y accesorios para todo tipo
+                                de instalaciones óleo-hidráulicas y neumáticas,
+                                equipada para tal fin con tecnología de última
+                                generación.Conman es una empresa con una gran
+                                trayectoria y experiencia en la fabricación y
+                                venta de terminales y accesorios para todo tipo
+                                de instalaciones óleo-hidráulicas y neumáticas,
+                                equipada para tal fin con tecnología de última
+                                generación.Conman es una empresa con una gran
+                                trayectoria y experiencia en la fabricación y
+                                venta de terminales y accesorios para todo tipo
+                                de instalaciones óleo-hidráulicas y neumáticas,
+                                equipada para tal fin con tecnología de última
+                                generación.Conman es una empresa con una gran
+                                trayectoria y experiencia en la fabricación y
+                                venta de terminales y accesorios para todo tipo
+                                de instalaciones óleo-hidráulicas y neumáticas,
+                                equipada para tal fin con tecnología de última
+                                generación.Conman es una empresa con una gran
+                                trayectoria y experiencia en la fabricación y
+                                venta de terminales y accesorios para todo tipo
+                                de instalaciones óleo-hidráulicas y neumáticas,
+                                equipada para tal fin con tecnología de última
+                                generación.Conman es una empresa con una gran
+                                trayectoria y experiencia en la fabricación y
+                                venta de terminales y accesorios para todo tipo
+                                de instalaciones óleo-hidráulicas y neumáticas,
+                                equipada para tal fin con tecnología de última
+                                generación.Conman es una empresa con una gran
+                                trayectoria y experiencia en la fabricación y
+                                venta de terminales y accesorios para todo tipo
+                                de instalaciones óleo-hidráulicas y neumáticas,
+                                equipada para tal fin con tecnología de última
+                                generación.Conman es una empresa con una gran
+                                trayectoria y experiencia en la fabricación y
+                                venta de terminales y accesorios para todo tipo
+                                de instalaciones óleo-hidráulicas y neumáticas,
+                                equipada para tal fin con tecnología de última
                                 generación.
-                            </p>
-                            <p>
-                                Nuestra prioridad es brindarle al cliente un
-                                servicio integral y una rápida respuesta a sus
-                                necesidades, y ofrecerle productos de máxima
-                                calidad. Estamos muy bien posicionados en el
-                                mercado, y distribuimos nuestros productos a lo
-                                largo del todo el país, a través de vendedores
-                                propios, y distribuidores.
-                            </p>
-                            <p>
-                                En Conman fabricamos una amplia línea de
-                                terminales y accesorios, y comercializamos
-                                mangueras de alta, media y baja presión,
-                                abasteciendo al agro y a la industria,
-                                principalmente a la relacionada con la actividad
-                                petrolera, brindando un servicio y asesoramiento
-                                eficiente, lo que nos da una posición de
-                                privilegio con respecto a la competencia. Además
-                                fabricamos prensas hidráulicas para mangueras,
-                                las cuales han tenido una excelente aceptación
-                                en el mercado interno y en el exterior.
                             </p>
                         </div>
                         <div className="mt-auto">
