@@ -100,8 +100,8 @@ export default function Navbar() {
     };
 
     const socials = [
-        { logo: fbIcon, href: "#" },
-        { logo: igIcon, href: "#" },
+        { logo: fbIcon, href: contactInfo?.fb },
+        { logo: igIcon, href: contactInfo?.ig },
     ];
 
     const [dropdowns, setDropdowns] = useState([
@@ -313,9 +313,14 @@ export default function Navbar() {
                         </AnimatePresence>
                     </div>
                     {socials.map((social, index) => (
-                        <Link key={index} to={social.href}>
+                        <a
+                            key={index}
+                            target="_blanck"
+                            href={social.href}
+                            rel="noopener noreferrer"
+                        >
                             <img src={social.logo} alt="" />
-                        </Link>
+                        </a>
                     ))}
                     <div className="flex flex-row gap-4 h-[16px] items-center justify-center ">
                         {!userToken && (

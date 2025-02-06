@@ -5,12 +5,18 @@ import { useStateContext } from "../contexts/ContextProvider";
 export default function ContactoAdmin() {
     const { contactInfo, fetchContactInfo } = useStateContext();
 
-    const [contact, setContacto] = useState({
-        mail: contactInfo?.mail,
-        phone: contactInfo?.phone,
-        wp: contactInfo?.wp,
-        location: contactInfo?.location,
-    });
+    const [contact, setContacto] = useState({});
+
+    useState(() => {
+        setContacto({
+            mail: contactInfo?.mail,
+            phone: contactInfo?.phone,
+            wp: contactInfo?.wp,
+            location: contactInfo?.location,
+            ig: contactInfo?.ig,
+            fb: contactInfo?.fb,
+        });
+    }, [contactInfo]);
 
     const submit = (ev) => {
         ev.preventDefault();
@@ -125,6 +131,57 @@ export default function ContactoAdmin() {
                                             setContacto({
                                                 ...contact,
                                                 location: ev.target.value,
+                                            });
+                                        }}
+                                        id="username"
+                                        name="username"
+                                        type="text"
+                                        className="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="sm:col-span-4">
+                            <label
+                                htmlFor="username"
+                                className="block text-sm/6 font-medium text-gray-900"
+                            >
+                                Instagram
+                            </label>
+                            <div className="mt-2">
+                                <div className="flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
+                                    <div className="shrink-0 select-none text-base text-gray-500 sm:text-sm/6"></div>
+                                    <input
+                                        value={contact?.ig}
+                                        onChange={(ev) => {
+                                            setContacto({
+                                                ...contact,
+                                                ig: ev.target.value,
+                                            });
+                                        }}
+                                        id="username"
+                                        name="username"
+                                        type="text"
+                                        className="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="sm:col-span-4">
+                            <label className="block text-sm/6 font-medium text-gray-900">
+                                Facebook
+                            </label>
+                            <div className="mt-2">
+                                <div className="flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
+                                    <div className="shrink-0 select-none text-base text-gray-500 sm:text-sm/6"></div>
+                                    <input
+                                        value={contact?.fb}
+                                        onChange={(ev) => {
+                                            setContacto({
+                                                ...contact,
+                                                fb: ev.target.value,
                                             });
                                         }}
                                         id="username"

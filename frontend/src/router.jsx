@@ -14,11 +14,13 @@ import GeneralView from "./views/GeneralView";
 import Home from "./views/Home";
 import ListaDePrecios from "./views/ListaDePrecios";
 import Login from "./views/Login";
+import Metadatos from "./views/Metadatos";
 import MultipleView from "./views/MultipleView";
 import Nosotros from "./views/Nosotros";
 import NosotrosAdmin from "./views/NosotrosAdmin";
 import NosotrosInicioAdmin from "./views/NosotrosInicioAdmin";
 import Novedades from "./views/Novedades";
+import NovedadesAdmin from "./views/NovedadesAdmin";
 import Pedidos from "./views/Pedidos";
 import PrivateProducts from "./views/PrivateProducts";
 import PrivateZone from "./views/PrivateZone";
@@ -158,6 +160,14 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/administradores",
                 element: <Administradores />,
+            },
+            {
+                path: "/dashboard/novedades",
+                element: <NovedadesAdmin />,
+            },
+            {
+                path: "/dashboard/metadatos",
+                element: <Metadatos />,
             },
         ],
     },

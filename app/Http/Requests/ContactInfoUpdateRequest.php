@@ -26,7 +26,9 @@ class ContactInfoUpdateRequest extends FormRequest
             "phone" => "required|string|max:100",
             "wp" => "required|string|max:100",
             "location" => "required|string|max:100",
-            "iframe"=> "nullable|string",
+            "iframe" => "nullable|string",
+            "ig" => "required|string|max:100",
+            "fb" => "required|string|max:100",
         ];
     }
 }

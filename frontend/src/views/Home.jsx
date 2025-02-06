@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import shieldIcon from "../assets/icons/shield-icon.svg";
 import novedades1 from "../assets/inicio/novedades-1.png";
@@ -17,39 +18,23 @@ import NovedadesCard from "../components/NovedadesCard";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Home() {
-    const { nosotrosInicio, fetchNosotrosInicio, categoryInicio } =
-        useStateContext();
+    const {
+        nosotrosInicio,
+        fetchNosotrosInicio,
+        categoryInicio,
+        calidadInicio,
+        novedades,
+    } = useStateContext();
 
     useEffect(() => {
         fetchNosotrosInicio();
     }, []);
 
-    const novedades = [
-        {
-            image: novedades1,
-            title: "Realizamos la entrega de nuestros productos a todo el país",
-            description:
-                "Nuestra logística eficiente garantiza tiempos de entrega competitivos, con la calidad y soporte que nos caracterizan. Desde grandes centros urbanos...",
-            href: "#",
-        },
-        {
-            image: novedades2,
-            title: "Accesorios para alta presión",
-            description:
-                "Fabricados y certificados bajo norma ISO 9001:2015. Tee macho fijo x macho fijo 7/8 UNF asiento tubo x macho fijo 1/2 NPT",
-            href: "#",
-        },
-        {
-            image: novedades3,
-            title: "FIMAQH",
-            description:
-                "Conmon exhibió su última generación de sistemas de monitoreo en tiempo real, diseñados para prevenir fallos en equipos y optimizar la eficiencia operativa. Estas herramientas no solo impulsan...",
-            href: "#",
-        },
-    ];
-
     return (
         <>
+            <Helmet>
+                <title>Conman</title>
+            </Helmet>
             <Navbar />
             <div>
                 <Carousel />
@@ -135,13 +120,7 @@ export default function Home() {
                             Politicas de Calidad
                         </h2>
                         <p className="text-[16px] max-sm:px-5 max-sm:text-center">
-                            La Dirección de CONMAN se compromete a cumplir la
-                            presente Política de la Calidad, mejorando en forma
-                            contínua el Sistema de Gestión de Calidad en
-                            concordancia con su contexto, la normativa legal
-                            vigente y otros aplicables, enfocado en la
-                            productividad eficiente y el alcance de todos los
-                            objetivos propuestos.
+                            {calidadInicio?.text}
                         </p>
                     </div>
 
@@ -174,13 +153,15 @@ export default function Home() {
                             </Link>
                         </div>
 
-                        <div className="flex relative flex-row flex-wrap gap-5 justify-between max-md:justify-center">
-                            {novedades.map((novedad, index) => (
-                                <NovedadesCard
-                                    key={index}
-                                    newsObject={novedad}
-                                />
-                            ))}
+                        <div className="flex flex-row flex-wrap gap-5 justify-start max-md:justify-center">
+                            {novedades
+                                .filter((nove) => nove.featured === 1)
+                                .map((novedad, index) => (
+                                    <NovedadesCard
+                                        key={index}
+                                        newsObject={novedad}
+                                    />
+                                ))}
                         </div>
                     </div>
                 </div>

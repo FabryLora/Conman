@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ContactInfo extends Model
+class Novedades extends Model
 {
     protected $guarded = [];
 }

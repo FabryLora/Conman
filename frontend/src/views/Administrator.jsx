@@ -89,7 +89,9 @@ export default function Administrator() {
             title: "Novedades",
             icon: faHouse,
             href: "#",
-            subHref: [{ title: "Slider", href: "#" }],
+            subHref: [
+                { title: "Tarjetas Novedades", href: "/dashboard/novedades" },
+            ],
         },
         {
             id: "contacto",
@@ -112,6 +114,14 @@ export default function Administrator() {
                     href: "/dashboard/administradores",
                 },
             ],
+        },
+        {
+            id: "metadatos",
+            open: false,
+            title: "Metadatos",
+            icon: faHouse,
+            href: "#",
+            subHref: [{ title: "Metadatos", href: "/dashboard/metadatos" }],
         },
     ]);
 

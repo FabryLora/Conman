@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -8,6 +8,17 @@ export default function MultipleView() {
     const [productInfo, setProductInfo] = useState(null);
     const [currentImage, setCurrentImage] = useState("");
     const { id } = useParams();
+    const location = useLocation();
+
+    const [cleanPathname, setCleanPathname] = useState(
+        location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
+    );
+
+    useEffect(() => {
+        setCleanPathname(
+            location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
+        );
+    }, [location]);
 
     useEffect(() => {
         axiosClient
@@ -29,6 +40,21 @@ export default function MultipleView() {
         <div className="font-roboto-condensed w-[80%] mx-auto py-20">
             <div className="grid grid-cols-2 grid-rows-2 gap-4 gap-y-10 max-lg:grid-cols-1 max-lg:grid-rows-4">
                 <div className="relative flex flex-row w-full gap-3">
+                    <div className="flex flex-row gap-1 items-center justify-center absolute -top-14 -left-24 text-[#515A53] max-lg:-left-0">
+                        <Link to={"/"}>{cleanPathname[0]}</Link>
+                        <p>{">"}</p>
+                        <Link
+                            to={`/inicio/${cleanPathname[1]
+                                .split(" ")
+                                .join("-")}`}
+                        >
+                            {cleanPathname[1]}
+                        </Link>
+                        <p>{">"}</p>
+                        <Link>{productInfo?.name}</Link>
+
+                        <Link></Link>
+                    </div>
                     <div className="lg:absolute -left-24 flex flex-col h-[300px] w-fit  gap-y-3">
                         {productInfo.images.map((image, index) => (
                             <button

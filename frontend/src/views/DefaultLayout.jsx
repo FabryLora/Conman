@@ -6,15 +6,21 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { useStateContext } from "../contexts/ContextProvider";
 export default function DefaultLayout() {
-    const { categoryInfo, fetchCategoryInfo } = useStateContext();
+    const { categoryInfo } = useStateContext();
 
     const location = useLocation();
 
+    const [cleanPathname, setCleanPathname] = useState(
+        location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
+    );
+
+    useEffect(() => {
+        setCleanPathname(
+            location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
+        );
+    }, [location]);
+
     // Eliminar las barras iniciales y dividir la ruta en palabras
-    const cleanPathname = location.pathname
-        .replace(/^\/+/, "")
-        .replace(/-/g, " ")
-        .split("/");
 
     // Eliminar la primera palabra
     const finalPath =
@@ -31,13 +37,15 @@ export default function DefaultLayout() {
     // Volver a unir las palabras restantes con '/'
 
     return (
-        <div className="overflow-hidden">
+        <div className="">
             <Navbar />
-            <DefaultBanner
-                title={finalPath}
-                href={""}
-                bannerImage={bannerImage}
-            />
+            {cleanPathname.length <= 2 && (
+                <DefaultBanner
+                    title={finalPath}
+                    href={""}
+                    bannerImage={bannerImage}
+                />
+            )}
             <Outlet />
             <Footer />
         </div>
