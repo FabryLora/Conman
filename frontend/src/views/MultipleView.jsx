@@ -52,8 +52,6 @@ export default function MultipleView() {
                         </Link>
                         <p>{">"}</p>
                         <Link>{productInfo?.name}</Link>
-
-                        <Link></Link>
                     </div>
                     <div className="lg:absolute -left-24 flex flex-col h-[300px] w-fit  gap-y-3">
                         {productInfo.images.map((image, index) => (
@@ -79,7 +77,7 @@ export default function MultipleView() {
                     <div className="h-[500px] w-full border border-gray-300">
                         <img
                             src={currentImage}
-                            className="object-contain h-[500px] w-full"
+                            className="object-contain h-full w-full"
                             alt=""
                         />
                     </div>

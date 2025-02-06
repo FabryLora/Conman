@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('sub_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('link');
             $table->foreignIdFor(Category::class, 'category_id')->constrained()->cascadeOnDelete();
             $table->string('order_value');
             $table->timestamps();

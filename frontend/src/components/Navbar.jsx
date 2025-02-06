@@ -34,7 +34,7 @@ export default function Navbar() {
     const tinyMenuRef = useRef(null);
     const loginRef = useRef(null);
 
-    const { setLinkInfo } = useStateContext();
+    const { setLinkInfo, categoryInfo } = useStateContext();
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -104,117 +104,26 @@ export default function Navbar() {
         { logo: igIcon, href: contactInfo?.ig },
     ];
 
-    const [dropdowns, setDropdowns] = useState([
-        {
-            id: "Nosotros",
-            open: false,
-            href: "/inicio/nosotros",
-            chevron: false,
-            chevronAnimation: false,
-        },
-        {
-            id: "Terminales y accesorios",
-            open: false,
-            href: "/inicio/terminales-y-accesorios",
-            chevron: true,
-            chevronAnimation: false,
-            subHref: [
-                { title: "Terminales", href: "/inicio/terminales" },
-                { title: "Accesorios", href: "/inicio/accesorios" },
-            ],
-        },
-        {
-            id: "Mangueras",
-            open: false,
-            href: "/inicio/mangueras",
-            chevron: true,
-            chevronAnimation: false,
-            subHref: [
-                { title: "SAE 100", href: "/inicio/mangueras-hidraulicas" },
-                {
-                    title: "Para combustible",
-                    href: "/inicio/mangueras-industriales",
-                },
-                {
-                    title: "20 bar / 300 lbs",
-                    href: "/inicio/mangueras-de-aire",
-                },
-                {
-                    title: "Multiproposito verde",
-                    href: "/inicio/mangueras-de-agua",
-                },
-                {
-                    title: "Aire acondicionado",
-                    href: "/inicio/mangueras-de-combustible",
-                },
-                {
-                    title: "Inoxidable con malla",
-                    href: "/inicio/mangueras-de-vapor",
-                },
-            ],
-        },
-        {
-            id: "Acoples rapidos",
-            open: false,
-            href: "/inicio/acoples-rapidos-hidraulicos",
-            chevron: true,
-            chevronAnimation: false,
-            subHref: [
-                {
-                    title: "Acople rapido hidraulico",
-                    href: "/inicio/mangueras-hidraulicas",
-                },
-                { title: "Bolita", href: "/inicio/mangueras-industriales" },
-                { title: "Punta", href: "/inicio/mangueras-de-aire" },
-                { title: "Frente plano", href: "/inicio/mangueras-de-agua" },
-                { title: "Mariposa", href: "/inicio/mangueras-de-combustible" },
-            ],
-        },
-        {
-            id: "Productos",
-            open: false,
-            href: "/inicio/productos",
-            chevron: true,
-            chevronAnimation: false,
-            subHref: [
-                {
-                    title: "Articulos de lubricacion",
-                    href: "/inicio/mangueras-hidraulicas",
-                },
-                {
-                    title: "Tratamientos de aire",
-                    href: "/inicio/mangueras-industriales",
-                },
-                { title: "Abrazaderas", href: "/inicio/mangueras-de-aire" },
-                { title: "Arandelas", href: "/inicio/mangueras-de-agua" },
-                {
-                    title: "Prensas / Manguera",
-                    href: "/inicio/mangueras-de-combustible",
-                },
-            ],
-        },
-        {
-            id: "Calidad",
-            open: false,
-            href: "/inicio/calidad",
-            chevron: false,
-            chevronAnimation: false,
-        },
-        {
-            id: "Novedades",
-            open: false,
-            href: "/inicio/novedades",
-            chevron: false,
-            chevronAnimation: false,
-        },
-        {
-            id: "Contacto",
-            open: false,
-            href: "/inicio/contacto",
-            chevron: false,
-            chevronAnimation: false,
-        },
-    ]);
+    const [dropdowns, setDropdowns] = useState([{}]);
+
+    useEffect(() => {
+        setDropdowns([
+            ...categoryInfo.map((category) => ({
+                id: category.name,
+                open: false,
+                href: `/inicio/${category.name
+                    .toLowerCase()
+                    .split(" ")
+                    .join("-")}`,
+                chevron: true,
+                chevronAnimation: false,
+                subHref: category.subcategories.map((subcategory) => ({
+                    title: subcategory.name,
+                    href: `/inicio/${category.name.toLowerCase()}/${subcategory.name.toLowerCase()}`,
+                })),
+            })),
+        ]);
+    }, [categoryInfo]);
 
     return (
         <div className="sticky top-0 z-50 flex flex-col items-center justify-center font-roboto-condensed">
@@ -451,7 +360,7 @@ export default function Navbar() {
                     )}
                 </div>
             </div>
-            <nav className="flex bg-white relative flex-row items-center pl-10 gap-20 w-full h-[85px] shadow-sm max-xl:justify-center">
+            <nav className="flex bg-white relative flex-row items-center pl-10 gap-24 w-full h-[85px] shadow-sm max-xl:justify-center">
                 <Link className="" to={"/"}>
                     <img
                         src={conmanLogo}
@@ -495,9 +404,7 @@ export default function Navbar() {
                                                 }
                                                 className="flex flex-row items-center justify-between px-2 border-b border-white hover:text-gray-700"
                                                 key={sub.title}
-                                                to={
-                                                    "/inicio/terminales-y-accesorios"
-                                                }
+                                                to={`${drop.href}`}
                                             >
                                                 {sub.title}
                                                 <FontAwesomeIcon
@@ -544,7 +451,9 @@ export default function Navbar() {
                                     >
                                         <div className="flex flex-row justify-between w-full items-center border-b">
                                             <Link
-                                                onClick={() => setLinkInfo("")}
+                                                onClick={() =>
+                                                    setLinkInfo(categoryInfo)
+                                                }
                                                 className="hover:text-gray-600 whitespace-nowrap"
                                                 to={drop.href}
                                             >

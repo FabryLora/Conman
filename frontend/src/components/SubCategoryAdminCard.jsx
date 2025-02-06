@@ -3,43 +3,35 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
-export default function CategoryAdminCard({ category }) {
-    const { fetchCategoryInfo } = useStateContext();
+export default function SubCategoryAdminCard({ subCategory }) {
+    const { fetchSubCategoryInfo, categoryInfo } = useStateContext();
 
     const [edit, setEdit] = useState(false);
 
-    const [image, setImage] = useState();
     const [name, setName] = useState();
-    const [destacado, setDestacado] = useState();
-    const [order, setOrder] = useState();
     const [link, setLink] = useState();
+    const [categoria, setCategoria] = useState();
+    const [order, setOrder] = useState();
 
     useEffect(() => {
-        setName(category?.name);
-        setDestacado(category?.destacado);
-        setOrder(category?.order_value);
-        setLink(category?.link);
-    }, [category]);
-
-    const hanldeFileChange = (e) => {
-        setImage(e.target.files[0]);
-    };
+        setName(subCategory?.name);
+        setLink(subCategory?.link);
+        setOrder(subCategory?.order_value);
+        setCategoria(subCategory?.category_id);
+    }, [subCategory]);
 
     const update = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        if (image) {
-            formData.append("image", image);
-        }
 
         formData.append("name", name);
-        formData.append("destacado", destacado ? 1 : 0);
-        formData.append("order_value", order);
         formData.append("link", link);
+        formData.append("category_id", categoria);
+        formData.append("order_value", order);
 
         try {
             const response = await axiosClient.post(
-                `/category/${category.id}?_method=PUT`,
+                `/subcategory/${subCategory.id}?_method=PUT`,
                 formData,
                 {
                     headers: {
@@ -49,29 +41,24 @@ export default function CategoryAdminCard({ category }) {
             );
 
             console.log(response);
-            fetchCategoryInfo();
+            fetchSubCategoryInfo();
         } catch (error) {
             console.log(error);
         }
     };
 
     return (
-        <tr className=" border">
-            <td className=" w-[90px] h-[90px]">
-                <img
-                    className="w-full h-full object-contain"
-                    src={category?.image_url}
-                    alt=""
-                />
+        <tr className=" h-[80px] border-y">
+            <td>{name}</td>
+            <td>{link}</td>
+            <td>
+                {
+                    categoryInfo.find((category) => category.id === categoria)
+                        ?.name
+                }
             </td>
-            <td className=" align-middle">{name}</td>
-            <td className=" align-middle">{link}</td>
-
-            <td className=" align-middle">
-                <input type="checkbox" checked={destacado} name="" id="" />
-            </td>
-            <td className=" align-middle">{order}</td>
-            <td className=" align-middle">
+            <td>{order}</td>
+            <td>
                 <button onClick={() => setEdit(!edit)}>
                     <FontAwesomeIcon icon={faPenToSquare} size="xl" />
                 </button>
@@ -80,14 +67,8 @@ export default function CategoryAdminCard({ category }) {
                 <div className="absolute top-0 left-0 w-full h-full bg-gray-500 bg-opacity-50 flex justify-center items-center">
                     <form
                         onSubmit={update}
-                        className="bg-white p-4 rounded-lg shadow-md flex flex-col items-start gap-2"
+                        className="bg-white p-4 rounded-lg shadow-md flex flex-col items-start min-w-[400px] gap-2"
                     >
-                        <label htmlFor="imagen">Imagen</label>
-                        <input
-                            type="file"
-                            onChange={hanldeFileChange}
-                            className="w-full border py-1 pl-2"
-                        />
                         <label htmlFor="name">Nombre</label>
                         <input
                             type="text"
@@ -102,19 +83,20 @@ export default function CategoryAdminCard({ category }) {
                             onChange={(e) => setLink(e.target.value)}
                             className="w-full border py-1 pl-2"
                         />
-                        <label htmlFor="destacado">Destacado</label>
-                        <div className="flex flex-row gap-1">
-                            <input
-                                id="destacado"
-                                type="checkbox"
-                                checked={destacado}
-                                onChange={(e) => setDestacado(e.target.checked)}
-                            />
-                            <label htmlFor="destacado">
-                                Marque esta casilla si quiere que la categoria
-                                este en el inicio
-                            </label>
-                        </div>
+
+                        <label htmlFor="categorias">Categoria</label>
+                        <select
+                            className="border w-full py-1"
+                            onChange={(e) => setCategoria(e.target.value)}
+                            name="categorias"
+                            id=""
+                        >
+                            {categoryInfo.map((category) => (
+                                <option value={category.id} key={category.id}>
+                                    {category.name}
+                                </option>
+                            ))}
+                        </select>
 
                         <label htmlFor="order">Orden</label>
                         <input

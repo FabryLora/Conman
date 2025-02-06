@@ -4,7 +4,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 
 export default function PDFComponent({ pdfObject, onUpdate }) {
     const { fetchPdfInfo } = useStateContext();
-    const [name, setName] = useState(pdfObject.name);
+    const [name, setName] = useState(pdfObject?.name);
     const [pdf, setPdf] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -15,7 +15,7 @@ export default function PDFComponent({ pdfObject, onUpdate }) {
 
     const downloadPDF = async () => {
         try {
-            const filename = pdfObject.pdf_url.split("/").pop(); // Extraer solo el nombre del archivo
+            const filename = pdfObject?.pdf_url.split("/").pop(); // Extraer solo el nombre del archivo
 
             const response = await axiosClient.get(
                 `/download-pdf/${filename}`,
@@ -29,7 +29,7 @@ export default function PDFComponent({ pdfObject, onUpdate }) {
 
             const a = document.createElement("a");
             a.href = url;
-            a.download = pdfObject.name;
+            a.download = pdfObject?.name;
             document.body.appendChild(a);
             a.click();
 
@@ -51,7 +51,7 @@ export default function PDFComponent({ pdfObject, onUpdate }) {
 
         try {
             await axiosClient.post(
-                `/pdf/${pdfObject.id}?_method=PUT`,
+                `/pdf/${pdfObject?.id}?_method=PUT`,
                 formData,
                 {
                     headers: { "Content-Type": "multipart/form-data" },
@@ -72,7 +72,7 @@ export default function PDFComponent({ pdfObject, onUpdate }) {
             onSubmit={handleUpdate}
             className="p-4 border rounded-lg shadow-md"
         >
-            <h2 className="text-lg font-semibold mb-2">{pdfObject.name}</h2>
+            <h2 className="text-lg font-semibold mb-2">{pdfObject?.name}</h2>
 
             <div className="mb-2">
                 <label className="block font-medium">Editar nombre:</label>

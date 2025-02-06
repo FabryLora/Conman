@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import shieldIcon from "../assets/icons/shield-icon.svg";
 import novedades1 from "../assets/inicio/novedades-1.png";
 import novedades2 from "../assets/inicio/novedades-2.png";
@@ -29,6 +29,9 @@ export default function Home() {
     useEffect(() => {
         fetchNosotrosInicio();
     }, []);
+
+    const location = useLocation();
+    console.log(location);
 
     return (
         <>

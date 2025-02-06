@@ -48,6 +48,14 @@ const router = createBrowserRouter([
         element: <DefaultLayout />,
         children: [
             {
+                path: "/inicio/:id/",
+                element: <GeneralView />,
+            },
+            {
+                path: "/inicio/:id/:id",
+                element: <MultipleView />,
+            },
+            {
                 path: "/inicio",
                 element: <Navigate to={"/"} />,
             },
@@ -55,42 +63,7 @@ const router = createBrowserRouter([
                 path: "/inicio/nosotros",
                 element: <Nosotros />,
             },
-            {
-                path: "/inicio/acoples-rapidos-hidraulicos",
-                element: (
-                    <GeneralView categoryName={"acoples rapidos hidraulicos"} />
-                ),
-            },
-            {
-                path: "/inicio/acoples-rapidos-hidraulicos/:id",
-                element: <MultipleView />,
-            },
-            {
-                path: "/inicio/terminales-y-accesorios",
-                element: (
-                    <GeneralView categoryName={"terminales y accesorios"} />
-                ),
-            },
-            {
-                path: "/inicio/terminales-y-accesorios/:id",
-                element: <MultipleView />,
-            },
-            {
-                path: "/inicio/mangueras",
-                element: <GeneralView categoryName={"mangueras"} />,
-            },
-            {
-                path: "/inicio/mangueras/:id",
-                element: <MultipleView />,
-            },
-            {
-                path: "/inicio/productos",
-                element: <GeneralView categoryName={"productos"} />,
-            },
-            {
-                path: "/inicio/productos/:id",
-                element: <MultipleView />,
-            },
+
             {
                 path: "/inicio/calidad",
                 element: <Calidad />,
@@ -105,6 +78,7 @@ const router = createBrowserRouter([
             },
         ],
     },
+
     {
         path: "/adm",
         element: <AdminLogin />,

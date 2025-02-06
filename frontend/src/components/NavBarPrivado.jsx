@@ -99,7 +99,7 @@ export default function NavbarPrivado() {
                     )}
                 </div>
             </div>
-            <nav className="flex relative flex-row items-center pl-10 gap-20 w-full h-[85px] shadow-sm max-lg:justify-center">
+            <nav className="flex relative flex-row items-center pl-10 gap-20 w-full h-[85px] shadow-sm max-lg:justify-center bg-white">
                 <Link className="w-[267px] h-[57px]" to={"/"}>
                     <img src={conmanLogo} alt="Logo" className="w-full" />
                 </Link>

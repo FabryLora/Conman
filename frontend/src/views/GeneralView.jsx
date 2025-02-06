@@ -1,32 +1,53 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import DefaultCard from "../components/DefaultCard";
 import { useStateContext } from "../contexts/ContextProvider.jsx";
 
-export default function GeneralView({ categoryName }) {
+export default function GeneralView() {
     const { categoryInfo, productInfo, linkInfo } = useStateContext();
 
+    const location = useLocation();
+
+    const [categoryName, setCategoryName] = useState();
+
+    const [cleanPathname, setCleanPathname] = useState(
+        location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
+    );
+
+    useEffect(() => {
+        const newPath = location.pathname
+            .replace(/^\/+/, "")
+            .replace(/-/g, " ")
+            .split("/");
+        setCleanPathname(newPath);
+        setCategoryName(newPath[1]?.split("-").join(" "));
+    }, [location]);
+
     const filteredCategory = categoryInfo.find(
-        (category) => category.name.toUpperCase() === categoryName.toUpperCase()
+        (category) =>
+            category?.name?.toUpperCase() === categoryName?.toUpperCase()
     );
 
     useEffect(() => {
         setSelectedSubcategory(linkInfo.toLowerCase());
     }, [linkInfo]);
     const [selectedSubcategory, setSelectedSubcategory] = useState(
-        linkInfo.toLowerCase()
+        linkInfo?.toLowerCase() || ""
     );
+
+    console.log("selectedSubcategory", selectedSubcategory);
 
     const filteredProducts = selectedSubcategory
         ? productInfo.filter(
               (info) =>
-                  info.subCategory.name === selectedSubcategory &&
-                  info.category.name.toUpperCase() ===
-                      categoryName.toUpperCase()
+                  info?.subCategory?.name === selectedSubcategory &&
+                  info?.category.name?.toUpperCase() ===
+                      categoryName?.toUpperCase()
           )
         : productInfo.filter(
               (info) =>
-                  info.category.name.toUpperCase() ===
-                  categoryName.toUpperCase()
+                  info.category?.name.toUpperCase() ===
+                  categoryName?.toUpperCase()
           );
 
     return (

@@ -18,16 +18,20 @@ class SubCategoryController extends Controller
         return SubCategoryResource::collection(SubCategory::with("products")->get());
     }
 
-   
+
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SubCategoryStore $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
+        $data = $request->validate([
+            "name" => "required",
+            "link" => "required",
+            "order_value" => "required",
+            "category_id" => "required|exists:categories,id",
+        ]);
         $subCategory = SubCategory::create($data);
         return new SubCategoryResource($subCategory);
-
     }
 
     /**
@@ -39,16 +43,24 @@ class SubCategoryController extends Controller
         return new SubCategoryResource($subCategory);
     }
 
-   
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(SubCategoryUpdate $request, SubCategory $subCategory)
+    public function update(Request $request, $id)
     {
-        $data = $request->validated();
+
+        $subCategory = SubCategory::findOrFail($id);
+
+        $data = $request->validate([
+            "name" => "required",
+            "link" => "required",
+            "order_value" => "required",
+            "category_id" => "required|exists:categories,id",
+        ]);
         $subCategory->update($data);
-        return new SubCategoryResource($subCategory);
+        return response()->json($subCategory);
     }
 
     /**
@@ -57,6 +69,6 @@ class SubCategoryController extends Controller
     public function destroy(SubCategory $subCategory)
     {
         $subCategory->delete();
-        return response('',204);
+        return response('', 204);
     }
 }

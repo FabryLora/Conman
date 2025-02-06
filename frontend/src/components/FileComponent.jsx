@@ -4,7 +4,7 @@ import axiosClient from "../axios";
 export default function FileComponent({ fileObject }) {
     const downloadPDF = async () => {
         try {
-            const filename = fileObject.pdf_url.split("/").pop(); // Extraer solo el nombre del archivo
+            const filename = fileObject?.pdf_url.split("/").pop(); // Extraer solo el nombre del archivo
 
             const response = await axiosClient.get(
                 `/download-pdf/${filename}`,
@@ -18,7 +18,7 @@ export default function FileComponent({ fileObject }) {
 
             const a = document.createElement("a");
             a.href = url;
-            a.download = fileObject.name;
+            a.download = fileObject?.name;
             document.body.appendChild(a);
             a.click();
 
@@ -41,7 +41,7 @@ export default function FileComponent({ fileObject }) {
 
                 <div className="flex flex-row justify-between items-center w-full px-5">
                     <div className="flex flex-col gap-1">
-                        <p className="font-medium">{fileObject.name}</p>
+                        <p className="font-medium">{fileObject?.name}</p>
                         <p>PDF / 145kb</p>
                     </div>
                     <button className="w-[24px] h-[24px]" onClick={downloadPDF}>
