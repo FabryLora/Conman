@@ -1,13 +1,11 @@
+import { Helmet } from "react-helmet-async";
 import bannerImage from "../assets/calidad/banner-image.png";
 import itemIcon from "../assets/icons/item-icon.svg";
-import conmanLogo from "../assets/logos/conman-logo.png";
-import iqnetLogo from "../assets/logos/iqnet-logo.png";
-import iramLogo from "../assets/logos/iram-logo.png";
 import FileComponent from "../components/FileComponent";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Calidad() {
-    const { pdfInfo } = useStateContext();
+    const { pdfInfo, metadatos } = useStateContext();
 
     const itemList = [
         "Satisfacer las necesidades de nuestros clients actuales y potenciales, con productos innovadores y de alta calidad, que hagan que nuestros clientes nos valoren y distingan, reconociendo en nuestra forma de trabajo, un modelo de comportamiento distintivo.",
@@ -16,18 +14,31 @@ export default function Calidad() {
         "Fabricar terminales y accesorios para instalaciones óleo-hidráulicas y neumáticas que respondan a las necesidades de nuestros clientes.",
     ];
 
-    const fileInfoList = [
-        { image: conmanLogo, title: "Politicas de calidad" },
-        { image: iqnetLogo, title: "Certificado IQNET - ISO 9001:2015" },
-        { image: iramLogo, title: "Certificado IRAM - ISO 9001:2015" },
-    ];
-
     return (
         <div className="font-roboto-condensed">
+            <Helmet>
+                <meta
+                    name="description"
+                    content={
+                        metadatos?.find(
+                            (dato) => dato.seccion.toLowerCase() === "calidad"
+                        )?.descripcion
+                    }
+                />
+                <meta
+                    name="keywords"
+                    content={metadatos
+                        ?.find(
+                            (dato) => dato.seccion.toLowerCase() === "calidad"
+                        )
+                        ?.keywords?.split(" ")
+                        .join(",")}
+                />
+            </Helmet>
             <div className="flex flex-col gap-20 py-20">
-                <div className="flex flex-row">
+                <div className="flex flex-row gap-10">
                     <div className="w-1/2 flex justify-center">
-                        <div className="w-[90%] flex flex-col justify-evenly leading-relaxed">
+                        <div className="pl-20 flex flex-col justify-evenly leading-relaxed gap-8">
                             <h2 className="font-bold text-[40px]">
                                 Politicas de Calidad
                             </h2>

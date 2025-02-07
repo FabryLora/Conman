@@ -30,7 +30,7 @@ export default function Navbar() {
     const tinyMenuRef = useRef(null);
     const loginRef = useRef(null);
 
-    const { setLinkInfo, categoryInfo } = useStateContext();
+    const { setLinkInfo, categoryInfo, logos } = useStateContext();
 
     function removeAccents(str) {
         return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -367,13 +367,15 @@ export default function Navbar() {
                 </div>
             </div>
             <nav className="flex bg-white relative flex-row items-center px-20 gap-24 w-full h-[85px] shadow-sm justify-between max-xl:justify-center">
-                <Link className="" to={"/"}>
-                    <img
-                        src={conmanLogo}
-                        alt="Logo"
-                        className="min-w-[218px] min-h-[47px] object-contain"
-                    />
-                </Link>
+                <div className="max-h-[57px] max-w-[267px] min-w-[230px] min-h-[50px] w-fit">
+                    <Link className="" to={"/"}>
+                        <img
+                            src={logos?.principal_url}
+                            alt="Logo"
+                            className="w-full h-full object-contain"
+                        />
+                    </Link>
+                </div>
 
                 <ul className="flex flex-row gap-10 w-fit max-xl:hidden items-center">
                     <Link
@@ -392,28 +394,29 @@ export default function Navbar() {
                             <div
                                 onMouseEnter={() => toggleDropdown(drop.id)}
                                 onMouseLeave={() => toggleDropdown(drop.id)}
-                                className={`relative flex gap-1 max-xl:text-sm items-center ${
-                                    drop.chevron ? "hover:bg-[#CBCBCB]" : ""
-                                }`}
+                                className={`relative flex gap-1 max-xl:text-sm items-center `}
                                 key={drop.id}
                             >
-                                <Link
-                                    onClick={() => setLinkInfo("")}
-                                    className="hover:text-gray-500 whitespace-nowrap"
-                                    to={drop.href}
-                                >
-                                    {drop.id}
-                                </Link>
-                                {drop.chevron && (
-                                    <img src={chevronDown} alt="Chevron" />
-                                )}
+                                <div className="flex flex-row items-center gap-1">
+                                    <Link
+                                        onClick={() => setLinkInfo("")}
+                                        className="hover:text-gray-500 whitespace-nowrap"
+                                        to={drop.href}
+                                    >
+                                        {drop.id}
+                                    </Link>
+                                    {drop.chevron && (
+                                        <img src={chevronDown} alt="Chevron" />
+                                    )}
+                                </div>
+
                                 <AnimatePresence>
                                     {drop.open && drop.subHref && (
                                         <motion.div
                                             initial={{ height: 0 }}
                                             animate={{ height: "fit-content" }}
                                             exit={{ height: 0 }}
-                                            className="absolute flex flex-col top-9 left-0 bg-[#CBCBCB] shadow-md font-roboto-condensed w-[200px] h-fit z-40 overflow-hidden"
+                                            className="absolute flex flex-col top-6 left-0 bg-[#CBCBCB] shadow-md font-roboto-condensed w-[200px] h-fit z-40 overflow-hidden"
                                         >
                                             {drop.subHref.map((sub) => (
                                                 <Link

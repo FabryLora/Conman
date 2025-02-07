@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ReactDOMServer from "react-dom/server";
+import { Helmet } from "react-helmet-async";
 import letterIcon from "../assets/icons/letter-red-icon.svg";
 import locationIcon from "../assets/icons/location-red-icon.svg";
 import phoneIcon from "../assets/icons/phone-red-icon.svg";
@@ -9,7 +10,7 @@ import EmailTemplate from "../components/EmailTemplate";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Contacto() {
-    const { contactInfo } = useStateContext();
+    const { contactInfo, metadatos } = useStateContext();
 
     const contactoInfo = [
         { icon: locationIcon, text: contactInfo?.location },
@@ -65,6 +66,25 @@ export default function Contacto() {
 
     return (
         <div className="flex justify-center">
+            <Helmet>
+                <meta
+                    name="description"
+                    content={
+                        metadatos?.find(
+                            (dato) => dato.seccion.toLowerCase() === "contacto"
+                        )?.descripcion
+                    }
+                />
+                <meta
+                    name="keywords"
+                    content={metadatos
+                        ?.find(
+                            (dato) => dato.seccion.toLowerCase() === "contacto"
+                        )
+                        ?.keywords?.split(" ")
+                        .join(",")}
+                />
+            </Helmet>
             <div className="font-roboto-condensed text-[#515A53] py-20 flex flex-col gap-20 w-[90%]">
                 <div className="flex flex-row justify-between">
                     <div className="w-1/2 flex flex-col gap-10">

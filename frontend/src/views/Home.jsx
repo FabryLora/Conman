@@ -23,6 +23,7 @@ export default function Home() {
         categoryInfo,
         calidadInicio,
         novedades,
+        metadatos,
     } = useStateContext();
 
     useEffect(() => {
@@ -33,6 +34,23 @@ export default function Home() {
         <>
             <Helmet>
                 <title>Conman</title>
+                <meta
+                    name="description"
+                    content={
+                        metadatos?.find(
+                            (dato) => dato.seccion.toLowerCase() === "inicio"
+                        )?.descripcion
+                    }
+                />
+                <meta
+                    name="keywords"
+                    content={metadatos
+                        ?.find(
+                            (dato) => dato.seccion.toLowerCase() === "inicio"
+                        )
+                        ?.keywords.split(" ")
+                        .join(",")}
+                />
             </Helmet>
             <Navbar />
             <div>

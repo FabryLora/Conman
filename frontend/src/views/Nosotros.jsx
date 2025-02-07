@@ -1,7 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import quienes from "../assets/inicio/quienes.png";
 import mision from "../assets/nosotros/mision-icon.svg";
 import sustent from "../assets/nosotros/sustent-icon.svg";
 import vision from "../assets/nosotros/vision-icon.svg";
@@ -9,30 +7,46 @@ import NosotrosCard from "../components/NosotrosCard";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Nosotros() {
-    const { nosotrosFirstInfo } = useStateContext();
+    const { nosotrosFirstInfo, metadatos, nosotrosSecond } = useStateContext();
 
     const nosotrosInfo = [
         {
             icon: mision,
             title: "Misión",
-            text: "Nuestra misión es fabricar productos de acero sustentables que agreguen valor en lo que respecta a método de trabajo, patrimonio tecnológico y capacidades de sus recursos humanos.  Estamos comprometidos con la comunidad mediante el desarrollo de nuestros colaboradores. Creemos que construir con materia prima reciclable de forma infinita, es la forma de vivir y construir el futuro.",
+            text: nosotrosSecond?.mision,
         },
         {
             icon: vision,
             title: "Visión",
-            text: "Nuestra visión es ser la empresa líder en el desarrollo y FABRICACIÓN DE PERFILES DE ACERO GALVANIZADO de Argentina y que cada empresa, constructor o desarrollador se lleve a su obra un perfil fabricado bajo normas y certificaciones actuales. Queremos que cada producto que se use para la construcción de una vivienda tenga la calidad que uno necesita para su vida diaria.",
+            text: nosotrosSecond?.vision,
         },
         {
             icon: sustent,
             title: "Sustentabilidad",
-            text: "Tenemos responsabilidad social y de calidad, por lo que trabajamos para conservar la diversidad y la productividad a lo largo del tiempo, haciendo un uso consciente y responsable de los recursos. Invertimos en gestión ambiental bajo normas ISO 14001: 2015 y en nuevas tecnologías. Producimos con acero sustentable para el crecimiento y la innovación.",
+            text: nosotrosSecond?.sustentabilidad,
         },
     ];
 
     return (
         <div>
             <Helmet>
-                <title>Conman - Nosotros</title>
+                <meta
+                    name="description"
+                    content={
+                        metadatos?.find(
+                            (dato) => dato.seccion.toLowerCase() === "nosotros"
+                        )?.descripcion
+                    }
+                />
+                <meta
+                    name="keywords"
+                    content={metadatos
+                        ?.find(
+                            (dato) => dato.seccion.toLowerCase() === "nosotros"
+                        )
+                        ?.keywords?.split(" ")
+                        .join(",")}
+                />
             </Helmet>
             <div className="flex flex-col lg:flex-row items-center my-10 font-roboto-condensed justify-center w-full h-full">
                 {/* Imagen - 50% */}

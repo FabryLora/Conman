@@ -6,6 +6,8 @@ import { useStateContext } from "../contexts/ContextProvider";
 export default function PrivateZone() {
     const { userToken } = useStateContext();
 
+    const location = useLocation();
+
     const [cleanPathname, setCleanPathname] = useState(
         location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
     );

@@ -41,6 +41,7 @@ export default function Administrator() {
             href: "#",
             subHref: [
                 { title: "Slider", href: "/dashboard/slider" },
+                { title: "Logos", href: "/dashboard/logos" },
 
                 {
                     title: "Nosotros Inicio",
@@ -70,7 +71,10 @@ export default function Administrator() {
             title: "Nosotros",
             icon: faHouse,
             href: "#",
-            subHref: [{ title: "Nosotros", href: "/dashboard/nosotros" }],
+            subHref: [
+                { title: "Nosotros", href: "/dashboard/nosotros" },
+                { title: "Valores", href: "/dashboard/valores" },
+            ],
         },
         {
             id: "calidad",

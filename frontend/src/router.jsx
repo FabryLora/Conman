@@ -16,6 +16,7 @@ import InformacionAdmin from "./views/InformacionAdmin";
 import ListaDePrecios from "./views/ListaDePrecios";
 import ListaDePreciosAdmin from "./views/ListaDePreciosAdmin";
 import Login from "./views/Login";
+import LogosAdmin from "./views/LogosAdmin";
 import Metadatos from "./views/Metadatos";
 import MultipleView from "./views/MultipleView";
 import Nosotros from "./views/Nosotros";
@@ -32,6 +33,7 @@ import RealProducts from "./views/RealProducts";
 import Signup from "./views/Signup";
 import SliderAdmin from "./views/SliderAdmin";
 import UsuariosAdmin from "./views/UsuariosAdmin";
+import ValoresAdmin from "./views/ValoresAdmin";
 
 const router = createBrowserRouter([
     {
@@ -154,6 +156,14 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/informacion",
                 element: <InformacionAdmin />,
+            },
+            {
+                path: "/dashboard/valores",
+                element: <ValoresAdmin />,
+            },
+            {
+                path: "/dashboard/logos",
+                element: <LogosAdmin />,
             },
         ],
     },

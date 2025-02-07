@@ -76,7 +76,7 @@ const Carousel = ({ autoScrollInterval = 5000 }) => {
             </div>
 
             {/* Indicadores */}
-            <div className="absolute bottom-16 left-16 flex space-x-2 z-30">
+            <div className="absolute bottom-16 left-20 flex space-x-2 z-30">
                 {sliderInfo.images &&
                     sliderInfo.images.map((_, index) => (
                         <button

@@ -7,9 +7,12 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryInicioController;
 use App\Http\Controllers\ContactInfoController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\ListaDePreciosController;
+use App\Http\Controllers\LogosController;
 use App\Http\Controllers\MetadatosController;
 use App\Http\Controllers\NosotrosFirstController;
 use App\Http\Controllers\NosotrosInicioController;
+use App\Http\Controllers\NosotrosSecondController;
 use App\Http\Controllers\NovedadesController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PedidoController;
@@ -24,13 +27,13 @@ use App\Http\Controllers\SliderController;
 use App\Http\Controllers\SliderImageController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\UserPedidoController;
-use App\Models\PedidosInformacion;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
+
 Route::post('/sendcontact', [SendContactInfoController::class, 'sendReactEmail']);
 Route::post('/sendpedido', [SendPedidoController::class, 'sendReactEmail']);
 Route::put('/users/{id}', [AuthController::class, 'updateProfile']);
@@ -66,3 +69,7 @@ Route::apiResource('/novedades', NovedadesController::class);
 Route::apiResource('/metadatos', MetadatosController::class);
 Route::apiResource('/pedidosinformacion', PedidosInformacionController::class);
 Route::apiResource('/userpedidos', UserPedidoController::class);
+Route::apiResource("/listadeprecios", ListaDePreciosController::class);
+Route::apiResource("/nosotrossecond", NosotrosSecondController::class);
+Route::apiResource("/logos", LogosController::class);
+Route::get('/downloadarchivo/{filename}', [ListaDePreciosController::class, 'downloadPDF']);

@@ -5,32 +5,18 @@ import letterIcon from "../assets/icons/letter-red-icon.svg";
 import locationIcon from "../assets/icons/location-red-icon.svg";
 import phoneIcon from "../assets/icons/phone-red-icon.svg";
 import whatsappIcon from "../assets/icons/whatsapp-red-icon.svg";
-import cosmanWhiteLogo from "../assets/logos/conman-white-logo.png";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Footer() {
-    const { contactInfo } = useStateContext();
+    const { contactInfo, logos, categoryInfo } = useStateContext();
 
-    const links = [
-        { title: "Nosotros", href: "/inicio/nosotros" },
-        {
-            title: "Terminales y accesorios",
-            href: "/inicio/terminales-y-accesorios",
-        },
-        { title: "Mangueras", href: "/inicio/mangueras" },
-        {
-            title: "Acoples rapidos",
-            href: "/inicio/acoples-rapidos-hidraulicos",
-        },
-        { title: "Productos", href: "/inicio/productos" },
-        { title: "Calidad", href: "/inicio/calidad" },
-        { title: "Novedades", href: "/inicio/novedads" },
-        { title: "Contacto", href: "/inicio/contacto" },
-    ];
+    function removeAccents(str) {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
 
     const social = [
-        { logo: fbIcon, href: "#" },
-        { logo: igIcon, href: "#" },
+        { logo: fbIcon, href: contactInfo?.fb },
+        { logo: igIcon, href: contactInfo?.ig },
     ];
 
     const contactoInfo = [
@@ -48,16 +34,17 @@ export default function Footer() {
                 {/* logos y redes */}
                 <div className="flex flex-col justify-center items-center gap-8 order-1 max-sm:mx-auto">
                     <div className="flex flex-col max-sm:py-5">
-                        <img src={cosmanWhiteLogo} alt="" />
+                        <img src={logos?.secundario_url} alt="" />
                     </div>
                     <div className="flex flex-row gap-4">
                         {social.map((item, index) => (
-                            <img
-                                className="w-[26px] h-[26px]"
-                                key={index}
-                                src={item.logo}
-                                alt=""
-                            />
+                            <a href={item?.href} target="_black" key={index}>
+                                <img
+                                    className="w-[26px] h-[26px]"
+                                    src={item.logo}
+                                    alt=""
+                                />
+                            </a>
                         ))}
                     </div>
                 </div>
@@ -65,16 +52,30 @@ export default function Footer() {
                 {/* footer nav */}
                 <div className="flex flex-col gap-7 order-2 max-sm:px-8">
                     <h2 className="text-xl font-semibold">Secciones</h2>
-                    <div className="grid grid-cols-2 grid-rows-4 gap-4">
-                        {links.map((item, index) => (
+                    <div className="grid grid-cols-2 grid-rows-4 gap-4 gap-x-10">
+                        <Link className="text-base" to={"/inicio/nosotros"}>
+                            Nosotros
+                        </Link>
+                        {categoryInfo?.map((item, index) => (
                             <Link
-                                className="text-base"
                                 key={index}
-                                to={item.href}
+                                className="text-base"
+                                to={`/inicio/${removeAccents(
+                                    item.name.split(" ").join("-").toLowerCase()
+                                )}`}
                             >
-                                {item.title}
+                                {item.name}
                             </Link>
                         ))}
+                        <Link className="text-base" to={"/inicio/calidad"}>
+                            Calidad
+                        </Link>
+                        <Link className="text-base" to={"/inicio/novedades"}>
+                            Novedades
+                        </Link>
+                        <Link className="text-base" to={"/inicio/contacto"}>
+                            Contacto
+                        </Link>
                     </div>
                 </div>
 

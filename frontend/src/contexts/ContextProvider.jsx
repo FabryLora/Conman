@@ -54,6 +54,12 @@ const StateContext = createContext({
     fetchMetadatos: () => {},
     pedidosInfo: {},
     fetchPedidosInfo: () => {},
+    listadeprecios: [],
+    fetchListadeprecios: () => {},
+    nosotrosSecond: {},
+    fetchNosotrosSecond: () => {},
+    logos: {},
+    fetchLogos: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -78,6 +84,9 @@ export const ContextProvider = ({ children }) => {
     const [novedades, setNovedades] = useState([]);
     const [metadatos, setMetadatos] = useState([]);
     const [pedidosInfo, setPedidosInfo] = useState({});
+    const [listadeprecios, setListadeprecios] = useState([]);
+    const [nosotrosSecond, setNosotrosSecond] = useState({});
+    const [logos, setLogos] = useState({});
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem("cart");
         return savedCart ? JSON.parse(savedCart) : [];
@@ -272,6 +281,24 @@ export const ContextProvider = ({ children }) => {
         });
     };
 
+    const fetchListadeprecios = () => {
+        axiosClient.get("/listadeprecios").then(({ data }) => {
+            setListadeprecios(data.data);
+        });
+    };
+
+    const fetchNosotrosSecond = () => {
+        axiosClient.get("/nosotrossecond").then(({ data }) => {
+            setNosotrosSecond(data.data[0]);
+        });
+    };
+
+    const fetchLogos = () => {
+        axiosClient.get("/logos").then(({ data }) => {
+            setLogos(data.data[0]);
+        });
+    };
+
     useEffect(() => {
         fetchNosotrosFirstInfo();
         fetchContactInfo();
@@ -292,6 +319,9 @@ export const ContextProvider = ({ children }) => {
         fetchNovedades();
         fetchMetadatos();
         fetchPedidosInfo();
+        fetchListadeprecios();
+        fetchNosotrosSecond();
+        fetchLogos();
     }, []);
 
     useEffect(() => {
@@ -315,6 +345,12 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                logos,
+                fetchLogos,
+                nosotrosSecond,
+                fetchNosotrosSecond,
+                listadeprecios,
+                fetchListadeprecios,
                 pedidosInfo,
                 fetchPedidosInfo,
                 metadatos,

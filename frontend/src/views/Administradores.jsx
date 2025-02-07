@@ -4,8 +4,6 @@ import AdministradorRow from "../components/AdministradorRow";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Administradores() {
-    const [error, setError] = useState(false);
-
     const [name, setName] = useState();
     const [password, setPassword] = useState();
     const [password_confirmation, setPassword_confirmation] = useState();
@@ -16,27 +14,14 @@ export default function Administradores() {
 
         axiosClient
             .post("/signup-admin", { name, password, password_confirmation })
-            .then(() => {
+            .then(({ data }) => {
                 fetchAllAdmins();
-            })
-
-            .catch((error) => {
-                if (error.response) {
-                    setError(
-                        Object.values(error.response.data.errors || {})
-                            .flat()
-                            .join(" ")
-                    );
-                } else {
-                    setError("Ocurrió un error. Intenta nuevamente.");
-                }
             });
     };
 
     return (
         <div className="flex flex-col items-center py-20">
-            <div className="flex flex-col gap-2 top-10 right-10 bg-white shadow-md p-5 font-roboto-condensed w-fit h-fit border">
-                {error && <div className="h-99 w-99">{error}</div>}
+            <div className="flex flex-col gap-2 top-10 right-10 mb-20 bg-white shadow-md p-5 font-roboto-condensed w-fit h-fit border">
                 <h2 className="font-bold text-[24px] py-5">
                     Crear Administrador
                 </h2>

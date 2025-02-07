@@ -18,9 +18,21 @@ class AdminController extends Controller
         return AdminResource::collection(Admin::all());
     }
 
-    public function show(Request $request, $id)
+    public function signup(SignupAdminRequest $request)
     {
-        return response()->json(Admin::find($id));
+        $data = $request->validated();
+
+        /**  @var \App\Models\Admin $admin */
+        $admin = Admin::create([
+            'name' => $data['name'],
+            'password' => bcrypt($data['password'])
+        ]);
+        $adminToken = $admin->createToken('main')->plainTextToken;
+
+        return response([
+            'user' => $admin,
+            'adminToken' => $adminToken
+        ]);
     }
 
     public function login(LoginAdminRequest $request)
@@ -30,13 +42,14 @@ class AdminController extends Controller
         $remember = $credentials['remember'] ?? false;
         unset($credentials['remember']);
 
-        if (!Auth::attempt($credentials, $remember)) {
+        if (!Auth::guard('admin')->attempt(['name' => $credentials['name'], 'password' => $credentials['password']], $remember)) {
             return response([
                 'error' => 'The provided credentials are not correct'
             ], 422);
         }
+
         /**  @var \App\Models\Admin $admin */
-        $admin = Auth::user();
+        $admin = Auth::guard('admin')->user();
         $adminToken = $admin->createToken('main')->plainTextToken;
 
         return response([
@@ -44,6 +57,13 @@ class AdminController extends Controller
             'adminToken' => $adminToken
         ]);
     }
+
+    public function show(Request $request, $id)
+    {
+        return response()->json(Admin::find($id));
+    }
+
+
 
 
     public function me(Request $request)
@@ -71,21 +91,4 @@ class AdminController extends Controller
 
         return response()->json($user);
     } */
-
-    public function signup(SignupAdminRequest $request)
-    {
-        $data = $request->validated();
-
-        /**  @var \App\Models\Admin $admin */
-        $admin = Admin::create([
-            'name' => $data['name'],
-            'password' => bcrypt($data['password'])
-        ]);
-        $adminToken = $admin->createToken('main')->plainTextToken;
-
-        return response([
-            'user' => $admin,
-            'adminToken' => $adminToken
-        ]);
-    }
 }

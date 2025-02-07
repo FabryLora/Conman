@@ -4,7 +4,10 @@ import { Link } from "react-router-dom";
 export default function HomeCategory({ categoryObject }) {
     return (
         <Link
-            to={categoryObject?.link}
+            to={`/inicio/${categoryObject?.name
+                ?.toLowerCase()
+                ?.split(" ")
+                ?.join("-")}`}
             className="flex relative justify-center items-center bg-cover bg-no-repeat bg-center w-full h-[365px] overflow-hidden max-md:min-w-[365px] text-center"
             onMouseEnter={() => {}}
             onMouseLeave={() => {}}
