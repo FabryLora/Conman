@@ -3,9 +3,7 @@ import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useLocation } from "react-router-dom";
 import shieldIcon from "../assets/icons/shield-icon.svg";
-import novedades1 from "../assets/inicio/novedades-1.png";
-import novedades2 from "../assets/inicio/novedades-2.png";
-import novedades3 from "../assets/inicio/novedades-3.png";
+
 import bannerCalidad from "../assets/inicio/pdc-banner.png";
 import quienes from "../assets/inicio/quienes.png";
 import iqnetLogo from "../assets/logos/iqnet-logo.png";
@@ -22,6 +20,7 @@ export default function Home() {
         nosotrosInicio,
         fetchNosotrosInicio,
         categoryInicio,
+        categoryInfo,
         calidadInicio,
         novedades,
     } = useStateContext();
@@ -29,9 +28,6 @@ export default function Home() {
     useEffect(() => {
         fetchNosotrosInicio();
     }, []);
-
-    const location = useLocation();
-    console.log(location);
 
     return (
         <>
@@ -53,12 +49,19 @@ export default function Home() {
                         transition={{ duration: 1.5 }}
                         className="grid grid-cols-2 grid-rows-2 h-fit justify-items-center gap-5 w-full max-md:w-screen max-md:flex max-md:flex-row max-md:overflow-x-scroll max-md:scrollbar-hide"
                     >
-                        {categoryInicio.map((category, index) => (
-                            <HomeCategory
-                                key={index}
-                                categoryObject={category}
-                            />
-                        ))}
+                        {categoryInfo
+                            .filter((category) => category.destacado === 1)
+                            .sort((a, b) => {
+                                if (a.order_value < b.order_value) return -1;
+                                if (a.order_value > b.order_value) return 1;
+                                return 0;
+                            })
+                            .map((category, index) => (
+                                <HomeCategory
+                                    key={index}
+                                    categoryObject={category}
+                                />
+                            ))}
                     </motion.div>
                 </div>
 
@@ -142,8 +145,8 @@ export default function Home() {
                 </div>
 
                 {/* Ultimas novedades */}
-                <div className="bg-special-white flex flex-col items-center md:pb-10">
-                    <div className="flex flex-col w-[90%] gap-3">
+                <div className="bg-special-white flex flex-col items-center pb-16">
+                    <div className="flex flex-col w-full px-20">
                         <div className="flex flex-row items-center justify-between max-sm:flex-col max-sm:gap-6 py-10">
                             <h2 className="text-[40px] font-bold font-roboto-condensed max-sm:text-center">
                                 Enterate de nuestra ultimas novedades

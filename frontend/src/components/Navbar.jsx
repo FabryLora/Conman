@@ -1,7 +1,4 @@
-import {
-    faChevronCircleRight,
-    faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
@@ -19,7 +16,6 @@ import xmark from "../assets/icons/xmark-solid.svg";
 import conmanLogo from "../assets/logos/conman-logo.png";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
-import DropdownButton from "./DropdownButton";
 import SearchCard from "./SearchCard";
 
 export default function Navbar() {
@@ -35,6 +31,10 @@ export default function Navbar() {
     const loginRef = useRef(null);
 
     const { setLinkInfo, categoryInfo } = useStateContext();
+
+    function removeAccents(str) {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -111,12 +111,12 @@ export default function Navbar() {
             ...categoryInfo.map((category) => ({
                 id: category.name,
                 open: false,
-                href: `/inicio/${category.name
-                    .toLowerCase()
-                    .split(" ")
-                    .join("-")}`,
+                href: `/inicio/${removeAccents(
+                    category.name.toLowerCase().split(" ").join("-")
+                )}`,
                 chevron: true,
                 chevronAnimation: false,
+                order_value: category.order_value,
                 subHref: category.subcategories.map((subcategory) => ({
                     title: subcategory.name,
                     href: `/inicio/${category.name.toLowerCase()}/${subcategory.name.toLowerCase()}`,
@@ -127,7 +127,7 @@ export default function Navbar() {
 
     return (
         <div className="sticky top-0 z-50 flex flex-col items-center justify-center font-roboto-condensed">
-            <div className="bg-primary-blue h-[40px] w-full flex items-center justify-between pl-11 pr-4 max-sm:pl-0 max-sm:justify-end">
+            <div className="bg-primary-blue h-[40px] w-full flex items-center justify-between pl-20 pr-4 max-sm:pl-0 max-sm:justify-end">
                 <div className="flex gap-4 items-center text-[14px] text-white h-[16px] max-sm:hidden">
                     <div className="flex gap-2 items-center">
                         <img className="h-[16px]" src={letterIcon} alt="" />
@@ -345,14 +345,20 @@ export default function Navbar() {
                                             duration: 0.1,
                                             ease: "linear",
                                         }}
-                                        className="absolute flex flex-col top-10 right-0 border broder-gray bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-fit z-20"
+                                        className="absolute flex flex-col gap-4 top-10 right-0 border broder-gray bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-fit z-20"
                                     >
                                         <Link
-                                            className="bg-primary-red text-white text-center p-4"
+                                            className="bg-primary-red text-white text-center px-4 py-2"
                                             to={"/privado"}
                                         >
                                             SECCION PRIVADA
                                         </Link>
+                                        <button
+                                            className="bg-primary-red text-white text-center px-4 py-2"
+                                            to={"/privado"}
+                                        >
+                                            CERRAR SESION
+                                        </button>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
@@ -360,7 +366,7 @@ export default function Navbar() {
                     )}
                 </div>
             </div>
-            <nav className="flex bg-white relative flex-row items-center pl-10 gap-24 w-full h-[85px] shadow-sm max-xl:justify-center">
+            <nav className="flex bg-white relative flex-row items-center px-20 gap-24 w-full h-[85px] shadow-sm justify-between max-xl:justify-center">
                 <Link className="" to={"/"}>
                     <img
                         src={conmanLogo}
@@ -369,55 +375,85 @@ export default function Navbar() {
                     />
                 </Link>
 
-                <ul className="flex flex-row gap-5 w-full max-xl:hidden">
-                    {dropdowns.map((drop) => (
-                        <div
-                            onMouseEnter={() => toggleDropdown(drop.id)}
-                            onMouseLeave={() => toggleDropdown(drop.id)}
-                            className={`relative flex gap-1 max-xl:text-sm items-center p-2 ${
-                                drop.chevron ? "hover:bg-[#CBCBCB]" : ""
-                            }`}
-                            key={drop.id}
-                        >
-                            <Link
-                                onClick={() => setLinkInfo("")}
-                                className="hover:text-gray-500 whitespace-nowrap"
-                                to={drop.href}
+                <ul className="flex flex-row gap-10 w-fit max-xl:hidden items-center">
+                    <Link
+                        className="hover:text-gray-500"
+                        to={"/inicio/nosotros"}
+                    >
+                        Nosotros
+                    </Link>
+                    {dropdowns
+                        .sort((a, b) => {
+                            if (a.order_value < b.order_value) return -1;
+                            if (a.order_value > b.order_value) return 1;
+                            return 0;
+                        })
+                        .map((drop) => (
+                            <div
+                                onMouseEnter={() => toggleDropdown(drop.id)}
+                                onMouseLeave={() => toggleDropdown(drop.id)}
+                                className={`relative flex gap-1 max-xl:text-sm items-center ${
+                                    drop.chevron ? "hover:bg-[#CBCBCB]" : ""
+                                }`}
+                                key={drop.id}
                             >
-                                {drop.id}
-                            </Link>
-                            {drop.chevron && (
-                                <img src={chevronDown} alt="Chevron" />
-                            )}
-                            <AnimatePresence>
-                                {drop.open && drop.subHref && (
-                                    <motion.div
-                                        initial={{ height: 0 }}
-                                        animate={{ height: "fit-content" }}
-                                        exit={{ height: 0 }}
-                                        className="absolute flex flex-col top-9 left-0 bg-[#CBCBCB] shadow-md font-roboto-condensed w-[200px] h-fit z-40 overflow-hidden"
-                                    >
-                                        {drop.subHref.map((sub) => (
-                                            <Link
-                                                onClick={() =>
-                                                    setLinkInfo(sub.title)
-                                                }
-                                                className="flex flex-row items-center justify-between px-2 border-b border-white hover:text-gray-700"
-                                                key={sub.title}
-                                                to={`${drop.href}`}
-                                            >
-                                                {sub.title}
-                                                <FontAwesomeIcon
-                                                    icon={faChevronRight}
-                                                    color={"#000"}
-                                                />
-                                            </Link>
-                                        ))}
-                                    </motion.div>
+                                <Link
+                                    onClick={() => setLinkInfo("")}
+                                    className="hover:text-gray-500 whitespace-nowrap"
+                                    to={drop.href}
+                                >
+                                    {drop.id}
+                                </Link>
+                                {drop.chevron && (
+                                    <img src={chevronDown} alt="Chevron" />
                                 )}
-                            </AnimatePresence>
-                        </div>
-                    ))}
+                                <AnimatePresence>
+                                    {drop.open && drop.subHref && (
+                                        <motion.div
+                                            initial={{ height: 0 }}
+                                            animate={{ height: "fit-content" }}
+                                            exit={{ height: 0 }}
+                                            className="absolute flex flex-col top-9 left-0 bg-[#CBCBCB] shadow-md font-roboto-condensed w-[200px] h-fit z-40 overflow-hidden"
+                                        >
+                                            {drop.subHref.map((sub) => (
+                                                <Link
+                                                    onClick={() =>
+                                                        setLinkInfo(sub.title)
+                                                    }
+                                                    className="flex flex-row items-center justify-between px-2 border-b border-white hover:text-gray-700"
+                                                    key={sub.title}
+                                                    to={`${drop.href}`}
+                                                >
+                                                    {sub.title}
+                                                    <FontAwesomeIcon
+                                                        icon={faChevronRight}
+                                                        color={"#000"}
+                                                    />
+                                                </Link>
+                                            ))}
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+                        ))}
+                    <Link
+                        className="hover:text-gray-500"
+                        to={"/inicio/calidad"}
+                    >
+                        Calidad
+                    </Link>
+                    <Link
+                        className="hover:text-gray-500"
+                        to={"/inicio/novedades"}
+                    >
+                        Novedades
+                    </Link>
+                    <Link
+                        className="hover:text-gray-500"
+                        to={"/inicio/contacto"}
+                    >
+                        Contacto
+                    </Link>
                 </ul>
                 <button
                     onClick={() => setTinyMenu(!tinyMenu)}

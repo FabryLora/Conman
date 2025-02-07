@@ -218,7 +218,7 @@ export default function CategoriasAdmin() {
                                         name=""
                                         id=""
                                     >
-                                        <option disabled value="">
+                                        <option value="">
                                             Seleccionar categoria
                                         </option>
                                         {categoryInfo.map((category) => (

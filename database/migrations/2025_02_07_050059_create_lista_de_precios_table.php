@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('extra_info_productos', function (Blueprint $table) {
+        Schema::create('lista_de_precios', function (Blueprint $table) {
             $table->id();
+            $table->string('archivo');
             $table->timestamps();
         });
     }
@@ -22,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('extra_info_productos');
+        Schema::dropIfExists('lista_de_precios');
     }
 };

@@ -15,7 +15,7 @@ class PedidoController extends Controller
      */
     public function index()
     {
-        return PedidoResource::collection(Pedido::with("prodPedidos")->get());
+        return PedidoResource::collection(Pedido::with(["prodPedidos", "userPedido"])->get());
     }
 
     public function store(Request $request)
@@ -46,7 +46,7 @@ class PedidoController extends Controller
      */
     public function show(Pedido $pedido)
     {
-        $pedido->load("prodPedidos");
+        $pedido->load(["prodPedidos", "userPedido"]);
         return new PedidoResource($pedido);
     }
 

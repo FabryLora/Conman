@@ -47,6 +47,19 @@ export default function SubCategoryAdminCard({ subCategory }) {
         }
     };
 
+    const deleteSubCategory = async () => {
+        try {
+            const response = await axiosClient.post(
+                `/subcategory/${subCategory.id}?_method=DELETE`
+            );
+
+            console.log(response);
+            fetchSubCategoryInfo();
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <tr className=" h-[80px] border-y">
             <td>{name}</td>
@@ -107,16 +120,22 @@ export default function SubCategoryAdminCard({ subCategory }) {
                         />
                         <div className="flex flex-row gap-2">
                             <button
-                                className="bg-blue-500 text-white px-2 py-1"
+                                className="bg-green-500 text-white px-2 py-1"
                                 type="submit"
                             >
                                 Actualizar
                             </button>
                             <button
-                                className="bg-red-500 text-white px-2 py-1"
+                                className="bg-blue-500 text-white px-2 py-1"
                                 onClick={() => setEdit(false)}
                             >
                                 Cancelar
+                            </button>
+                            <button
+                                className="bg-red-500 text-white px-2 py-1"
+                                onClick={deleteSubCategory}
+                            >
+                                Eliminar
                             </button>
                         </div>
                     </form>

@@ -41,9 +41,13 @@ export default function ProductRow({ product }) {
             </div>
             <p className="text-left">{product?.code}</p>
             <p className="text-left">{product?.name}</p>
-            <p className="text-center">${product?.price}</p>
+            <p className="text-center">
+                ${product?.price.toLocaleString("es-AR")}
+            </p>
             <p className="text-center">{product?.discount}%</p>
-            <p className="text-center">${extraInfo.descuento}</p>
+            <p className="text-center">
+                ${extraInfo.descuento.toLocaleString("es-AR")}
+            </p>
 
             <div className="flex justify-center">
                 {location.pathname === "/privado/pedido" ? (

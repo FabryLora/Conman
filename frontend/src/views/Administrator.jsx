@@ -41,10 +41,7 @@ export default function Administrator() {
             href: "#",
             subHref: [
                 { title: "Slider", href: "/dashboard/slider" },
-                {
-                    title: "Categorias Inicio",
-                    href: "/dashboard/categorias-inicio",
-                },
+
                 {
                     title: "Nosotros Inicio",
                     href: "/dashboard/nosotros-inicio",
@@ -108,7 +105,7 @@ export default function Administrator() {
             icon: faHouse,
             href: "#",
             subHref: [
-                { title: "Usuarios", href: "/dashboard/usuarios" },
+                { title: "Clientes", href: "/dashboard/clientes" },
                 {
                     title: "Administradores",
                     href: "/dashboard/administradores",
@@ -122,6 +119,24 @@ export default function Administrator() {
             icon: faHouse,
             href: "#",
             subHref: [{ title: "Metadatos", href: "/dashboard/metadatos" }],
+        },
+        {
+            id: "zonaprivada",
+            open: false,
+            title: "Zona Privada",
+            icon: faHouse,
+            href: "#",
+            subHref: [
+                { title: "Pedidos", href: "/dashboard/pedidos-privada" },
+                {
+                    title: "Lista de Precios",
+                    href: "/dashboard/lista-de-precios",
+                },
+                {
+                    title: "Informacion y Descuento",
+                    href: "/dashboard/informacion",
+                },
+            ],
         },
     ]);
 

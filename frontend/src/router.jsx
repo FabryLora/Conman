@@ -12,7 +12,9 @@ import ContactoAdmin from "./views/ContactoAdmin";
 import DefaultLayout from "./views/DefaultLayout";
 import GeneralView from "./views/GeneralView";
 import Home from "./views/Home";
+import InformacionAdmin from "./views/InformacionAdmin";
 import ListaDePrecios from "./views/ListaDePrecios";
+import ListaDePreciosAdmin from "./views/ListaDePreciosAdmin";
 import Login from "./views/Login";
 import Metadatos from "./views/Metadatos";
 import MultipleView from "./views/MultipleView";
@@ -22,6 +24,7 @@ import NosotrosInicioAdmin from "./views/NosotrosInicioAdmin";
 import Novedades from "./views/Novedades";
 import NovedadesAdmin from "./views/NovedadesAdmin";
 import Pedidos from "./views/Pedidos";
+import PedidosAdmin from "./views/PedidosAdmin";
 import PrivateProducts from "./views/PrivateProducts";
 import PrivateZone from "./views/PrivateZone";
 import ProductosAdmin from "./views/ProductosAdmin";
@@ -112,17 +115,14 @@ const router = createBrowserRouter([
                 element: <ContactoAdmin />,
             },
             {
-                path: "/dashboard/usuarios",
+                path: "/dashboard/clientes",
                 element: <UsuariosAdmin />,
             },
             {
                 path: "/dashboard/archivos",
                 element: <CalidadAdmin />,
             },
-            {
-                path: "/dashboard/categorias-inicio",
-                element: <CategoriasInicioAdmin />,
-            },
+
             {
                 path: "/dashboard/nosotros-inicio",
                 element: <NosotrosInicioAdmin />,
@@ -142,6 +142,18 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/metadatos",
                 element: <Metadatos />,
+            },
+            {
+                path: "/dashboard/pedidos-privada",
+                element: <PedidosAdmin />,
+            },
+            {
+                path: "/dashboard/lista-de-precios",
+                element: <ListaDePreciosAdmin />,
+            },
+            {
+                path: "/dashboard/informacion",
+                element: <InformacionAdmin />,
             },
         ],
     },

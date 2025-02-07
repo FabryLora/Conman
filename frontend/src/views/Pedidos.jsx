@@ -9,7 +9,7 @@ import ProductRow from "../components/ProductRow";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Pedidos() {
-    const { cart, clearCart, userInfo } = useStateContext();
+    const { cart, clearCart, userInfo, pedidosInfo } = useStateContext();
 
     const [selected, setSelected] = useState("retiro");
     const [fileName, setFileName] = useState("Seleccionar archivo");
@@ -25,23 +25,28 @@ export default function Pedidos() {
     const [error, setError] = useState(false);
     const [succ, setSucc] = useState(false);
     const [succID, setSuccID] = useState();
-    const loacation = useLocation();
 
     useEffect(() => {
         const total = cart.reduce((acc, prod) => {
             return acc + prod.price * prod.additionalInfo.cantidad;
         }, 0);
-        setSubtotal(total.toFixed(2));
-
-        const condescuento = total * 0.97;
-        setSubtotalDescuento(condescuento.toFixed(2));
-        const iva = condescuento * 0.21;
-        setIva(iva.toFixed(2));
-        const descuento = total * 0.03;
-        setDescuento(descuento.toFixed(2));
-        const totalFinal = condescuento + iva;
-        setTotalFinal(totalFinal.toFixed(2));
-    }, [cart]);
+        setSubtotal(total.toLocaleString("es-AR"));
+        if (pedidosInfo?.descuento > 0 && tipo_entrega === "retiro cliente") {
+            const condescuento = total - (total * pedidosInfo?.descuento) / 100;
+            setSubtotalDescuento(condescuento.toLocaleString("es-AR"));
+            const iva = condescuento * 0.21;
+            setIva(iva.toLocaleString("es-AR"));
+            const descuento = (total * pedidosInfo?.descuento) / 100;
+            setDescuento(descuento.toLocaleString("es-AR"));
+            const totalFinal = condescuento + iva;
+            setTotalFinal(totalFinal.toLocaleString("es-AR"));
+        } else {
+            const iva = total * 0.21;
+            setIva(iva.toFixed(2));
+            setSubtotalDescuento(total.toLocaleString("es-AR"));
+            setTotalFinal((total + iva).toLocaleString("es-AR"));
+        }
+    }, [cart, tipo_entrega]);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -69,11 +74,14 @@ export default function Pedidos() {
         }
 
         formData.append("tipo_entrega", tipo_entrega);
-        formData.append("subtotal", subtotal);
-        formData.append("descuento", descuento);
+
+        formData.append("subtotal", descuento ? subtotal : 0);
+        formData.append("descuento", descuento ? descuento : 0);
+
         formData.append("subtotaldescuento", subtotalDescuento);
         formData.append("iva", iva);
-        if (totalFinal > 0) {
+
+        if (totalFinal !== "0.00") {
             formData.append("total", totalFinal);
         }
 
@@ -87,6 +95,19 @@ export default function Pedidos() {
             const pedidoId = response.data.data.id;
 
             setSuccID(pedidoId);
+
+            const userPedidoResponse = await axiosClient.post("/userpedidos", {
+                codigo_postal: userInfo.codigo_postal,
+                direccion: userInfo.direccion,
+                email: userInfo.email,
+                nombre: userInfo.name,
+                pedido_id: pedidoId,
+                telefono: userInfo.telefono,
+                dni: userInfo.dni,
+                localidad: userInfo.localidad,
+                provincia: userInfo.provincia,
+                razon_social: userInfo.razon_social,
+            });
 
             cart.forEach((prod) => {
                 const formProds = new FormData();
@@ -123,8 +144,8 @@ export default function Pedidos() {
                     extraInfo={{
                         mensaje: mensaje,
                         tipo_entrega: tipo_entrega,
-                        subtotal: subtotal,
-                        descuento: descuento,
+                        subtotal: subtotal ? subtotal : 0,
+                        descuento: descuento ? descuento : 0,
                         subtotalDescuento: subtotalDescuento,
                         iva: iva,
                         total: totalFinal,
@@ -136,9 +157,9 @@ export default function Pedidos() {
             const responseMail = await axiosClient.post("/sendpedido", {
                 html: htmlContent,
             });
-            console.log(responseMail);
             clearCart();
             setSucc(true);
+            console.log(userPedidoResponse);
         } catch (error) {
             setError(true);
             console.log(error);
@@ -157,7 +178,7 @@ export default function Pedidos() {
     }, [error]);
 
     return (
-        <div className="w-[80%] mx-auto py-20 grid grid-cols-2 gap-10">
+        <div className="w-full px-20 py-20 grid grid-cols-2 gap-10">
             <AnimatePresence>
                 {error && (
                     <motion.div
@@ -238,12 +259,7 @@ export default function Pedidos() {
                         Informacion importante
                     </h2>
                 </div>
-                <p className="p-5">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Sint dolores dignissimos itaque libero non eum possimus
-                    alias quibusdam, a, reiciendis vel unde dicta sunt
-                    voluptatum impedit asperiores cumque qui! Quos!
-                </p>
+                <p className="p-5 break-words">{pedidosInfo?.informacion}</p>
             </div>
             <div className="w-full border bg-gray-50">
                 <div className="bg-[#EAEAEA] p-3">
@@ -275,9 +291,11 @@ export default function Pedidos() {
                                 Retiro cliente
                             </label>
                         </div>
-                        <span className="text-green-600 font-medium">
-                            3% descuento
-                        </span>
+                        {pedidosInfo?.descuento > 0 && (
+                            <span className="text-green-600 font-medium">
+                                {pedidosInfo?.descuento}% descuento
+                            </span>
+                        )}
                     </div>
 
                     {/* Opción: Reparto Conman */}
@@ -353,14 +371,22 @@ export default function Pedidos() {
                 </div>
 
                 <div className="flex flex-col justify-between px-4 text-xl gap-2 border-b py-2">
-                    <div className="flex flex-row justify-between w-full">
-                        <p>Subtotal {"(sin descuento)"}</p>
-                        <p>${subtotal}</p>
-                    </div>
-                    <div className="flex flex-row justify-between w-full">
-                        <p>Descuento {"(3%)"}</p>
-                        <p className="text-green-600">-${descuento}</p>
-                    </div>
+                    {pedidosInfo?.descuento > 0 &&
+                        tipo_entrega === "retiro cliente" && (
+                            <div className="flex flex-row justify-between w-full">
+                                <p>Subtotal {"(sin descuento)"}</p>
+                                <p>${subtotal}</p>
+                            </div>
+                        )}
+                    {pedidosInfo?.descuento > 0 &&
+                        tipo_entrega === "retiro cliente" && (
+                            <div className="flex flex-row justify-between w-full">
+                                <p>
+                                    Descuento {`(${pedidosInfo?.descuento}%)`}
+                                </p>
+                                <p className="text-green-600">-${descuento}</p>
+                            </div>
+                        )}
                     <div className="flex flex-row justify-between w-full">
                         <p>Subtotal</p>
                         <p>${subtotalDescuento}</p>

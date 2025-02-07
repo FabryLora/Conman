@@ -14,6 +14,10 @@ export default function GeneralView() {
         location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
     );
 
+    function removeAccents(str) {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
     useEffect(() => {
         const newPath = location.pathname
             .replace(/^\/+/, "")
@@ -25,7 +29,8 @@ export default function GeneralView() {
 
     const filteredCategory = categoryInfo.find(
         (category) =>
-            category?.name?.toUpperCase() === categoryName?.toUpperCase()
+            removeAccents(category?.name?.toUpperCase()) ===
+            categoryName?.toUpperCase()
     );
 
     useEffect(() => {
@@ -41,17 +46,19 @@ export default function GeneralView() {
         ? productInfo.filter(
               (info) =>
                   info?.subCategory?.name === selectedSubcategory &&
-                  info?.category.name?.toUpperCase() ===
+                  removeAccents(info?.category.name?.toUpperCase()) ===
                       categoryName?.toUpperCase()
           )
         : productInfo.filter(
               (info) =>
-                  info.category?.name.toUpperCase() ===
+                  removeAccents(info.category?.name.toUpperCase()) ===
                   categoryName?.toUpperCase()
           );
 
+    console.log(filteredCategory);
+
     return (
-        <div className="flex flex-row w-full py-20 px-5 gap-10 font-roboto-condensed min-h-[526px]">
+        <div className="flex flex-row w-full py-20 px-20 gap-10 font-roboto-condensed min-h-[526px]">
             {/* Lista de subcategorías */}
             <div className="w-[20%]">
                 <button

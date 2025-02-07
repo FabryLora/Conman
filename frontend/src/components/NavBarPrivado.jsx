@@ -43,7 +43,7 @@ export default function NavbarPrivado() {
 
     return (
         <div className="sticky top-0 flex flex-col items-center justify-center font-roboto-condensed">
-            <div className="bg-primary-blue h-[40px] w-full flex items-center justify-between pl-11 pr-10">
+            <div className="bg-primary-blue h-[40px] w-full flex items-center justify-between pl-20 pr-14">
                 <div className="flex gap-4 items-center text-[14px] text-white h-[16px]">
                     <div className="flex gap-2 items-center">
                         <img className="h-[16px]" src={letterIcon} alt="" />
@@ -99,9 +99,13 @@ export default function NavbarPrivado() {
                     )}
                 </div>
             </div>
-            <nav className="flex relative flex-row items-center pl-10 gap-20 w-full h-[85px] shadow-sm max-lg:justify-center bg-white">
+            <nav className="flex relative flex-row items-center pl-20 pr-4 gap-20 w-full h-[85px] shadow-sm max-lg:justify-center bg-white">
                 <Link className="w-[267px] h-[57px]" to={"/"}>
-                    <img src={conmanLogo} alt="Logo" className="w-full" />
+                    <img
+                        src={conmanLogo}
+                        alt="Logo"
+                        className="w-full h-full object-contain"
+                    />
                 </Link>
                 <ul className="flex flex-row gap-5 w-full justify-end pr-10 max-lg:hidden">
                     {links.map((linkInfo) => (

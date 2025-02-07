@@ -2,6 +2,10 @@ import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 
 export default function DefaultCard({ cardObject, images }) {
+    const removeAccents = (str) => {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    };
+
     return (
         <motion.div
             initial={{ opacity: 0, x: 20 }}
@@ -11,7 +15,9 @@ export default function DefaultCard({ cardObject, images }) {
         >
             <Link
                 className="flex justify-center h-[287px]"
-                to={`/inicio/terminales-y-accesorios/${cardObject.id}`}
+                to={`/inicio/${removeAccents(
+                    cardObject.category.name.split(" ").join("-").toLowerCase()
+                )}/${cardObject.id}`}
             >
                 {images ? (
                     <img

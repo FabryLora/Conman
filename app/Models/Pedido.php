@@ -12,4 +12,9 @@ class Pedido extends Model
     {
         return $this->hasMany(ProductosPedidos::class);
     }
+
+    public function userPedido()
+    {
+        return $this->hasOne(UserPedido::class);
+    }
 }

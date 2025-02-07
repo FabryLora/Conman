@@ -52,6 +52,8 @@ const StateContext = createContext({
     fetchNovedades: () => {},
     metadatos: [],
     fetchMetadatos: () => {},
+    pedidosInfo: {},
+    fetchPedidosInfo: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -75,6 +77,7 @@ export const ContextProvider = ({ children }) => {
     const [allAdmins, setAllAdmins] = useState([]);
     const [novedades, setNovedades] = useState([]);
     const [metadatos, setMetadatos] = useState([]);
+    const [pedidosInfo, setPedidosInfo] = useState({});
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem("cart");
         return savedCart ? JSON.parse(savedCart) : [];
@@ -245,6 +248,12 @@ export const ContextProvider = ({ children }) => {
         });
     };
 
+    const fetchPedidosInfo = () => {
+        axiosClient.get("/pedidosinformacion").then(({ data }) => {
+            setPedidosInfo(data.data[0]);
+        });
+    };
+
     const fetchAllAdmins = () => {
         axiosClient.get("/alladmins").then(({ data }) => {
             setAllAdmins(data.data);
@@ -282,6 +291,7 @@ export const ContextProvider = ({ children }) => {
         fetchAllAdmins();
         fetchNovedades();
         fetchMetadatos();
+        fetchPedidosInfo();
     }, []);
 
     useEffect(() => {
@@ -305,6 +315,8 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                pedidosInfo,
+                fetchPedidosInfo,
                 metadatos,
                 fetchMetadatos,
                 novedades,

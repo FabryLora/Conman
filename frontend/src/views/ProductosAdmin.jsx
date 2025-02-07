@@ -14,6 +14,10 @@ export default function ProductosAdmin() {
     // ID de la categoría
     const [principal, setPrincipal] = useState("0");
 
+    const [image, setImage] = useState();
+    const [file, setFile] = useState();
+    const [description, setDescription] = useState();
+
     const { subCategoryInfo, productInfo, categoryInfo, fetchProductInfo } =
         useStateContext();
 
@@ -25,12 +29,28 @@ export default function ProductosAdmin() {
         e.preventDefault();
 
         try {
+            const prodData = new FormData();
+
+            prodData.append("name", name);
+            prodData.append("category_id", categoryId);
+            prodData.append(
+                "sub_category_id",
+                subCategoryId ? subCategoryId : null
+            );
+            prodData.append("description", description);
+            prodData.append("image", image);
+            prodData.append("file", file);
+
             // 1. Crear el producto
-            const productResponse = await axiosClient.post("/product", {
-                name,
-                sub_category_id: subCategoryId,
-                category_id: categoryId,
-            });
+            const productResponse = await axiosClient.post(
+                "/product",
+                prodData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
 
             const productId = productResponse.data.data.id; // ID del producto recién creado
 
@@ -76,7 +96,7 @@ export default function ProductosAdmin() {
                                     htmlFor="cover-photo"
                                     className="block text-sm/6 font-medium text-gray-900"
                                 >
-                                    Imagen
+                                    Imagen de Portada
                                 </label>
                                 <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 ">
                                     <div className="flex items-center justify-start p-4 w-1/2">
@@ -92,6 +112,70 @@ export default function ProductosAdmin() {
                                                     name="file-upload"
                                                     type="file"
                                                     onChange={handleFileChange}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="col-span-full">
+                                <label
+                                    htmlFor="image"
+                                    className="block text-sm/6 font-medium text-gray-900"
+                                >
+                                    Imagen Tecnica
+                                </label>
+                                <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 ">
+                                    <div className="flex items-center justify-start p-4 w-1/2">
+                                        <div className="text-center items-center h-fit self-center flex flex-row justify-start gap-3">
+                                            <PhotoIcon
+                                                aria-hidden="true"
+                                                className="mx-auto size-12 text-gray-300"
+                                            />
+                                            <div className=" flex text-sm/6 text-gray-600">
+                                                <input
+                                                    accept=""
+                                                    id="image"
+                                                    name="image"
+                                                    type="file"
+                                                    onChange={(e) =>
+                                                        setImage(
+                                                            e.target.files[0]
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="col-span-full">
+                                <label
+                                    htmlFor="file"
+                                    className="block text-sm/6 font-medium text-gray-900"
+                                >
+                                    Ficha Tecnica
+                                </label>
+                                <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 ">
+                                    <div className="flex items-center justify-start p-4 w-1/2">
+                                        <div className="text-center items-center h-fit self-center flex flex-row justify-start gap-3">
+                                            <PhotoIcon
+                                                aria-hidden="true"
+                                                className="mx-auto size-12 text-gray-300"
+                                            />
+                                            <div className=" flex text-sm/6 text-gray-600">
+                                                <input
+                                                    accept=""
+                                                    id="file"
+                                                    name="file"
+                                                    type="file"
+                                                    onChange={(e) =>
+                                                        setFile(
+                                                            e.target.files[0]
+                                                        )
+                                                    }
                                                 />
                                             </div>
                                         </div>
@@ -122,6 +206,27 @@ export default function ProductosAdmin() {
 
                             <div className="col-span-full">
                                 <label
+                                    htmlFor="description"
+                                    className="block text-sm/6 font-medium text-gray-900"
+                                >
+                                    Descripcion
+                                </label>
+                                <div className="mt-2">
+                                    <textarea
+                                        value={description}
+                                        onChange={(ev) =>
+                                            setDescription(ev.target.value)
+                                        }
+                                        id="description"
+                                        name="description"
+                                        rows={4}
+                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="col-span-full">
+                                <label
                                     htmlFor="categoria"
                                     className="block text-sm/6 font-medium text-gray-900"
                                 >
@@ -143,9 +248,9 @@ export default function ProductosAdmin() {
                                         {categoryInfo.map((category, index) => (
                                             <option
                                                 key={index}
-                                                value={category.id}
+                                                value={category?.id}
                                             >
-                                                {category.name}
+                                                {category?.name}
                                             </option>
                                         ))}
                                     </select>
@@ -181,9 +286,9 @@ export default function ProductosAdmin() {
                                             .map((subcategory, index) => (
                                                 <option
                                                     key={index}
-                                                    value={subcategory.id}
+                                                    value={subcategory?.id}
                                                 >
-                                                    {subcategory.name}
+                                                    {subcategory?.name}
                                                 </option>
                                             ))}
                                     </select>
@@ -208,11 +313,20 @@ export default function ProductosAdmin() {
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" className="px-6 py-3">
-                            Imagenes
+                            Imagenes de portada
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                            Imagene tecnica
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                            Ficha tecnica
                         </th>
 
                         <th scope="col" className="px-6 py-3">
                             Nombre
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                            Descripcion
                         </th>
 
                         <th scope="col" className="px-6 py-3">
@@ -235,13 +349,14 @@ export default function ProductosAdmin() {
                                 subCategoryInfo.find(
                                     (category) =>
                                         category.id ===
-                                        Number(info.subCategory.id)
+                                        Number(info?.subCategory?.id)
                                 )?.name
                             }
                             categoryName={
                                 categoryInfo.find(
                                     (category) =>
-                                        category.id === Number(info.category.id)
+                                        category.id ===
+                                        Number(info?.category?.id)
                                 )?.name
                             }
                         />

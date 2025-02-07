@@ -2,18 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ExtraInfoProducto;
+use App\Models\ListaDePrecios;
 use Illuminate\Http\Request;
 
-class ExtraInfoProductoController extends Controller
+class ListaDePreciosController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
-    }
+    public function index() {}
 
     /**
      * Show the form for creating a new resource.
@@ -34,7 +31,7 @@ class ExtraInfoProductoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ExtraInfoProducto $extraInfoProducto)
+    public function show(ListaDePrecios $listaDePrecios)
     {
         //
     }
@@ -42,7 +39,7 @@ class ExtraInfoProductoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ExtraInfoProducto $extraInfoProducto)
+    public function edit(ListaDePrecios $listaDePrecios)
     {
         //
     }
@@ -50,7 +47,7 @@ class ExtraInfoProductoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ExtraInfoProducto $extraInfoProducto)
+    public function update(Request $request, ListaDePrecios $listaDePrecios)
     {
         //
     }
@@ -58,7 +55,7 @@ class ExtraInfoProductoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ExtraInfoProducto $extraInfoProducto)
+    public function destroy(ListaDePrecios $listaDePrecios)
     {
         //
     }

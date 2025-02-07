@@ -25,6 +25,7 @@ class PedidoResource extends JsonResource
             "iva" => $this->iva,
             "total" => $this->total,
             "prodPedidos" => ProdPedidoResource::collection($this->whenLoaded('prodPedidos')),
+            "userPedido" => new UserPedidosResource($this->whenLoaded('userPedido')),
         ];
     }
 }

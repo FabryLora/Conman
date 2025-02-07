@@ -25,7 +25,7 @@ export default function PrivateProducts() {
     });
 
     return (
-        <div className="w-[80%] mx-auto py-10 flex flex-col gap-20">
+        <div className="w-full px-20 py-20 flex flex-col gap-20">
             <div className="h-[134px] w-full bg-primary-blue text-white">
                 <div className="flex flex-col gap-2 justify-center h-full p-10">
                     <h2>Buscar por:</h2>

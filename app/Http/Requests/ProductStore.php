@@ -22,9 +22,11 @@ class ProductStore extends FormRequest
     public function rules(): array
     {
         return [
-
+            "description" => "nullable|string",
+            "image" => "nullable|file|max:2048",
+            "file" => "nullable|file|max:2048",
             "name"  => "required|string",
-            "sub_category_id" => "required|exists:sub_categories,id",
+            "sub_category_id" => "nullable|exists:sub_categories,id",
             "category_id" => "required|exists:categories,id",
 
         ];

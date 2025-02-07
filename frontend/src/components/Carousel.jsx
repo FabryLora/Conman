@@ -47,7 +47,7 @@ const Carousel = ({ autoScrollInterval = 5000 }) => {
             </div>
 
             {/* Contenido estático */}
-            <div className="absolute inset-0 flex flex-col justify-center gap-16 pl-16 text-white font-roboto z-30">
+            <div className="absolute inset-0 flex flex-col justify-center gap-16 pl-20 text-white font-roboto z-30">
                 <div>
                     <div className="relative text-6xl font-bold">
                         <span className="absolute bottom-[2px] text-primary-blue">

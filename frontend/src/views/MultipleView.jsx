@@ -36,6 +36,34 @@ export default function MultipleView() {
         return <div>Loading...</div>; // Mostrar un mensaje mientras se carga la información
     }
 
+    const downloadPDF = async () => {
+        try {
+            const filename = productInfo?.file_url.split("/").pop(); // Extraer solo el nombre del archivo
+
+            const response = await axiosClient.get(
+                `/downloadfile/${filename}`,
+                {
+                    responseType: "blob",
+                }
+            );
+
+            const blob = new Blob([response.data], { type: "application/pdf" });
+            const url = window.URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = productInfo?.name;
+            document.body.appendChild(a);
+            a.click();
+
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Error al descargar el PDF:", error);
+        }
+    };
+
+    console.log(cleanPathname[1]);
+
     return (
         <div className="font-roboto-condensed w-[80%] mx-auto py-20">
             <div className="grid grid-cols-2 grid-rows-2 gap-4 gap-y-10 max-lg:grid-cols-1 max-lg:grid-rows-4">
@@ -88,10 +116,13 @@ export default function MultipleView() {
                             <h2 className="font-bold text-[32px]">
                                 {productInfo?.name}
                             </h2>
-                            <p>{productInfo?.name}</p>
+                            <p>{productInfo?.description}</p>
                         </div>
                         <div className="flex flex-row gap-10">
-                            <button className="h-[47px] w-full text-primary-red border border-primary-red">
+                            <button
+                                onClick={downloadPDF}
+                                className="h-[47px] w-full text-primary-red border border-primary-red"
+                            >
                                 FICHA TECNICA
                             </button>
                             <Link
@@ -130,14 +161,12 @@ export default function MultipleView() {
                     </div>
                 </div>
 
-                <div className="w-full h-full">
-                    <div className="w-full h-full flex justify-center items-center">
-                        <img
-                            className="h-[333px]"
-                            src={productInfo?.images[1]?.image_url}
-                            alt=""
-                        />
-                    </div>
+                <div className="w-full h-[333px] self-center ">
+                    <img
+                        className="w-full h-full object-contain"
+                        src={productInfo?.image_url}
+                        alt=""
+                    />
                 </div>
             </div>
         </div>
