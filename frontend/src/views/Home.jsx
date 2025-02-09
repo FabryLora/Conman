@@ -13,6 +13,7 @@ import Footer from "../components/Footer";
 import HomeCategory from "../components/HomeCategory";
 import Navbar from "../components/Navbar";
 import NovedadesCard from "../components/NovedadesCard";
+import WhatsappComponent from "../components/WhatsappComponent";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Home() {
@@ -84,21 +85,17 @@ export default function Home() {
                 </div>
 
                 {/* Quienes somos */}
-                <div className="max-xl:relative max-xl:h-[700px] flex flex-row my-10 font-roboto-condensed justify-center w-full h-full max-xl:bg-primary-blue overflow-hidden">
+                <div className="max-lg:relative max-lg:h-fit flex flex-row max-lg:flex-col my-10 font-roboto-condensed justify-center w-full h-full overflow-hidden">
                     {/* Imagen - 50% */}
-                    <img
-                        className="absolute w-full h-full object-fill opacity-30 xl:hidden"
-                        src={quienes}
-                        alt="¿Quiénes somos?"
-                    />
+
                     <motion.div
                         initial={{ oapcity: 0, x: -200 }}
                         whileInView={{ oapcity: 1, x: 0 }}
                         transition={{ duration: 1.2 }}
-                        className="w-full lg:w-1/2 flex justify-center items-center max-xl:hidden"
+                        className="w-full lg:w-1/2 flex justify-center items-center max-lg:w-full max-lg:h-[400px] h-[700px]"
                     >
                         <img
-                            className="w-full h-auto lg:h-[678px] object-cover"
+                            className="w-full h-full  object-cover object-center"
                             src={nosotrosInicio?.image_url}
                             alt="¿Quiénes somos?"
                         />
@@ -108,20 +105,31 @@ export default function Home() {
                         initial={{ oapcity: 0, x: 200 }}
                         whileInView={{ oapcity: 1, x: 0 }}
                         transition={{ duration: 1.2 }}
-                        className="max-xl:py-5 max-xl:items-center max-xl:absolute max-xl:z-10 flex flex-col gap-6 lg:gap-10  max-xl:w-full px-6 w-1/2 max-xl:text-white overflow-hidden"
+                        className=" max-lg:items-center flex flex-col  justify-end  w-1/2 max-lg:text-white  overflow-hidden px-14 pt-10 gap-40 max-2xl:gap-24 max-lg:w-full"
                     >
-                        <div className="flex flex-col gap-6 text-[14px] sm:text-[16px] text-justify max-w-[90%] whitespace-pre-line h-fit">
-                            <h2 className="text-[24px] sm:text-[32px] lg:text-[40px] font-bold text-center xl:text-left">
-                                {nosotrosInicio?.title}
-                            </h2>
-                            <p className="max-h-[430px] text-base break-words ">
-                                {nosotrosInicio?.text}
-                            </p>
+                        <div className="flex flex-col items-start overflow-y-auto max-h-[700px] w-full ">
+                            <style>
+                                {`
+                                    .custom-content div > span {
+                                        font-size: 16px !important; /* Cambia 1.25rem a 1rem */
+                                    }
+                                    .custom-content  p {
+                                        font-size: 16px !important; /* Cambia 1.25rem a 1rem */
+                                    }
+                                    
+                                `}
+                            </style>
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: nosotrosInicio?.text || "",
+                                }}
+                                className="custom-content font-roboto-condensed prose prose-sm sm:prose lg:prose-lg xl:prose-xl w-full min-w-full max-w-full"
+                            ></div>
                         </div>
-                        <div className="mt-auto">
+                        <div className="">
                             <Link
                                 to={"/inicio/nosotros"}
-                                className="bg-primary-red w-[289px] h-[47px] text-white flex justify-center items-center  mt-20 max-xl:mt-0"
+                                className="bg-primary-red w-[289px] h-[47px] text-white flex justify-center items-center  max-xl:mt-0"
                             >
                                 MÁS INFO
                             </Link>
@@ -190,6 +198,7 @@ export default function Home() {
                     </div>
                 </div>
             </div>
+            <WhatsappComponent />
             <Footer />
         </>
     );

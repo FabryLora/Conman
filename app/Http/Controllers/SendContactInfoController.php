@@ -13,7 +13,7 @@ class SendContactInfoController extends Controller
 
         Mail::send([], [], function ($message) use ($htmlContent) {
             $message->to('fabriloco2002@gmail.com')
-                ->subject('Correo con Vista en React')
+                ->subject('Correo de Contacto')
                 ->html($htmlContent);
         });
 

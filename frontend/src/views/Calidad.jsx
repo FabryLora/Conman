@@ -5,7 +5,7 @@ import FileComponent from "../components/FileComponent";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Calidad() {
-    const { pdfInfo, metadatos } = useStateContext();
+    const { pdfInfo, metadatos, calidadInfo } = useStateContext();
 
     const itemList = [
         "Satisfacer las necesidades de nuestros clients actuales y potenciales, con productos innovadores y de alta calidad, que hagan que nuestros clientes nos valoren y distingan, reconociendo en nuestra forma de trabajo, un modelo de comportamiento distintivo.",
@@ -35,47 +35,42 @@ export default function Calidad() {
                         .join(",")}
                 />
             </Helmet>
+            <style>
+                {`
+                            .custom-content div > span {
+    font-size: 16px !important; /* Cambia 1.25rem a 1rem */
+}
+ 
+   
+                            `}
+            </style>
             <div className="flex flex-col gap-20 py-20">
-                <div className="flex flex-row gap-10">
-                    <div className="w-1/2 flex justify-center">
-                        <div className="pl-20 flex flex-col justify-evenly leading-relaxed gap-8">
-                            <h2 className="font-bold text-[40px]">
-                                Politicas de Calidad
-                            </h2>
-                            <p className="text-[16px]">
-                                La Dirección de CONMAN se compromete a cumplir
-                                la presente Política de la Calidad, mejorando en
-                                forma contínua el Sistema de Gestión de Calidad
-                                en concordancia con su contexto, la normativa
-                                legal vigente y otros aplicables, enfocado en la
-                                productividad eficiente y el alcance de todos
-                                los objetivos propuestos.
-                            </p>
-                            <ul className="flex flex-col gap-2">
-                                <p>Tambien recuerda:</p>
-                                {itemList.map((item, index) => (
-                                    <li
-                                        key={index}
-                                        className="flex items-start gap-1"
-                                    >
-                                        <img src={itemIcon} alt="" />
-                                        <p>{item}</p>
-                                    </li>
-                                ))}
-                            </ul>
-                            <p className="font-semibold">
-                                Lorem ipsum dolor sit amet consectetur
-                                adipisicing elit. Quo eligendi sunt dolor veniam
-                                quod libero nostrum blanditiis animi dicta.
-                                Ratione eligendi dignissimos earum culpa
-                                corrupti dolore reiciendis, nihil obcaecati
-                                aliquid?
-                            </p>
+                <div className="flex flex-row gap-10 max-lg:flex-col">
+                    <div className="flex flex-col h-full w-full lg:w-1/2 md:max-w-full lg:max-w-none items-center max-lg:order-2">
+                        <div className="flex flex-col gap-6 items-start overflow-y-auto max-h-[700pxpx] w-full">
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: calidadInfo?.text || "",
+                                }}
+                                className="custom-content font-roboto-condensed px-12 prose prose-sm sm:prose lg:prose-lg xl:prose-xl w-full min-w-full max-w-full 
+    [&_ul]:list-none 
+    [&_ul_li]:relative 
+    [&_ul_li]:pl-8 
+    [&_ul_li:before]:absolute 
+    [&_ul_li:before]:left-0 
+    [&_ul_li:before]:top-1 
+    
+    [&_ul_li:before]:content-[url('/src/assets/icons/item-icon.svg')]"
+                            ></div>
                         </div>
                     </div>
 
-                    <div className="w-1/2">
-                        <img className="w-full" src={bannerImage} alt="" />
+                    <div className="w-1/2 max-lg:order-1 max-lg:w-full max-lg:h-[500px]">
+                        <img
+                            className="w-full h-full object-cover"
+                            src={calidadInfo?.image_url}
+                            alt=""
+                        />
                     </div>
                 </div>
                 <div className="flex flex-row justify-evenly">

@@ -1,7 +1,34 @@
 import { useState } from "react";
+import axiosClient from "../axios";
 
 export default function PedidosRowAdmin({ pedidoObject }) {
     const [isOpen, setIsOpen] = useState(false);
+
+    const downloadPDF = async () => {
+        try {
+            const filename = pedidoObject?.archivo_url.split("/").pop(); // Extraer solo el nombre del archivo
+
+            const response = await axiosClient.get(
+                `/downloadpedido/${filename}`,
+                {
+                    responseType: "blob",
+                }
+            );
+
+            const blob = new Blob([response.data], { type: "application/pdf" });
+            const url = window.URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = pedidoObject?.userPedido?.nombre;
+            document.body.appendChild(a);
+            a.click();
+
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Error al descargar el PDF:", error);
+        }
+    };
 
     return (
         <div className="grid grid-cols-3 items-center justify-items-center py-2 border-b text-[#515A53]">
@@ -127,6 +154,18 @@ export default function PedidosRowAdmin({ pedidoObject }) {
                                     )}
                                 </tbody>
                             </table>
+                            {pedidoObject?.archivo_url && (
+                                <p>
+                                    <strong>Archivo:</strong>{" "}
+                                    <button
+                                        onClick={downloadPDF}
+                                        className="text-blue-500"
+                                    >
+                                        Descargar
+                                    </button>
+                                </p>
+                            )}
+
                             <p>
                                 <strong>Mensaje:</strong>{" "}
                                 {pedidoObject?.mensaje}

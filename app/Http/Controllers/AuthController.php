@@ -79,36 +79,51 @@ class AuthController extends Controller
 
     public function me(Request $request)
     {
-        return $request->user();
+        return response()->json([
+            'id' => $request->user()->id,
+            $request->user(),
+        ]);
     }
 
-    public function updateProfile(Request $request)
+    public function update(Request $request, $id)
     {
-        $user = $request->user();
+        $user = User::find($id);
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'password' => 'sometimes|nullable|min:8|confirmed',
-            'razon_social' => 'required|string|max:100',
-            'dni' => 'required|string|max:100',
-            'telefono' => 'required|string|max:100',
-            'direccion' => 'required|string|max:100',
-            'provincia' => 'nullable|string|max:100',
-            'localidad' => 'nullable|string|max:100',
-            'codigo_postal' => 'required|string|max:100'
-        ]);
-
-        if (isset($validated['password'])) {
-            $validated['password'] = bcrypt($validated['password']);
-        } else {
-            unset($validated['password']);
+        if (!$user) {
+            return response()->json([
+                'error' => 'User not found'
+            ], 404);
         }
 
-        $user->update($validated);
+        $data = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|email|max:255|unique:users,email,' . $id,
+            'razon_social' => 'nullable|string|max:255',
+            'dni' => 'nullable|string|max:20',
+            'telefono' => 'nullable|string|max:20',
+            'direccion' => 'nullable|string|max:255',
+            'provincia' => 'nullable|string|max:255',
+            'localidad' => 'nullable|string|max:255',
+            'codigo_postal' => 'nullable|string|max:20',
+            'password' => 'nullable|string|min:6|confirmed',
+        ]);
 
-        return response()->json($user);
+        // Solo actualiza la contraseña si se proporciona
+        if (!empty($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        } else {
+            unset($data['password']); // Elimina el campo para no sobrescribirlo
+        }
+
+        $user->update($data);
+
+        return response()->json([
+            'message' => 'User updated successfully',
+            'user' => new UserResource($user)
+        ], 200);
     }
+
+
 
     public function destroy($id)
     {

@@ -15,10 +15,15 @@ class PDFResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
+        $path = storage_path("app/public/" . $this->pdf);
+
         return [
             "id" => $this->id,
             "name" => $this->name,
             "pdf_url" => $this->pdf ? url("storage/" . $this->pdf) : null,
+            "peso" => file_exists($path) ? filesize($path) : null, // Tamaño en bytes
+            "formato" => file_exists($path) ? mime_content_type($path) : null, // Tipo MIME
         ];
     }
 }

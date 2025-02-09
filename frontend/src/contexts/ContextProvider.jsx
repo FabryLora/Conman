@@ -60,6 +60,9 @@ const StateContext = createContext({
     fetchNosotrosSecond: () => {},
     logos: {},
     fetchLogos: () => {},
+    userId: "",
+    fetchCalidadInfo: () => {},
+    calidadInfo: {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -87,6 +90,8 @@ export const ContextProvider = ({ children }) => {
     const [listadeprecios, setListadeprecios] = useState([]);
     const [nosotrosSecond, setNosotrosSecond] = useState({});
     const [logos, setLogos] = useState({});
+    const [calidadInfo, setCalidadInfo] = useState({});
+    const [userId, setUserId] = useState("");
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem("cart");
         return savedCart ? JSON.parse(savedCart) : [];
@@ -163,7 +168,8 @@ export const ContextProvider = ({ children }) => {
 
     const fetchUserInfo = () => {
         axiosClient.get("/me").then(({ data }) => {
-            setUserInfo(data);
+            setUserInfo(data[0]);
+            setUserId(data.id);
         });
     };
 
@@ -299,6 +305,12 @@ export const ContextProvider = ({ children }) => {
         });
     };
 
+    const fetchCalidadInfo = () => {
+        axiosClient.get("/calidadinfo").then(({ data }) => {
+            setCalidadInfo(data.data[0]);
+        });
+    };
+
     useEffect(() => {
         fetchNosotrosFirstInfo();
         fetchContactInfo();
@@ -322,6 +334,7 @@ export const ContextProvider = ({ children }) => {
         fetchListadeprecios();
         fetchNosotrosSecond();
         fetchLogos();
+        fetchCalidadInfo();
     }, []);
 
     useEffect(() => {
@@ -345,6 +358,9 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                fetchCalidadInfo,
+                calidadInfo,
+                userId,
                 logos,
                 fetchLogos,
                 nosotrosSecond,

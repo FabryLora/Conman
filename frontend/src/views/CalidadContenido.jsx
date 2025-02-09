@@ -4,75 +4,67 @@ import { useEffect, useRef, useState } from "react";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
-export default function NosotrosInicioAdmin() {
-    const { nosotrosInicio, fetchNosotrosInicio } = useStateContext();
-
-    const [title, setTitle] = useState();
+export default function CalidadContenido() {
+    const { calidadInfo, fetchCalidadInfo } = useStateContext();
     const [text, setText] = useState();
     const [image, setImage] = useState();
-
-    const editorRef = useRef(null);
-
-    useEffect(() => {
-        fetchNosotrosInicio();
-    }, []);
-
-    useEffect(() => {
-        setTitle(nosotrosInicio?.title);
-        setText(nosotrosInicio.text || "");
-        if (editorRef.current && nosotrosInicio?.text) {
-            editorRef.current.summernote("code", nosotrosInicio?.text);
-        }
-    }, [nosotrosInicio]);
-
     const [error, setError] = useState(false);
     const [succ, setSucc] = useState(false);
 
-    const handleImageChange = (e) => {
-        setImage(e.target.files[0]);
+    const editorRef = useRef(null); // Referencia al editor
+
+    useEffect(() => {
+        fetchCalidadInfo();
+    }, []);
+
+    useEffect(() => {
+        setText(calidadInfo?.text || "");
+
+        // Si el editor está inicializado, actualiza el contenido
+        if (editorRef.current && calidadInfo?.text) {
+            editorRef.current.summernote("code", calidadInfo?.text);
+        }
+    }, [calidadInfo]);
+
+    const handleImageChange = (ev) => {
+        setImage(ev.target.files[0]);
     };
 
     const update = async (e) => {
         e.preventDefault();
 
-        const formData = new FormData();
+        // Obtiene el contenido del editor antes de enviar
 
-        formData.append("title", title);
+        const formData = new FormData();
         formData.append("text", editorRef.current.summernote("code"));
-        if (image !== undefined) {
+        if (image) {
             formData.append("image", image);
         }
 
         try {
-            await axiosClient.post(`/nosotrosinicio/1?_method=PUT`, formData, {
+            await axiosClient.post(`/calidadinfo/1?_method=PUT`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
 
-            fetchNosotrosInicio();
+            fetchCalidadInfo();
             setSucc(true);
         } catch (err) {
             if (err && err.response) {
                 const errorMessages = err.response.data.errors;
-                const messagesArray = [];
-
-                Object.values(errorMessages).forEach((messagesArrayField) => {
-                    messagesArrayField.forEach((message) => {
-                        let translatedMessage = message;
-                        if (message === "The title field is required.") {
-                            translatedMessage =
-                                "El campo título no puede estar vacío.";
-                        } else if (message === "The text field is required.") {
-                            translatedMessage =
-                                "El campo texto no puede estar vacío.";
-                        } else if (message === "The image field is required.") {
-                            translatedMessage =
-                                "El campo imagen no puede estar vacío.";
-                        }
-                        messagesArray.push(translatedMessage);
+                const messagesArray = Object.values(errorMessages)
+                    .flat()
+                    .map((message) => {
+                        if (message === "The title field is required.")
+                            return "El campo título no puede estar vacío.";
+                        if (message === "The text field is required.")
+                            return "El campo texto no puede estar vacío.";
+                        if (message === "The image field is required.")
+                            return "El campo imagen no puede estar vacío.";
+                        return message;
                     });
-                });
+
                 setSucc(false);
                 setError(messagesArray);
             }
@@ -98,7 +90,7 @@ export default function NosotrosInicioAdmin() {
     }, [succ]);
 
     return (
-        <div className="">
+        <div>
             {error && (
                 <div className="fixed top-10 left-[55%] bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
                     <p className="font-bold">Error</p>
@@ -120,23 +112,35 @@ export default function NosotrosInicioAdmin() {
                     <div className="border-b border-gray-900/10 pb-12">
                         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div className="col-span-full">
-                                <label
-                                    htmlFor="about"
-                                    className="block text-sm/6 font-medium text-gray-900"
-                                >
+                                <label className="block text-sm/6 font-medium text-gray-900">
                                     Texto
                                 </label>
                                 <div className="mt-2 min-w-[900px] prose prose-sm sm:prose lg:prose-lg xl:prose-xl">
                                     <ReactSummernoteLite
+                                        options={{
+                                            styleTags: [
+                                                {
+                                                    title: "Interlineado normal",
+                                                    tag: "p",
+                                                    className: "leading-normal",
+                                                },
+                                                {
+                                                    title: "Interlineado amplio",
+                                                    tag: "p",
+                                                    className: "leading-loose",
+                                                },
+                                            ],
+                                        }}
                                         className="w-full"
                                         onInit={({ note }) => {
                                             if (!editorRef.current) {
                                                 editorRef.current = note; // Guarda la referencia del editor solo una vez
+                                                console.log("init", note);
 
-                                                if (text) {
+                                                if (calidadInfo?.text) {
                                                     note.summernote(
                                                         "code",
-                                                        text
+                                                        calidadInfo?.text
                                                     );
                                                 }
                                             }
@@ -146,39 +150,28 @@ export default function NosotrosInicioAdmin() {
                             </div>
 
                             <div className="col-span-full">
-                                <label
-                                    htmlFor="cover-photo"
-                                    className="block font-medium text-gray-900 text-xl"
-                                >
+                                <label className="block font-medium text-gray-900 text-xl">
                                     Imagen
                                 </label>
-                                <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 ">
-                                    <div className=" w-1/2">
+                                <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25">
+                                    <div className="w-1/2">
                                         <img
                                             className="w-full h-full object-contain"
-                                            src={nosotrosInicio?.image_url}
+                                            src={calidadInfo?.image_url}
                                             alt=""
                                         />
                                     </div>
                                     <div className="flex items-center justify-center w-1/2">
                                         <div className="text-center items-center h-fit self-center">
-                                            <PhotoIcon
-                                                aria-hidden="true"
-                                                className="mx-auto size-12 text-gray-300"
-                                            />
-                                            <div className="mt-4 flex text-sm/6 text-gray-600">
-                                                <label
-                                                    htmlFor="file-upload"
-                                                    className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                                                >
+                                            <PhotoIcon className="mx-auto size-12 text-gray-300" />
+                                            <div className="mt-4 flex text-sm text-gray-600">
+                                                <label className="cursor-pointer rounded-md bg-white font-semibold text-indigo-600 hover:text-indigo-500">
                                                     <span>Cambiar Imagen</span>
                                                     <input
-                                                        id="file-upload"
-                                                        name="file-upload"
+                                                        type="file"
                                                         onChange={
                                                             handleImageChange
                                                         }
-                                                        type="file"
                                                         className="sr-only"
                                                     />
                                                 </label>
@@ -193,7 +186,7 @@ export default function NosotrosInicioAdmin() {
                 <div className="mt-6 flex items-center justify-end gap-x-6 pb-10">
                     <button
                         type="submit"
-                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
                     >
                         Actualizar
                     </button>

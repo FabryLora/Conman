@@ -13,7 +13,6 @@ import searchIcon from "../assets/icons/search.svg";
 import letterIcon from "../assets/icons/sobre.svg";
 import userIcon from "../assets/icons/user-icon.svg";
 import xmark from "../assets/icons/xmark-solid.svg";
-import conmanLogo from "../assets/logos/conman-logo.png";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 import SearchCard from "./SearchCard";
@@ -141,11 +140,11 @@ export default function Navbar() {
                 <div className="flex fle-row gap-4 h-full items-center">
                     <div
                         ref={searchBarRef}
-                        className="relative flex flex-row items-center gap-3"
+                        className="relative flex flex-row items-center max-sm:justify-end gap-3"
                     >
                         <AnimatePresence>
                             <div
-                                className={`flex flex-row items-center gap-2 rounded-md ${
+                                className={`flex flex-row items-center gap-2 rounded-md max-sm:w-[70%] ${
                                     search ? "border px-2" : ""
                                 }`}
                             >
@@ -185,7 +184,7 @@ export default function Navbar() {
                                     <img
                                         src={searchIcon}
                                         alt="Buscar"
-                                        className="h-[15px]"
+                                        className="h-[15px] max-sm:h-[20px] "
                                     />
                                 </label>
                             </div>
@@ -196,7 +195,7 @@ export default function Navbar() {
                                     initial={{ opacity: 0, y: -8 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -8 }}
-                                    className="absolute flex flex-col top-8 bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-[439px] z-40"
+                                    className="absolute flex flex-col top-8 bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-[439px] z-40 max-sm:-right-44"
                                 >
                                     <h2 className="font-bold text-[24px] py-5">
                                         Resultados de busqueda
@@ -227,6 +226,7 @@ export default function Navbar() {
                             target="_blanck"
                             href={social.href}
                             rel="noopener noreferrer"
+                            className="max-sm:hidden"
                         >
                             <img src={social.logo} alt="" />
                         </a>
@@ -359,6 +359,12 @@ export default function Navbar() {
                                         >
                                             CERRAR SESION
                                         </button>
+                                        <Link
+                                            className="bg-primary-red text-white text-center px-4 py-2"
+                                            to={"/actualizar-perfil"}
+                                        >
+                                            ACTUALIZAR PERFIL
+                                        </Link>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
@@ -460,7 +466,7 @@ export default function Navbar() {
                 </ul>
                 <button
                     onClick={() => setTinyMenu(!tinyMenu)}
-                    className="w-[20px] h-[20px] absolute left-10 xl:hidden"
+                    className="w-[20px] h-[20px] absolute left-20 max-sm:left-6 xl:hidden"
                 >
                     <img src={barsIcon} alt="" />
                 </button>
@@ -483,6 +489,12 @@ export default function Navbar() {
                                 <img src={xmark} alt="" />
                             </button>
                             <ul className="flex flex-col gap-5 p-10 text-white w-full">
+                                <Link
+                                    className="mx-2 hover:text-gray-600 whitespace-nowrap border-b"
+                                    to={"/inicio/nosotros"}
+                                >
+                                    Nosotros
+                                </Link>
                                 {dropdowns.map((drop) => (
                                     <div
                                         className="relative flex-col justify-between gap-1 items-center p-2"
@@ -490,9 +502,7 @@ export default function Navbar() {
                                     >
                                         <div className="flex flex-row justify-between w-full items-center border-b">
                                             <Link
-                                                onClick={() =>
-                                                    setLinkInfo(categoryInfo)
-                                                }
+                                                onClick={() => setLinkInfo("")}
                                                 className="hover:text-gray-600 whitespace-nowrap"
                                                 to={drop.href}
                                             >
@@ -548,7 +558,7 @@ export default function Navbar() {
                                                                             sub.title
                                                                         )
                                                                     }
-                                                                    className="flex flex-row items-center justify-between pl-5 hover:text-gray-600"
+                                                                    className="flex flex-row items-center justify-between mx-5 hover:text-gray-600"
                                                                     key={
                                                                         sub.title
                                                                     }
@@ -565,6 +575,24 @@ export default function Navbar() {
                                         </AnimatePresence>
                                     </div>
                                 ))}
+                                <Link
+                                    className="border-b mx-2 hover:text-gray-600 whitespace-nowrap"
+                                    to={"/inicio/calidad"}
+                                >
+                                    Calidad
+                                </Link>
+                                <Link
+                                    className="border-b mx-2 hover:text-gray-600 whitespace-nowrap"
+                                    to={"/inicio/nosotros"}
+                                >
+                                    Novedades
+                                </Link>
+                                <Link
+                                    className="mx-2 hover:text-gray-600 whitespace-nowrap border-b"
+                                    to={"/inicio/nosotros"}
+                                >
+                                    Contacto
+                                </Link>
                             </ul>
                         </motion.div>
                     </div>

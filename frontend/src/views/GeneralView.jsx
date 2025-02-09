@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import DefaultCard from "../components/DefaultCard";
+import WhatsappComponent from "../components/WhatsappComponent.jsx";
 import { useStateContext } from "../contexts/ContextProvider.jsx";
 
 export default function GeneralView() {
@@ -34,13 +35,11 @@ export default function GeneralView() {
     );
 
     useEffect(() => {
-        setSelectedSubcategory(linkInfo.toLowerCase());
+        setSelectedSubcategory(linkInfo?.toLowerCase());
     }, [linkInfo]);
     const [selectedSubcategory, setSelectedSubcategory] = useState(
         linkInfo?.toLowerCase() || ""
     );
-
-    console.log("selectedSubcategory", selectedSubcategory);
 
     const filteredProducts = selectedSubcategory
         ? productInfo.filter(
@@ -55,12 +54,10 @@ export default function GeneralView() {
                   categoryName?.toUpperCase()
           );
 
-    console.log(filteredCategory);
-
     return (
-        <div className="flex flex-row w-full py-20 px-20 gap-10 font-roboto-condensed min-h-[526px]">
+        <div className="flex flex-row w-full py-20 px-20 gap-10 font-roboto-condensed min-h-[526px] max-sm:flex-col">
             {/* Lista de subcategorías */}
-            <div className="w-[20%]">
+            <div className="w-[20%] max-sm:w-full">
                 <button
                     onClick={() => setSelectedSubcategory("")}
                     className={` text-[16px] border-y border-[#EAEAEA] py-2 w-full text-left ${
@@ -94,6 +91,7 @@ export default function GeneralView() {
                     />
                 ))}
             </div>
+            <WhatsappComponent />
         </div>
     );
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CalidadInfoController;
 use App\Http\Controllers\CalidadInicioController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryInicioController;
@@ -36,7 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('/sendcontact', [SendContactInfoController::class, 'sendReactEmail']);
 Route::post('/sendpedido', [SendPedidoController::class, 'sendReactEmail']);
-Route::put('/users/{id}', [AuthController::class, 'updateProfile']);
+Route::put('/users/{id}', [AuthController::class, 'update']);
 Route::delete('/users/{id}', [AuthController::class, 'destroy']);
 Route::get('/me-admin', [AdminController::class, 'me']);
 Route::get('/allusers', [AuthController::class, 'index']);
@@ -64,6 +65,7 @@ Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/login-admin', [AdminController::class, 'login']);
 Route::post('/signup-admin', [AdminController::class, 'signup']);
+Route::put('/admin/{id}', [AdminController::class, 'update']);
 Route::get('/alladmins', [AdminController::class, 'index']);
 Route::apiResource('/novedades', NovedadesController::class);
 Route::apiResource('/metadatos', MetadatosController::class);
@@ -72,4 +74,6 @@ Route::apiResource('/userpedidos', UserPedidoController::class);
 Route::apiResource("/listadeprecios", ListaDePreciosController::class);
 Route::apiResource("/nosotrossecond", NosotrosSecondController::class);
 Route::apiResource("/logos", LogosController::class);
+Route::apiResource("/calidadinfo", CalidadInfoController::class);
 Route::get('/downloadarchivo/{filename}', [ListaDePreciosController::class, 'downloadPDF']);
+Route::get('/downloadpedido/{filename}', [PedidoController::class, 'downloadPDF']);

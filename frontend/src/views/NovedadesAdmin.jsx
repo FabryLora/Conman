@@ -1,5 +1,5 @@
 import { PhotoIcon } from "@heroicons/react/24/solid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axiosClient from "../axios";
 import NovedadesRow from "../components/NovedadesRow";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -11,6 +11,8 @@ export default function NovedadesAdmin() {
     const [title, setTitle] = useState();
     const [text, setText] = useState();
     const [featured, setFeatured] = useState(0);
+    const [error, setError] = useState(false);
+    const [succ, setSucc] = useState(false);
 
     const handleFileChange = (e) => {
         setImage(e.target.files[0]); // Almacena los archivos seleccionados
@@ -37,16 +39,68 @@ export default function NovedadesAdmin() {
             );
 
             console.log(novedadesResponse);
-            alert("Novedad creada correctamente.");
+            setSucc(true);
             fetchNovedades();
-        } catch (error) {
-            console.error("Error al crear el producto:", error);
-            alert("Hubo un error al crear el producto.");
+        } catch (err) {
+            if (err && err.response) {
+                const errorMessages = err.response.data.errors;
+                const messagesArray = [];
+
+                Object.values(errorMessages).forEach((messagesArrayField) => {
+                    messagesArrayField.forEach((message) => {
+                        let translatedMessage = message;
+                        if (message === "The title field is required.") {
+                            translatedMessage =
+                                "El campo título no puede estar vacío.";
+                        } else if (message === "The text field is required.") {
+                            translatedMessage =
+                                "El campo texto no puede estar vacío.";
+                        } else if (message === "The image field is required.") {
+                            translatedMessage =
+                                "El campo imagen no puede estar vacío.";
+                        }
+                        messagesArray.push(translatedMessage);
+                    });
+                });
+                setSucc(false);
+                setError(messagesArray);
+            }
         }
     };
 
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => {
+                setError(null);
+            }, 4000);
+            return () => clearTimeout(timer);
+        }
+    }, [error]);
+
+    useEffect(() => {
+        if (succ) {
+            const timer = setTimeout(() => {
+                setSucc(null);
+            }, 4000);
+            return () => clearTimeout(timer);
+        }
+    }, [succ]);
+
     return (
         <div className="relative overflow-x-auto">
+            {error && (
+                <div className="fixed top-10 left-[55%] bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
+                    <p className="font-bold">Error</p>
+                    {error.map((errMsg, index) => (
+                        <p key={index}>{errMsg}</p>
+                    ))}
+                </div>
+            )}
+            {succ && (
+                <div className="fixed top-10 left-[55%] bg-green-100 border-l-4 border-green-500 text-green-700 p-4">
+                    <p className="font-bold">Guardado correctamente</p>
+                </div>
+            )}
             <form
                 onSubmit={handleSubmit}
                 className="p-5 flex flex-col justify-between h-fit"

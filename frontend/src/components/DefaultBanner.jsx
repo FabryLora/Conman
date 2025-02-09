@@ -8,7 +8,7 @@ export default function DefaultBanner({ title, href, bannerImage }) {
                 src={bannerImage}
                 alt=""
             />
-            <div className=" flex flex-col justify-between absolute h-full px-20">
+            <div className=" flex flex-col justify-between absolute h-full px-20 max-sm:px-6">
                 <div className="flex flex-row items-center gap-1 text-sm pt-6">
                     <Link to={"/"}>Inicio</Link>
                     <p>{">"}</p>

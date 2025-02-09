@@ -12,13 +12,12 @@ export default function CategoryAdminCard({ category }) {
     const [name, setName] = useState();
     const [destacado, setDestacado] = useState();
     const [order, setOrder] = useState();
-    const [link, setLink] = useState();
+    const [link, setLink] = useState("");
 
     useEffect(() => {
         setName(category?.name);
         setDestacado(category?.destacado);
         setOrder(category?.order_value);
-        setLink(category?.link);
     }, [category]);
 
     const hanldeFileChange = (e) => {
@@ -35,7 +34,7 @@ export default function CategoryAdminCard({ category }) {
         formData.append("name", name);
         formData.append("destacado", destacado ? 1 : 0);
         formData.append("order_value", order);
-        formData.append("link", link);
+        formData.append("link", "a");
 
         try {
             const response = await axiosClient.post(
@@ -77,7 +76,6 @@ export default function CategoryAdminCard({ category }) {
                 />
             </td>
             <td className=" align-middle">{name}</td>
-            <td className=" align-middle">{link}</td>
 
             <td className=" align-middle">
                 <input type="checkbox" checked={destacado} name="" id="" />
@@ -107,13 +105,7 @@ export default function CategoryAdminCard({ category }) {
                             onChange={(e) => setName(e.target.value)}
                             className="w-full border py-1 pl-2"
                         />
-                        <label htmlFor="link">Link</label>
-                        <input
-                            type="text"
-                            value={link}
-                            onChange={(e) => setLink(e.target.value)}
-                            className="w-full border py-1 pl-2"
-                        />
+
                         <label htmlFor="destacado">Destacado</label>
                         <div className="flex flex-row gap-1">
                             <input

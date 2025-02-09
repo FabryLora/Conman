@@ -15,13 +15,13 @@ export default function CategoriasAdmin() {
     const [name, setName] = useState();
     const [destacado, setDestacado] = useState();
     const [order, setOrder] = useState();
-    const [link, setLink] = useState();
+    const [link, setLink] = useState("");
 
     //subcategory
 
     const [nameSub, setNameSub] = useState();
     const [orderSub, setOrderSub] = useState();
-    const [linkSub, setLinkSub] = useState();
+    const [linkSub, setLinkSub] = useState("");
     const [categoryId, setCategoryId] = useState();
 
     const hanldeFileChange = (e) => {
@@ -35,7 +35,7 @@ export default function CategoriasAdmin() {
         formData.append("name", name);
         formData.append("destacado", destacado ? 1 : 0);
         formData.append("order_value", order);
-        formData.append("link", link);
+        formData.append("link", "a");
 
         try {
             const response = await axiosClient.post("/category", formData, {
@@ -56,7 +56,7 @@ export default function CategoriasAdmin() {
         const formData = new FormData();
         formData.append("name", nameSub);
         formData.append("order_value", orderSub);
-        formData.append("link", linkSub);
+        formData.append("link", "a");
         formData.append("category_id", categoryId);
 
         try {
@@ -83,7 +83,7 @@ export default function CategoriasAdmin() {
                             <tr className=" text-center">
                                 <td className=" min-w-[200px] py-2">Imagen</td>
                                 <td>Nombre</td>
-                                <td>Link</td>
+
                                 <td>Destacado</td>
                                 <td>Orden</td>
                                 <td>Editar</td>
@@ -119,17 +119,6 @@ export default function CategoriasAdmin() {
                                         }
                                         type="text"
                                         placeholder="Nombre de la categoria"
-                                    />
-                                </td>
-                                <td className="table-cell">
-                                    <input
-                                        className="text-center"
-                                        value={link}
-                                        onChange={(e) =>
-                                            setLink(e.target.value)
-                                        }
-                                        type="text"
-                                        placeholder="Link"
                                     />
                                 </td>
 
@@ -173,7 +162,7 @@ export default function CategoriasAdmin() {
                         <thead className="table-header-group bg-gray-400">
                             <tr className="table-row text-center">
                                 <td className="table-cell py-2">Nombre</td>
-                                <td className="table-cell">Link</td>
+
                                 <td className="table-cell">Categoria</td>
                                 <td className="table-cell">Orden</td>
                                 <td className="table-cell">Editar</td>
@@ -195,17 +184,6 @@ export default function CategoriasAdmin() {
                                         }
                                         type="text"
                                         placeholder="Nombre de la categoria"
-                                    />
-                                </td>
-                                <td>
-                                    <input
-                                        className="text-center"
-                                        value={linkSub}
-                                        onChange={(e) =>
-                                            setLinkSub(e.target.value)
-                                        }
-                                        type="text"
-                                        placeholder="Link"
                                     />
                                 </td>
 

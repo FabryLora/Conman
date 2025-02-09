@@ -16,7 +16,7 @@ export default function NavbarPrivado() {
     const [tinyMenu, setTinyMenu] = useState(false);
     const [userLoged, setUserLoged] = useState(false);
     const [selectedLink, setSelectedLink] = useState("Productos");
-    const { userToken, userInfo, contactInfo } = useStateContext();
+    const { userToken, userInfo, contactInfo, logos } = useStateContext();
 
     const { cart } = useStateContext();
 
@@ -69,8 +69,8 @@ export default function NavbarPrivado() {
                                 className="w-[139px] h-full flex justify-center items-center bg-white"
                             >
                                 <h2 className="font-medium text-sm text-primary-blue">
-                                    {userInfo.name
-                                        ? userInfo.name.toUpperCase()
+                                    {userInfo?.name
+                                        ? userInfo?.name.toUpperCase()
                                         : ""}
                                 </h2>
                             </button>
@@ -84,13 +84,25 @@ export default function NavbarPrivado() {
                                             duration: 0.1,
                                             ease: "linear",
                                         }}
-                                        className="absolute flex flex-col top-10 right-0 border broder-gray bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-fit z-20"
+                                        className="absolute flex flex-col gap-4 top-10 right-0 border broder-gray bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-fit z-20"
                                     >
                                         <Link
-                                            className="bg-primary-red text-white text-center p-4"
+                                            className="bg-primary-red text-white text-center px-4 py-2"
                                             to={"/privado"}
                                         >
                                             SECCION PRIVADA
+                                        </Link>
+                                        <button
+                                            className="bg-primary-red text-white text-center px-4 py-2"
+                                            to={"/privado"}
+                                        >
+                                            CERRAR SESION
+                                        </button>
+                                        <Link
+                                            className="bg-primary-red text-white text-center px-4 py-2"
+                                            to={"/actualizar-perfil"}
+                                        >
+                                            ACTUALIZAR PERFIL
                                         </Link>
                                     </motion.div>
                                 )}
@@ -102,7 +114,7 @@ export default function NavbarPrivado() {
             <nav className="flex relative flex-row items-center pl-20 pr-4 gap-20 w-full h-[85px] shadow-sm max-lg:justify-center bg-white">
                 <Link className="w-[267px] h-[57px]" to={"/"}>
                     <img
-                        src={conmanLogo}
+                        src={logos?.principal_url}
                         alt="Logo"
                         className="w-full h-full object-contain"
                     />

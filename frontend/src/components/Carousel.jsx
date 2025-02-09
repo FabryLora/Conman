@@ -47,7 +47,7 @@ const Carousel = ({ autoScrollInterval = 5000 }) => {
             </div>
 
             {/* Contenido estático */}
-            <div className="absolute inset-0 flex flex-col justify-center gap-16 pl-20 text-white font-roboto z-30">
+            <div className="absolute inset-0 flex flex-col justify-center gap-16 pl-20 max-sm:pl-6 text-white font-roboto z-30">
                 <div>
                     <div className="relative text-6xl font-bold">
                         <span className="absolute bottom-[2px] text-primary-blue">
@@ -76,7 +76,7 @@ const Carousel = ({ autoScrollInterval = 5000 }) => {
             </div>
 
             {/* Indicadores */}
-            <div className="absolute bottom-16 left-20 flex space-x-2 z-30">
+            <div className="absolute bottom-16 left-20 max-sm:left-6 flex space-x-2 z-30">
                 {sliderInfo.images &&
                     sliderInfo.images.map((_, index) => (
                         <button

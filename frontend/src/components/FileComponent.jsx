@@ -42,7 +42,14 @@ export default function FileComponent({ fileObject }) {
                 <div className="flex flex-row justify-between items-center w-full px-5">
                     <div className="flex flex-col gap-1">
                         <p className="font-medium">{fileObject?.name}</p>
-                        <p>PDF / 145kb</p>
+                        <p>
+                            {fileObject?.formato.split("/")[1].toUpperCase() ||
+                                "desconocido"}{" "}
+                            /{" "}
+                            {fileObject?.peso
+                                ? `${(fileObject.peso / 1024).toFixed(2)} KB`
+                                : "Desconocido"}
+                        </p>
                     </div>
                     <button className="w-[24px] h-[24px]" onClick={downloadPDF}>
                         <img

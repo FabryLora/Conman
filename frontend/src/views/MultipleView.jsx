@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import axiosClient from "../axios";
+import WhatsappComponent from "../components/WhatsappComponent";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function MultipleView() {
@@ -61,8 +62,6 @@ export default function MultipleView() {
             console.error("Error al descargar el PDF:", error);
         }
     };
-
-    console.log(cleanPathname[1]);
 
     return (
         <div className="font-roboto-condensed w-[80%] mx-auto py-20">
@@ -169,6 +168,7 @@ export default function MultipleView() {
                     />
                 </div>
             </div>
+            <WhatsappComponent />
         </div>
     );
 }

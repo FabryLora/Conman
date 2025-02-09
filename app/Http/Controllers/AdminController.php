@@ -71,24 +71,37 @@ class AdminController extends Controller
         return response()->json(Admin::all());
     }
 
-    /* public function updateProfile(Request $request)
+    public function update(Request $request, $id)
     {
-        $user = $request->user();
-        
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'password' => 'sometimes|nullable|min:8|confirmed',
-        ]);
+        // Buscar el administrador por ID
+        $admin = Admin::find($id);
 
-        if (isset($validated['password'])) {
-            $validated['password'] = bcrypt($validated['password']);
-        } else {
-            unset($validated['password']);
+        if (!$admin) {
+            return response()->json(['error' => 'Admin not found'], 404);
         }
 
-        $user->update($validated);
+        // Validar los datos de la solicitud
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'password' => 'nullable|string|min:8|confirmed', // Si se proporciona, se valida como mínimo 8 caracteres
+        ]);
 
-        return response()->json($user);
-    } */
+        // Actualizar los campos que han sido validados
+        if (isset($validated['name'])) {
+            $admin->name = $validated['name'];
+        }
+
+        if (isset($validated['password'])) {
+            $admin->password = bcrypt($validated['password']);
+        }
+
+        // Guardar los cambios
+        $admin->save();
+
+        // Retornar la respuesta con el administrador actualizado
+        return response()->json([
+            'message' => 'Admin updated successfully',
+            'user' => $admin
+        ]);
+    }
 }

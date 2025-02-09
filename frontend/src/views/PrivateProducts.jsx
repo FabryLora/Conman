@@ -65,11 +65,6 @@ export default function PrivateProducts() {
                             type="text"
                             placeholder="Código"
                         />
-                        <input
-                            className="h-[41px] bg-white font-bold text-primary-blue border w-fit px-12"
-                            type="submit"
-                            value={"BUSCAR"}
-                        />
                     </div>
                 </div>
             </div>

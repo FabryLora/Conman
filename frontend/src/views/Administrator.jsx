@@ -82,7 +82,10 @@ export default function Administrator() {
             title: "Calidad",
             icon: faHouse,
             href: "#",
-            subHref: [{ title: "Archivos", href: "/dashboard/archivos" }],
+            subHref: [
+                { title: "Contenido", href: "/dashboard/contenido" },
+                { title: "Archivos", href: "/dashboard/archivos" },
+            ],
         },
         {
             id: "novedades",

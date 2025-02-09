@@ -154,9 +154,21 @@ export default function Pedidos() {
                 />
             );
 
-            const responseMail = await axiosClient.post("/sendpedido", {
-                html: htmlContent,
-            });
+            // Enviar email con archivos adjuntos
+            const emailFormData = new FormData();
+            emailFormData.append("html", htmlContent);
+
+            if (archivo !== null) {
+                emailFormData.append("attachments[]", archivo);
+            }
+
+            const responseMail = await axiosClient.post(
+                "/sendpedido",
+                emailFormData,
+                {
+                    headers: { "Content-Type": "multipart/form-data" },
+                }
+            );
             clearCart();
             setSucc(true);
             console.log(userPedidoResponse);
@@ -253,7 +265,7 @@ export default function Pedidos() {
                 </div>
             </div>
 
-            <div className="h-[206px] border">
+            <div className="h-[206px] border max-sm:col-span-2 max-sm:order-1">
                 <div className="bg-[#EAEAEA]">
                     <h2 className="p-3 text-xl font-bold">
                         Informacion importante
@@ -261,7 +273,7 @@ export default function Pedidos() {
                 </div>
                 <p className="p-5 break-words">{pedidosInfo?.informacion}</p>
             </div>
-            <div className="w-full border bg-gray-50">
+            <div className="w-full border bg-gray-50 max-sm:col-span-2 max-sm:order-3">
                 <div className="bg-[#EAEAEA] p-3">
                     <h2 className="text-lg font-semibold">Entrega</h2>
                 </div>
@@ -349,7 +361,7 @@ export default function Pedidos() {
                     </div>
                 </div>
             </div>
-            <div className="h-[206px] flex flex-col gap-3">
+            <div className="h-[206px] flex flex-col gap-3 max-sm:col-span-2 max-sm:order-2">
                 <div className="">
                     <h2 className=" text-xl font-bold">
                         Escribinos un mensaje
@@ -365,7 +377,7 @@ export default function Pedidos() {
                     id=""
                 ></textarea>
             </div>
-            <div className="h-fit border">
+            <div className="h-fit border max-sm:col-span-2 max-sm:order-5">
                 <div className="bg-[#EAEAEA]">
                     <h2 className="p-3 text-xl font-bold">Pedido</h2>
                 </div>
@@ -404,7 +416,7 @@ export default function Pedidos() {
                     <p className="text-2xl">${totalFinal}</p>
                 </div>
             </div>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 max-sm:col-span-2 max-sm:order-4">
                 <h2 className="font-bold text-2xl">Adjuntar un archivo</h2>
                 <div className="w-full border flex items-center justify-between">
                     <span className="text-gray-600 pl-4">{fileName}</span>
@@ -422,7 +434,7 @@ export default function Pedidos() {
                     />
                 </div>
             </div>
-            <div className="flex flex-row gap-3 w-full">
+            <div className="flex flex-row gap-3 w-full max-sm:col-span-2 max-sm:order-6">
                 <button
                     onClick={clearCart}
                     className="h-[47px] w-full border border-primary-red text-primary-red"

@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import conmanLogo from "../assets/logos/conman-white-logo.png";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
-export default function Signup() {
-    const { setUserToken, userToken, provincias, logos } = useStateContext();
+export default function UpdateUser() {
+    const { provincias, userInfo, fetchUserInfo, userId, userToken } =
+        useStateContext();
     const [error, setError] = useState(null);
+
+    useEffect(() => {
+        fetchUserInfo();
+    }, []);
+
+    console.log(userId);
 
     const [userSubmitInfo, setUserSubmitInfo] = useState({
         name: "",
@@ -22,14 +29,28 @@ export default function Signup() {
         codigo_postal: "",
     });
 
+    useEffect(() => {
+        if (userInfo) {
+            setUserSubmitInfo({
+                name: userInfo.name,
+                email: userInfo.email,
+                razon_social: userInfo.razon_social,
+                dni: userInfo.dni,
+                telefono: userInfo.telefono,
+                direccion: userInfo.direccion,
+                provincia: userInfo.provincia,
+                localidad: userInfo.localidad,
+                codigo_postal: userInfo.codigo_postal,
+            });
+        }
+    }, [userInfo]);
+
     const onSubmit = (ev) => {
         ev.preventDefault();
 
         axiosClient
-            .post("/signup", userSubmitInfo)
-            .then(({ data }) => {
-                setUserToken(data.token);
-            })
+            .put(`/users/${userId}`, userSubmitInfo)
+
             .catch((error) => {
                 if (error.response) {
                     setError(
@@ -43,23 +64,25 @@ export default function Signup() {
             });
     };
 
-    if (userToken) {
-        return <Navigate to="/" />;
-    }
-
     const handleInputChange = (ev) => {
         const { name, value } = ev.target;
         setUserSubmitInfo({ ...userSubmitInfo, [name]: value });
     };
 
+    if (!userToken) {
+        return <Navigate to={"/"} />;
+    }
+
     return (
         <div className="flex flex-col gap-10 justify-center items-center w-screen h-screen bg-black bg-opacity-50 fixed top-0 left-0 z-10">
             <Link to="/">
-                <img src={logos?.principal_url} alt="Logo" />
+                <img src={conmanLogo} alt="Logo" />
             </Link>
             <div className="flex flex-col gap-2 bg-white shadow-md p-5 font-roboto-condensed w-fit h-fit z-20">
                 {error && <div className="text-red-500">{error}</div>}
-                <h2 className="font-bold text-[24px] py-5">Registrarse</h2>
+                <h2 className="font-bold text-[24px] py-5">
+                    Actualizar perfil
+                </h2>
                 <form
                     onSubmit={onSubmit}
                     className="w-fit h-full flex flex-col gap-3"
@@ -86,7 +109,6 @@ export default function Signup() {
                                 type="password"
                                 name="password"
                                 id="password"
-                                required
                             />
                         </div>
                         <div className="flex flex-col gap-2">
@@ -100,7 +122,6 @@ export default function Signup() {
                                 type="password"
                                 name="password_confirmation"
                                 id="password_confirmation"
-                                required
                             />
                         </div>
                         <div className="flex flex-col gap-2">
@@ -242,15 +263,9 @@ export default function Signup() {
                         className="w-[325px] h-[47px] bg-primary-red text-white self-center my-5"
                         type="submit"
                     >
-                        REGISTRARSE
+                        ACTUALIZAR
                     </button>
                 </form>
-                <div className="flex flex-col items-center">
-                    <p>¿Ya tienes una cuenta?</p>
-                    <Link className="text-primary-red" to="/iniciar-sesion">
-                        INICIAR SESIÓN
-                    </Link>
-                </div>
             </div>
         </div>
     );

@@ -4,9 +4,9 @@ import Administrator from "./views/Administrator";
 import AdminLogin from "./views/AdminLogin";
 import Calidad from "./views/Calidad";
 import CalidadAdmin from "./views/CalidadAdmin";
+import CalidadContenido from "./views/CalidadContenido";
 import CalidadInicioAdmin from "./views/CalidadInicioAdmin";
 import CategoriasAdmin from "./views/CategoriasAdmin";
-import CategoriasInicioAdmin from "./views/CategoriasInicioAdmin";
 import Contacto from "./views/Contacto";
 import ContactoAdmin from "./views/ContactoAdmin";
 import DefaultLayout from "./views/DefaultLayout";
@@ -32,6 +32,7 @@ import ProductosAdmin from "./views/ProductosAdmin";
 import RealProducts from "./views/RealProducts";
 import Signup from "./views/Signup";
 import SliderAdmin from "./views/SliderAdmin";
+import UpdateUser from "./views/UpdateUser";
 import UsuariosAdmin from "./views/UsuariosAdmin";
 import ValoresAdmin from "./views/ValoresAdmin";
 
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
     {
         path: "/iniciar-sesion",
         element: <Login />,
+    },
+    {
+        path: "/actualizar-perfil",
+        element: <UpdateUser />,
     },
     {
         path: "/inicio",
@@ -164,6 +169,10 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/logos",
                 element: <LogosAdmin />,
+            },
+            {
+                path: "/dashboard/contenido",
+                element: <CalidadContenido />,
             },
         ],
     },

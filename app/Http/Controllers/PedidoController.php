@@ -65,4 +65,15 @@ class PedidoController extends Controller
         $pedido->delete();
         return response()->json(null, 204);
     }
+
+    public function downloadPDF($filename)
+    {
+        $path = storage_path("app/public/archivos/" . $filename); // Ruta correcta
+
+        if (file_exists($path)) {
+            return response()->download($path);
+        }
+
+        return response()->json(['message' => 'Archivo no encontrado'], 404);
+    }
 }

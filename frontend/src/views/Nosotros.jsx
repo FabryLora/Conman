@@ -48,7 +48,7 @@ export default function Nosotros() {
                         .join(",")}
                 />
             </Helmet>
-            <div className="flex flex-col lg:flex-row items-center my-10 font-roboto-condensed justify-center w-full h-full">
+            <div className="flex flex-col lg:flex-row items-center my-20 font-roboto-condensed justify-center w-full h-full">
                 {/* Imagen - 50% */}
                 <div className="w-full lg:w-1/2 flex justify-center items-center mb-6 lg:mb-0">
                     <img
@@ -58,21 +58,33 @@ export default function Nosotros() {
                     />
                 </div>
                 {/* Texto - dinámico */}
-                <div className="flex flex-col gap-6 h-full px-6 w-full lg:w-1/2 max-lg:max-w-full max-w-[90%] sm:max-w-[80%] md:max-w-full lg:max-w-none items-center">
-                    <div className="flex flex-col gap-6 text-[14px] max-lg:max-w-full max-w-[90%]  items-start leading-relaxed overflow-y-auto">
-                        <h2 className="text-[24px] sm:text-[32px] lg:text-[40px] font-bold text-left max-lg:text-center w-full">
-                            {nosotrosFirstInfo?.title}
-                        </h2>
-                        <p className="whitespace-pre-line break-words w-full text-[16px] sm:text-[18px]">
-                            {nosotrosFirstInfo?.text}
-                        </p>
+
+                <style>
+                    {`
+                            .custom-content div > span {
+    font-size: 16px !important; /* Cambia 1.25rem a 1rem */
+}
+    .custom-content {
+                        
+    }
+                            `}
+                </style>
+
+                <div className="flex flex-col h-full w-full lg:w-1/2 md:max-w-full lg:max-w-none items-center">
+                    <div className="flex flex-col gap-6 items-start overflow-y-auto max-h-[678px] w-full">
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: nosotrosFirstInfo?.text || "",
+                            }}
+                            className="custom-content font-roboto-condensed px-12 prose prose-sm sm:prose lg:prose-lg xl:prose-xl w-full min-w-full max-w-full"
+                        ></div>
                     </div>
                 </div>
             </div>
 
             <div className="h-fit w-full bg-special-white flex justify-center pb-20">
                 <div className="w-[90%]">
-                    <h2 className="font-bold text-[40px] pb-20 pt-16">
+                    <h2 className="font-bold text-[40px] py-20">
                         ¿Porque elegirnos?
                     </h2>
                     <div className="flex flex-row flex-wrap gap-y-20 justify-between max-lg:justify-center">
