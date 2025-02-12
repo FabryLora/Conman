@@ -25,6 +25,9 @@ export default function Navbar() {
     const [password, setPassword] = useState("");
     const [search, setSearch] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
+    const [login, setLogin] = useState(false);
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
     const searchBarRef = useRef(null);
     const tinyMenuRef = useRef(null);
     const loginRef = useRef(null);
@@ -70,6 +73,7 @@ export default function Navbar() {
 
     const onSubmit = (ev) => {
         ev.preventDefault();
+        setLogin(true);
         axiosClient
             .post("/login", {
                 name: user,
@@ -77,6 +81,12 @@ export default function Navbar() {
             })
             .then(({ data }) => {
                 setUserToken(data.token);
+                setLogin(false);
+            })
+            .catch((err) => {
+                setError(true);
+                setLogin(false);
+                setErrorMessage("Credenciales incorrectas");
             });
     };
 
@@ -118,7 +128,10 @@ export default function Navbar() {
                 order_value: category.order_value,
                 subHref: category.subcategories.map((subcategory) => ({
                     title: subcategory.name,
-                    href: `/inicio/${category.name.toLowerCase()}/${subcategory.name.toLowerCase()}`,
+                    href: `/inicio/${category.name
+                        .toLowerCase()
+                        .split(" ")
+                        .join("-")}`,
                 })),
             })),
         ]);
@@ -144,9 +157,9 @@ export default function Navbar() {
                     >
                         <AnimatePresence>
                             <div
-                                className={`flex flex-row items-center gap-2 rounded-md max-sm:w-[70%] ${
+                                className={`flex flex-row items-center gap-2 rounded-md  ${
                                     search ? "border px-2" : ""
-                                }`}
+                                } ${userToken ? "max-sm:w-[60%]" : ""}`}
                             >
                                 <motion.div
                                     className={`flex items-center rounded-md overflow-hidden w-fit text-white
@@ -174,7 +187,7 @@ export default function Navbar() {
                                 </motion.div>
 
                                 <label
-                                    className="cursor-pointer"
+                                    className="cursor-pointer max-sm:min-w-[15px] max-sm:h-[15px]"
                                     htmlFor="searchid"
                                     onClick={() => {
                                         setSearch(!search);
@@ -184,7 +197,7 @@ export default function Navbar() {
                                     <img
                                         src={searchIcon}
                                         alt="Buscar"
-                                        className="h-[15px] max-sm:h-[20px] "
+                                        className=" max-sm:w-full max-sm:h-full max-sm:object-contain"
                                     />
                                 </label>
                             </div>
@@ -200,7 +213,7 @@ export default function Navbar() {
                                     <h2 className="font-bold text-[24px] py-5">
                                         Resultados de busqueda
                                     </h2>
-                                    <div className="flex flex-col">
+                                    <div className="flex flex-col overflow-y-auto">
                                         {productInfo
                                             .filter((product) =>
                                                 product.name
@@ -252,8 +265,13 @@ export default function Navbar() {
                                                 ease: "linear",
                                             }}
                                             ref={loginRef}
-                                            className="absolute flex flex-col top-10 right-10 bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-[439px] z-40 border"
+                                            className="absolute flex flex-col top-10 right-10 max-sm:right-4 bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-[439px] z-40 border"
                                         >
+                                            {error && (
+                                                <p className="text-red-500">
+                                                    {errorMessage}
+                                                </p>
+                                            )}
                                             <h2 className="font-bold text-[24px] py-5">
                                                 Iniciar sesion
                                             </h2>
@@ -305,7 +323,9 @@ export default function Navbar() {
                                                     className="w-[325px] h-[47px] bg-primary-red text-white self-center"
                                                     type="submit"
                                                 >
-                                                    INICIAR SESION
+                                                    {login
+                                                        ? "Iniciando sesion..."
+                                                        : "Iniciar sesion"}
                                                 </button>
                                             </form>
                                             <div className="flex flex-col items-center">
@@ -354,8 +374,9 @@ export default function Navbar() {
                                             SECCION PRIVADA
                                         </Link>
                                         <button
+                                            onClick={() => setUserToken("")}
+                                            type="button"
                                             className="bg-primary-red text-white text-center px-4 py-2"
-                                            to={"/privado"}
                                         >
                                             CERRAR SESION
                                         </button>
@@ -422,7 +443,7 @@ export default function Navbar() {
                                             initial={{ height: 0 }}
                                             animate={{ height: "fit-content" }}
                                             exit={{ height: 0 }}
-                                            className="absolute flex flex-col top-6 left-0 bg-[#CBCBCB] shadow-md font-roboto-condensed w-[200px] h-fit z-40 overflow-hidden"
+                                            className="absolute flex flex-col top-6 left-0 bg-[#CBCBCB] shadow-md font-roboto-condensed w-[200px] h-fit max-h-[600px] overflow-y-auto z-40 overflow-hidden"
                                         >
                                             {drop.subHref.map((sub) => (
                                                 <Link
@@ -490,6 +511,7 @@ export default function Navbar() {
                             </button>
                             <ul className="flex flex-col gap-5 p-10 text-white w-full">
                                 <Link
+                                    onClick={() => setTinyMenu(false)}
                                     className="mx-2 hover:text-gray-600 whitespace-nowrap border-b"
                                     to={"/inicio/nosotros"}
                                 >
@@ -502,7 +524,10 @@ export default function Navbar() {
                                     >
                                         <div className="flex flex-row justify-between w-full items-center border-b">
                                             <Link
-                                                onClick={() => setLinkInfo("")}
+                                                onClick={() => {
+                                                    setLinkInfo("");
+                                                    setTinyMenu(false);
+                                                }}
                                                 className="hover:text-gray-600 whitespace-nowrap"
                                                 to={drop.href}
                                             >
@@ -553,17 +578,20 @@ export default function Navbar() {
                                                         {drop.subHref.map(
                                                             (sub) => (
                                                                 <Link
-                                                                    onClick={() =>
+                                                                    onClick={() => {
                                                                         setLinkInfo(
                                                                             sub.title
-                                                                        )
-                                                                    }
+                                                                        );
+                                                                        setTinyMenu(
+                                                                            false
+                                                                        );
+                                                                    }}
                                                                     className="flex flex-row items-center justify-between mx-5 hover:text-gray-600"
                                                                     key={
                                                                         sub.title
                                                                     }
                                                                     to={
-                                                                        "/inicio/terminales-y-accesorios"
+                                                                        sub.href
                                                                     }
                                                                 >
                                                                     {sub.title}
@@ -576,20 +604,23 @@ export default function Navbar() {
                                     </div>
                                 ))}
                                 <Link
+                                    onClick={() => setTinyMenu(false)}
                                     className="border-b mx-2 hover:text-gray-600 whitespace-nowrap"
                                     to={"/inicio/calidad"}
                                 >
                                     Calidad
                                 </Link>
                                 <Link
+                                    onClick={() => setTinyMenu(false)}
                                     className="border-b mx-2 hover:text-gray-600 whitespace-nowrap"
                                     to={"/inicio/nosotros"}
                                 >
                                     Novedades
                                 </Link>
                                 <Link
+                                    onClick={() => setTinyMenu(false)}
                                     className="mx-2 hover:text-gray-600 whitespace-nowrap border-b"
-                                    to={"/inicio/nosotros"}
+                                    to={"/inicio/contacto"}
                                 >
                                     Contacto
                                 </Link>

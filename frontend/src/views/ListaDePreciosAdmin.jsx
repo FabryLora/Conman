@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import axiosClient from "../axios";
 import ListaDePreciosRow from "../components/ListaDePreciosRow";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -8,13 +9,9 @@ export default function ListaDePreciosAdmin() {
 
     const [archivo, setArchivo] = useState();
     const [nombre, setNombre] = useState();
-    const [message, setMessage] = useState("");
 
     const handleUpload = async (e) => {
         e.preventDefault();
-        if (!archivo) {
-            setMessage("Selecciona un archivo PDF");
-        }
 
         const formData = new FormData();
         formData.append("archivo", archivo);
@@ -30,13 +27,15 @@ export default function ListaDePreciosAdmin() {
             );
 
             fetchListadeprecios();
+            toast.success("Archivo subido correctamente");
         } catch (err) {
-            setMessage("Error al subir el archivo");
+            toast.error("Error al subir el archivo");
         }
     };
 
     return (
         <div className="p-10 flex flex-col">
+            <ToastContainer />
             <h1 className="text-2xl py-4">Crear nuevo campo de archivo</h1>
             <form
                 onSubmit={handleUpload}
@@ -64,8 +63,6 @@ export default function ListaDePreciosAdmin() {
                         Subir Archivo
                     </button>
                 </div>
-
-                {message && <p className="mt-2">{message}</p>}
             </form>
             <h1 className="text-2xl py-4 pt-20">Campos de archivo</h1>
             <div className="w-full flex flex-row flex-wrap gap-4">

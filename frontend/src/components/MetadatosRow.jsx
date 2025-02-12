@@ -1,6 +1,7 @@
 import { faPenToSquare, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import axiosClient from "../axios";
 
 export default function MetadatosRow({ metadatosObject }) {
@@ -28,8 +29,10 @@ export default function MetadatosRow({ metadatosObject }) {
                     descripcion,
                 }
             );
+            toast.success("Metadatos actualizados correctamente");
         } catch (error) {
             console.log(error);
+            toast.error("Error al actualizar los metadatos");
         }
     };
 

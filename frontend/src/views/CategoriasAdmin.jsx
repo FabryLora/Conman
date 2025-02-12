@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import axiosClient from "../axios";
 import CategoryAdminCard from "../components/CategoryAdminCard";
 import SubCategoryAdminCard from "../components/SubCategoryAdminCard";
@@ -46,8 +47,9 @@ export default function CategoriasAdmin() {
 
             console.log(response);
             fetchCategoryInfo();
+            toast.success("Guardado correctamente");
         } catch (error) {
-            console.log(error);
+            toast.error("Error al guardar");
         }
     };
 
@@ -68,34 +70,29 @@ export default function CategoriasAdmin() {
 
             console.log(response);
             fetchSubCategoryInfo();
+            toast.success("Guardado correctamente");
         } catch (error) {
-            console.log(error);
+            toast.error("Error al guardar");
         }
     };
 
     return (
         <div className="flex flex-col w-full">
+            <ToastContainer />
             <div className="flex flex-col w-[90%] mx-auto py-10 gap-3">
                 <h1 className="text-2xl">Categorias</h1>
                 <div className="flex justify-center w-full">
-                    <table className=" w-full shadow-md">
+                    <table className=" w-full shadow-md ">
                         <thead className=" bg-gray-400">
                             <tr className=" text-center">
                                 <td className=" min-w-[200px] py-2">Imagen</td>
                                 <td>Nombre</td>
-
                                 <td>Destacado</td>
                                 <td>Orden</td>
                                 <td>Editar</td>
                             </tr>
                         </thead>
-                        <tbody className=" text-center">
-                            {categoryInfo.map((category) => (
-                                <CategoryAdminCard
-                                    key={category.id}
-                                    category={category}
-                                />
-                            ))}
+                        <tbody className=" text-center ">
                             <tr className="h-[80px]">
                                 <td>
                                     <label
@@ -151,6 +148,12 @@ export default function CategoriasAdmin() {
                                     </button>
                                 </td>
                             </tr>
+                            {categoryInfo.map((category) => (
+                                <CategoryAdminCard
+                                    key={category.id}
+                                    category={category}
+                                />
+                            ))}
                         </tbody>
                     </table>
                 </div>
@@ -169,12 +172,6 @@ export default function CategoriasAdmin() {
                             </tr>
                         </thead>
                         <tbody className=" text-center">
-                            {subCategoryInfo.map((category) => (
-                                <SubCategoryAdminCard
-                                    key={category.id}
-                                    subCategory={category}
-                                />
-                            ))}
                             <tr className="h-[80px]" action="">
                                 <td>
                                     <input
@@ -229,6 +226,12 @@ export default function CategoriasAdmin() {
                                     </button>
                                 </td>
                             </tr>
+                            {subCategoryInfo.map((category) => (
+                                <SubCategoryAdminCard
+                                    key={category.id}
+                                    subCategory={category}
+                                />
+                            ))}
                         </tbody>
                     </table>
                 </div>

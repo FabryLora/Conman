@@ -10,7 +10,7 @@ export default function SearchCard({ searchObject }) {
             }`}
             className="flex flex-row justify-between items-center border-b hover:bg-gray-300 p-2"
         >
-            <div className="w-[60px] h-[60px] border flex justify-center items-center">
+            <div className="min-w-[60px] h-[60px] border flex justify-center items-center">
                 {searchObject?.images[0] ? (
                     <img
                         className="object-cover w-full h-full"
@@ -21,7 +21,9 @@ export default function SearchCard({ searchObject }) {
                     <FontAwesomeIcon icon={faImage} size="xl" />
                 )}
             </div>
-            <h2 className="text-black">{searchObject?.name.toUpperCase()}</h2>
+            <h2 className="text-black text-right">
+                {searchObject?.name.toUpperCase()}
+            </h2>
         </Link>
     );
 }

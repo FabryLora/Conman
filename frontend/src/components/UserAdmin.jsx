@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -23,15 +24,27 @@ export default function UserAdmin({ user }) {
         ev.preventDefault();
         const payload = { ...updateInfo };
 
-        axiosClient.put(`/users/${user.id}`, payload).then(() => {
-            fetchAllUsers();
-        });
+        axiosClient
+            .put(`/users/${user.id}`, payload)
+            .then(() => {
+                fetchAllUsers();
+                toast.success("Usuario actualizado correctamente");
+            })
+            .catch(() => {
+                toast.error("Error al actualizar el usuario");
+            });
     };
 
     const deleteUser = () => {
-        axiosClient.delete(`/users/${user.id}`).then(() => {
-            fetchAllUsers();
-        });
+        axiosClient
+            .delete(`/users/${user.id}`)
+            .then(() => {
+                fetchAllUsers();
+                toast.success("Usuario eliminado correctamente");
+            })
+            .catch(() => {
+                toast.error("Error al eliminar el usuario");
+            });
     };
 
     return (

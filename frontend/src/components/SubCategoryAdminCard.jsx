@@ -1,6 +1,7 @@
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 export default function SubCategoryAdminCard({ subCategory }) {
@@ -42,8 +43,9 @@ export default function SubCategoryAdminCard({ subCategory }) {
 
             console.log(response);
             fetchSubCategoryInfo();
+            toast.success("Subcategoria actualizada correctamente");
         } catch (error) {
-            console.log(error);
+            toast.error("Error al actualizar la subcategoria");
         }
     };
 
@@ -55,8 +57,9 @@ export default function SubCategoryAdminCard({ subCategory }) {
 
             console.log(response);
             fetchSubCategoryInfo();
+            toast.success("Subcategoria eliminada correctamente");
         } catch (error) {
-            console.log(error);
+            toast.error("Error al eliminar la subcategoria");
         }
     };
 
@@ -119,12 +122,14 @@ export default function SubCategoryAdminCard({ subCategory }) {
                                 Actualizar
                             </button>
                             <button
+                                type="button"
                                 className="bg-blue-500 text-white px-2 py-1"
                                 onClick={() => setEdit(false)}
                             >
                                 Cancelar
                             </button>
                             <button
+                                type="button"
                                 className="bg-red-500 text-white px-2 py-1"
                                 onClick={deleteSubCategory}
                             >

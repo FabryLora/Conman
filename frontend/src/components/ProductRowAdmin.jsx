@@ -2,6 +2,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -101,11 +102,10 @@ export default function ProductRowAdmin({
 
             fetchProductInfo();
 
-            alert("Producto creado con éxito.");
+            toast.success("Guardado correctamente");
             setEditable(false);
         } catch (error) {
-            console.error("Error al crear el producto:", error);
-            alert("Hubo un error al crear el producto.");
+            toast.error("Error al guardar");
         }
     };
 
@@ -131,7 +131,7 @@ export default function ProductRowAdmin({
 
             window.URL.revokeObjectURL(url);
         } catch (error) {
-            console.error("Error al descargar el PDF:", error);
+            toast.error("Error al descargar el archivo");
         }
     };
 
@@ -140,7 +140,9 @@ export default function ProductRowAdmin({
             const response = await axiosClient.delete(`/image/${imageId}`);
             fetchProductInfo();
             console.log("Imagen eliminada:", response);
+            toast.success("Imagen eliminada correctamente");
         } catch (error) {
+            toast.error("Error al eliminar la imagen");
             console.error("Error al eliminar la imagen:", error);
         }
     };
@@ -149,7 +151,9 @@ export default function ProductRowAdmin({
         try {
             await axiosClient.delete(`/product/${groupid}`);
             fetchProductInfo();
+            toast.success("Producto eliminado correctamente");
         } catch (error) {
+            toast.error("Error al eliminar el producto");
             console.error("Error al eliminar la imagen:", error);
         }
     };

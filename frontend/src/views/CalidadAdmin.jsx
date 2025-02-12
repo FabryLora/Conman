@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import axiosClient from "../axios";
 import PDFComponent from "../components/PDFComponent";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -29,15 +30,16 @@ const CalidadAdmin = () => {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
-            setMessage(response.data.message);
             fetchPdfInfo();
+            toast.success("PDF subido correctamente");
         } catch (error) {
-            setMessage("Error al subir el archivo");
+            toast.error("Error al subir el archivo");
         }
     };
 
     return (
         <>
+            <ToastContainer />
             <div className="p-4">
                 <input
                     type="file"
@@ -50,7 +52,6 @@ const CalidadAdmin = () => {
                 >
                     Subir PDF
                 </button>
-                {message && <p className="mt-2">{message}</p>}
             </div>
 
             {pdfInfo &&

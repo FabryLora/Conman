@@ -6,7 +6,7 @@ export default function WhatsappComponent() {
 
     return (
         <a
-            href={`https://wa.me/${contactInfo?.wp}`} // Reemplaza con tu número de WhatsApp
+            href={`https://wa.me/${contactInfo?.wp?.replace(/\D/g, "")}`} // Reemplaza con tu número de WhatsApp
             target="_blank"
             rel="noopener noreferrer"
             className="fixed bottom-5 right-5 z-[100]"

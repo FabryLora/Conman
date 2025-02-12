@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ReactDOMServer from "react-dom/server";
 import { Helmet } from "react-helmet-async";
+import { ToastContainer, toast } from "react-toastify";
 import letterIcon from "../assets/icons/letter-red-icon.svg";
 import locationIcon from "../assets/icons/location-red-icon.svg";
 import phoneIcon from "../assets/icons/phone-red-icon.svg";
@@ -34,7 +35,6 @@ export default function Contacto() {
         message: "",
     });
 
-    const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleInputChange = (e) => {
@@ -57,8 +57,10 @@ export default function Contacto() {
                 html: htmlContent,
             });
             console.log("Correo enviado:", response.data);
+            toast.success("Mensaje enviado correctamente");
         } catch (error) {
             console.error("Error al enviar el correo:", error);
+            toast.error("Error al enviar el mensaje");
         } finally {
             setIsSubmitting(false); // Restablece el estado después de la petición
         }
@@ -66,6 +68,7 @@ export default function Contacto() {
 
     return (
         <div className="flex justify-center">
+            <ToastContainer />
             <Helmet>
                 <meta
                     name="description"
@@ -86,8 +89,8 @@ export default function Contacto() {
                 />
             </Helmet>
             <div className="font-roboto-condensed text-[#515A53] py-20 flex flex-col gap-20 w-[90%]">
-                <div className="flex flex-row justify-between">
-                    <div className="w-1/2 flex flex-col gap-10">
+                <div className="flex flex-row justify-between max-md:flex-col max-md:items-center max-md:w-full max-md:gap-10">
+                    <div className="w-1/2 flex flex-col gap-10 max-md:w-full">
                         <p className="text-[18px]">
                             Para mayor información, no dude en contactarse
                             mediante el siguiente formulario, o a través de
@@ -107,26 +110,22 @@ export default function Contacto() {
                             ))}
                         </div>
                     </div>
-                    <div className="w-1/2 flex justify-end">
+                    <div className="w-1/2 flex justify-end max-md:w-full max-md:flex-col">
                         <form
-                            className="w-fit flex flex-col gap-10"
+                            className="w-fit flex flex-col gap-10 max-md:w-full"
                             onSubmit={sendEmail}
                         >
-                            <div className="grid grid-cols-2 grid-rows-2 gap-5 items-center justify-center w-fit">
+                            <div className="grid grid-cols-2 grid-rows-2 gap-5 items-center justify-center w-fit max-md:grid-cols-1  max-md:w-full ">
                                 {inputInfo.map((info, index) => (
                                     <div
-                                        className="flex flex-col gap-2"
+                                        className="flex flex-col gap-2 max-md:col-span-2"
                                         key={index}
                                     >
                                         <label htmlFor={info.id}>
                                             {info.title}
                                         </label>
                                         <input
-                                            className={`border pl-3 w-[264px] h-[48px] ${
-                                                errors[info.id]
-                                                    ? "border-red-500"
-                                                    : "border-gray-300"
-                                            }`}
+                                            className={`border pl-3 w-[264px] h-[48px] max-md:w-full `}
                                             type={info.type}
                                             name={info.id}
                                             id={info.id}
@@ -134,32 +133,18 @@ export default function Contacto() {
                                             onChange={handleInputChange}
                                             required
                                         />
-                                        {errors[info.id] && (
-                                            <span className="text-red-500 text-sm">
-                                                {errors[info.id][0]}
-                                            </span>
-                                        )}
                                     </div>
                                 ))}
                                 <div className="col-span-2">
                                     <label htmlFor="message">Mensaje</label>
                                     <textarea
-                                        className={`w-full h-[155px] border p-3 ${
-                                            errors.message
-                                                ? "border-red-500"
-                                                : "border-gray-300"
-                                        }`}
+                                        className={`w-full h-[155px] border p-3 `}
                                         name="message"
                                         id="message"
                                         value={formData.message}
                                         onChange={handleInputChange}
                                         required
                                     ></textarea>
-                                    {errors.message && (
-                                        <span className="text-red-500 text-sm">
-                                            {errors.message[0]}
-                                        </span>
-                                    )}
                                 </div>
                             </div>
                             <button

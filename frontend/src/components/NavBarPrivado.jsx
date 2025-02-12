@@ -8,7 +8,6 @@ import igIcon from "../assets/icons/igIcon.svg";
 import phoneIcon from "../assets/icons/phone.svg";
 import letterIcon from "../assets/icons/sobre.svg";
 import xmark from "../assets/icons/xmark-solid.svg";
-import conmanLogo from "../assets/logos/conman-logo.png";
 
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -16,9 +15,7 @@ export default function NavbarPrivado() {
     const [tinyMenu, setTinyMenu] = useState(false);
     const [userLoged, setUserLoged] = useState(false);
     const [selectedLink, setSelectedLink] = useState("Productos");
-    const { userToken, userInfo, contactInfo, logos } = useStateContext();
-
-    const { cart } = useStateContext();
+    const { userToken, userInfo, contactInfo, logos, cart } = useStateContext();
 
     const [cartProd, setCartProd] = useState(cart.length);
 
@@ -27,8 +24,8 @@ export default function NavbarPrivado() {
     }, [cart]);
 
     const socials = [
-        { logo: fbIcon, href: "#" },
-        { logo: igIcon, href: "#" },
+        { logo: fbIcon, href: contactInfo?.fb },
+        { logo: igIcon, href: contactInfo?.ig },
     ];
 
     const links = [
@@ -42,9 +39,9 @@ export default function NavbarPrivado() {
     ];
 
     return (
-        <div className="sticky top-0 flex flex-col items-center justify-center font-roboto-condensed">
-            <div className="bg-primary-blue h-[40px] w-full flex items-center justify-between pl-20 pr-14">
-                <div className="flex gap-4 items-center text-[14px] text-white h-[16px]">
+        <div className="sticky top-0 flex flex-col items-center justify-center font-roboto-condensed z-[100]">
+            <div className="bg-primary-blue h-[40px] w-full flex items-center justify-between pl-20 pr-14 max-sm:p-0 max-sm:justify-end max-sm:pr-10">
+                <div className="flex gap-4 items-center text-[14px] text-white h-[16px] max-sm:hidden">
                     <div className="flex gap-2 items-center">
                         <img className="h-[16px]" src={letterIcon} alt="" />
                         <p>{contactInfo?.mail}</p>
@@ -160,7 +157,7 @@ export default function NavbarPrivado() {
                             animate={{ x: 0 }}
                             exit={{ x: "-100%" }}
                             transition={{ duration: 0.5 }}
-                            className="flex flex-col absolute top-0 left-0 h-screen w-1/2 bg-primary-blue"
+                            className="flex flex-col absolute top-0 left-0 h-screen w-1/2 max-sm:w-[70%] bg-primary-blue"
                         >
                             <button
                                 onClick={() => setTinyMenu(false)}
@@ -174,7 +171,12 @@ export default function NavbarPrivado() {
                                         className="flex gap-1 justify-between items-center"
                                         key={link.title}
                                     >
-                                        <Link to={link.href}>{link.title}</Link>
+                                        <Link
+                                            onClick={() => setTinyMenu(false)}
+                                            to={link.href}
+                                        >
+                                            {link.title}
+                                        </Link>
                                         {link.chevron && (
                                             <img
                                                 className="w-[16px] h-[16px]"

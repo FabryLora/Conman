@@ -1,6 +1,7 @@
 import { faEdit, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -24,6 +25,10 @@ export default function AdministradorRow({ adminObject }) {
             .then(({ data }) => {
                 fetchAllAdmins();
                 setEdit(false);
+                toast.success("Administrador actualizado correctamente");
+            })
+            .catch((err) => {
+                toast.error("Error al actualizar el administrador");
             });
     };
 

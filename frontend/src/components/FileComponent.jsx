@@ -4,7 +4,7 @@ import axiosClient from "../axios";
 export default function FileComponent({ fileObject }) {
     const downloadPDF = async () => {
         try {
-            const filename = fileObject?.pdf_url.split("/").pop(); // Extraer solo el nombre del archivo
+            const filename = fileObject?.pdf_url?.split("/").pop(); // Extraer solo el nombre del archivo
 
             const response = await axiosClient.get(
                 `/download-pdf/${filename}`,
@@ -43,11 +43,11 @@ export default function FileComponent({ fileObject }) {
                     <div className="flex flex-col gap-1">
                         <p className="font-medium">{fileObject?.name}</p>
                         <p>
-                            {fileObject?.formato.split("/")[1].toUpperCase() ||
+                            {fileObject?.formato?.split("/")[1].toUpperCase() ||
                                 "desconocido"}{" "}
                             /{" "}
                             {fileObject?.peso
-                                ? `${(fileObject.peso / 1024).toFixed(2)} KB`
+                                ? `${(fileObject?.peso / 1024).toFixed(2)} KB`
                                 : "Desconocido"}
                         </p>
                     </div>

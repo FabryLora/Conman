@@ -1,18 +1,9 @@
 import { Helmet } from "react-helmet-async";
-import bannerImage from "../assets/calidad/banner-image.png";
-import itemIcon from "../assets/icons/item-icon.svg";
 import FileComponent from "../components/FileComponent";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Calidad() {
     const { pdfInfo, metadatos, calidadInfo } = useStateContext();
-
-    const itemList = [
-        "Satisfacer las necesidades de nuestros clients actuales y potenciales, con productos innovadores y de alta calidad, que hagan que nuestros clientes nos valoren y distingan, reconociendo en nuestra forma de trabajo, un modelo de comportamiento distintivo.",
-        "Reconocer al personal como el activo principal de nuestra empresa, fomentando un clima que favorezca el compromiso, la formación, el involucramiento y la iniciativa.",
-        "Elegir proveedores que se adhieran a nuestros principios.",
-        "Fabricar terminales y accesorios para instalaciones óleo-hidráulicas y neumáticas que respondan a las necesidades de nuestros clientes.",
-    ];
 
     return (
         <div className="font-roboto-condensed">
@@ -73,7 +64,7 @@ export default function Calidad() {
                         />
                     </div>
                 </div>
-                <div className="flex flex-row justify-evenly">
+                <div className="flex flex-row justify-evenly max-md:flex-col max-md:items-center max-md:gap-10">
                     {pdfInfo.map((fileObject, index) => (
                         <FileComponent key={index} fileObject={fileObject} />
                     ))}

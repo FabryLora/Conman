@@ -5,15 +5,13 @@ import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function UpdateUser() {
-    const { provincias, userInfo, fetchUserInfo, userId, userToken } =
+    const { provincias, userInfo, fetchUserInfo, userId, userToken, logos } =
         useStateContext();
     const [error, setError] = useState(null);
 
     useEffect(() => {
         fetchUserInfo();
     }, []);
-
-    console.log(userId);
 
     const [userSubmitInfo, setUserSubmitInfo] = useState({
         name: "",
@@ -75,8 +73,8 @@ export default function UpdateUser() {
 
     return (
         <div className="flex flex-col gap-10 justify-center items-center w-screen h-screen bg-black bg-opacity-50 fixed top-0 left-0 z-10">
-            <Link to="/">
-                <img src={conmanLogo} alt="Logo" />
+            <Link className="py-10" to="/">
+                <img src={logos?.secundario_url} alt="Logo" />
             </Link>
             <div className="flex flex-col gap-2 bg-white shadow-md p-5 font-roboto-condensed w-fit h-fit z-20">
                 {error && <div className="text-red-500">{error}</div>}

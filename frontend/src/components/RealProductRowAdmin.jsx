@@ -1,5 +1,6 @@
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -41,7 +42,9 @@ export default function RealProductRowAdmin({ productObject }) {
                 }
             );
             fetchRealProducts();
+            toast.success("Producto actualizado correctamente");
         } catch (error) {
+            toast.error("Error al actualizar el producto");
             console.error("Error al actualizar:", error);
         }
     };
@@ -50,7 +53,9 @@ export default function RealProductRowAdmin({ productObject }) {
         try {
             await axiosClient.delete(`/realproducts/${productObject.id}`);
             fetchRealProducts();
+            toast.success("Producto eliminado correctamente");
         } catch (error) {
+            toast.error("Error al eliminar el producto");
             console.error("Error al eliminar el producto:", error);
         }
     };

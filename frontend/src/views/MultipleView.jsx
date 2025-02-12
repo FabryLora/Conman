@@ -152,7 +152,7 @@ export default function MultipleView() {
                                     .map((cosas) => (
                                         <tr key={cosas.id}>
                                             <td>{cosas?.code}</td>
-                                            <td>{cosas?.price}</td>
+                                            <td>{cosas?.name}</td>
                                         </tr>
                                     ))}
                             </tbody>

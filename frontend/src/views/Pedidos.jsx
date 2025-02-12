@@ -190,7 +190,7 @@ export default function Pedidos() {
     }, [error]);
 
     return (
-        <div className="w-full px-20 py-20 grid grid-cols-2 gap-10">
+        <div className="w-full px-20 py-20 grid grid-cols-2 gap-10 max-sm:px-4">
             <AnimatePresence>
                 {error && (
                     <motion.div
@@ -229,8 +229,8 @@ export default function Pedidos() {
                 )}
             </AnimatePresence>
             <div className="grid  w-full  items-start col-span-2">
-                <div className="grid grid-cols-8 items-center justify-center bg-[#F5F5F5] h-[52px] text-center font-semibold">
-                    <p></p>
+                <div className="grid grid-cols-8 items-center justify-center bg-[#F5F5F5] h-[52px] text-center font-semibold max-sm:text-sm">
+                    <p className="max-sm:hidden"></p>
                     <p className="text-left">Codigo</p>
                     <p className="text-left">Producto</p>
                     <p>Precio x un.</p>
@@ -271,7 +271,9 @@ export default function Pedidos() {
                         Informacion importante
                     </h2>
                 </div>
-                <p className="p-5 break-words">{pedidosInfo?.informacion}</p>
+                <p className="p-5 break-words whitespace-pre-line">
+                    {pedidosInfo?.informacion}
+                </p>
             </div>
             <div className="w-full border bg-gray-50 max-sm:col-span-2 max-sm:order-3">
                 <div className="bg-[#EAEAEA] p-3">

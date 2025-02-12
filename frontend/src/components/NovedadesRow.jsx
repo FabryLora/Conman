@@ -1,7 +1,6 @@
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -50,11 +49,11 @@ export default function NovedadesRow({ novedadesObject }) {
 
             fetchNovedades();
 
-            alert("Novedad creado con éxito.");
+            toast.success("Guardado correctamente");
             setEditable(false);
         } catch (error) {
             console.error("Error al crear el producto:", error);
-            alert("Hubo un error al crear el producto.");
+            toast.error("Error al guardar");
         }
     };
 
@@ -62,7 +61,9 @@ export default function NovedadesRow({ novedadesObject }) {
         try {
             await axiosClient.delete(`/novedades/${novedadesObject.id}`);
             fetchNovedades();
+            toast.success("Novedad eliminada correctamente");
         } catch (error) {
+            toast.error("Error al eliminar la novedad");
             console.error("Error al eliminar la novcedad:", error);
         }
     };

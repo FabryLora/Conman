@@ -35,10 +35,10 @@ export default function GeneralView() {
     );
 
     useEffect(() => {
-        setSelectedSubcategory(linkInfo?.toLowerCase());
+        setSelectedSubcategory(linkInfo);
     }, [linkInfo]);
     const [selectedSubcategory, setSelectedSubcategory] = useState(
-        linkInfo?.toLowerCase() || ""
+        linkInfo || ""
     );
 
     const filteredProducts = selectedSubcategory
@@ -55,7 +55,7 @@ export default function GeneralView() {
           );
 
     return (
-        <div className="flex flex-row w-full py-20 px-20 gap-10 font-roboto-condensed min-h-[526px] max-sm:flex-col">
+        <div className="flex flex-row w-full py-20 px-20 gap-10 font-roboto-condensed min-h-[526px] max-sm:flex-col max-sm:px-6 max-sm:items-center">
             {/* Lista de subcategorías */}
             <div className="w-[20%] max-sm:w-full">
                 <button

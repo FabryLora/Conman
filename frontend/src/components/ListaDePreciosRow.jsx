@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -7,7 +8,6 @@ export default function ListaDePreciosRow({ listaObject }) {
 
     const [archivo, setArchivo] = useState();
     const [nombre, setNombre] = useState();
-    const [message, setMessage] = useState("");
 
     useEffect(() => {
         setNombre(listaObject?.nombre);
@@ -34,16 +34,15 @@ export default function ListaDePreciosRow({ listaObject }) {
             a.click();
 
             window.URL.revokeObjectURL(url);
+            toast.success("Archivo descargado correctamente");
         } catch (error) {
             console.error("Error al descargar el PDF:", error);
+            toast.error("Error al descargar el archivo");
         }
     };
 
     const update = async (e) => {
         e.preventDefault();
-        if (!archivo) {
-            setMessage("Selecciona un archivo PDF");
-        }
 
         const formData = new FormData();
         if (archivo) {
@@ -62,8 +61,9 @@ export default function ListaDePreciosRow({ listaObject }) {
             );
 
             fetchListadeprecios();
+            toast.success("Archivo actualizado correctamente");
         } catch (err) {
-            setMessage("Error al subir el archivo");
+            toast.error("Error al actualizar el archivo");
         }
     };
 
@@ -74,8 +74,10 @@ export default function ListaDePreciosRow({ listaObject }) {
             );
             console.log(response);
             fetchListadeprecios();
+            toast.success("Archivo eliminado correctamente");
         } catch (error) {
             console.log(error);
+            toast.error("Error al eliminar el archivo");
         }
     };
 

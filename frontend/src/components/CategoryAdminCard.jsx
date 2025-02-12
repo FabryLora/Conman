@@ -1,6 +1,7 @@
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 export default function CategoryAdminCard({ category }) {
@@ -49,8 +50,9 @@ export default function CategoryAdminCard({ category }) {
 
             console.log(response);
             fetchCategoryInfo();
+            toast.success("Categoria actualizada correctamente");
         } catch (error) {
-            console.log(error);
+            toast.error("Error al actualizar la categoria");
         }
     };
 
@@ -61,8 +63,9 @@ export default function CategoryAdminCard({ category }) {
             );
             console.log(response);
             fetchCategoryInfo();
+            toast.success("Categoria eliminada correctamente");
         } catch (error) {
-            console.log(error);
+            toast.error("Error al eliminar la categoria");
         }
     };
 
@@ -135,12 +138,14 @@ export default function CategoryAdminCard({ category }) {
                                 Actualizar
                             </button>
                             <button
+                                type="button"
                                 className="bg-blue-500 text-white px-2 py-1"
                                 onClick={() => setEdit(false)}
                             >
                                 Cancelar
                             </button>
                             <button
+                                type="button"
                                 className="bg-red-500 text-white px-2 py-1"
                                 onClick={deleteCategory}
                             >

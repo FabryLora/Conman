@@ -25,7 +25,7 @@ export default function PrivateZone() {
     return (
         <div className="font-roboto-condensed w-full">
             <NavbarPrivado />
-            <div className="absolute flex flex-row gap-1 items-center justify-center  text-[#515A53] left-20 top-[150px]">
+            <div className="absolute flex flex-row gap-1 items-center justify-center  text-[#515A53] left-20 top-[150px] max-sm:left-10">
                 <Link to={"/"}>Inicio</Link>
                 <p>{">"}</p>
                 <Link to={"#"}>{cleanPathname[1]}</Link>

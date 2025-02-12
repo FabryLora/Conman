@@ -1,18 +1,20 @@
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 export default function SliderImageComponent({ image }) {
-    const { fetchSliderImage, fetchSliderInfo } = useStateContext();
+    const { fetchSliderInfo } = useStateContext();
 
     const [trashHidden, setTrashHidden] = useState(false);
     const deleteImage = async () => {
         try {
             await axiosClient.delete(`/sliderimage/${image.id}`);
             fetchSliderInfo();
+            toast.success("Imagen borrada correctamente");
         } catch (error) {
-            console.error("Error al eliminar la imagen:", error);
+            toast.error("Error al borrar la imagen");
         }
     };
 

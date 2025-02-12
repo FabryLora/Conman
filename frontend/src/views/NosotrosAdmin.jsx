@@ -1,14 +1,13 @@
 import { ReactSummernoteLite } from "@easylogic/react-summernote-lite";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import { useEffect, useRef, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function NosotrosAdmin() {
     const { nosotrosFirstInfo, fetchNosotrosFirstInfo } = useStateContext();
     const [nosotrosFirst, setNosotrosFirst] = useState({});
-    const [error, setError] = useState(false);
-    const [succ, setSucc] = useState(false);
 
     const editorRef = useRef(null); // Referencia al editor
 
@@ -62,62 +61,16 @@ export default function NosotrosAdmin() {
             .put(`/nosotros-first/1`, payload)
             .then(() => {
                 fetchNosotrosFirstInfo();
-                setSucc(true);
+                toast.success("Guardado correctamente");
             })
             .catch((err) => {
-                if (err && err.response) {
-                    const errorMessages = err.response.data.errors;
-                    const messagesArray = Object.values(errorMessages)
-                        .flat()
-                        .map((message) => {
-                            if (message === "The title field is required.")
-                                return "El campo título no puede estar vacío.";
-                            if (message === "The text field is required.")
-                                return "El campo texto no puede estar vacío.";
-                            if (message === "The image field is required.")
-                                return "El campo imagen no puede estar vacío.";
-                            return message;
-                        });
-
-                    setSucc(false);
-                    setError(messagesArray);
-                }
+                toast.error("Error al guardar");
             });
     };
 
-    useEffect(() => {
-        if (error) {
-            const timer = setTimeout(() => {
-                setError(null);
-            }, 4000);
-            return () => clearTimeout(timer);
-        }
-    }, [error]);
-
-    useEffect(() => {
-        if (succ) {
-            const timer = setTimeout(() => {
-                setSucc(null);
-            }, 4000);
-            return () => clearTimeout(timer);
-        }
-    }, [succ]);
-
     return (
         <div>
-            {error && (
-                <div className="fixed top-10 left-[55%] bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
-                    <p className="font-bold">Error</p>
-                    {error.map((errMsg, index) => (
-                        <p key={index}>{errMsg}</p>
-                    ))}
-                </div>
-            )}
-            {succ && (
-                <div className="fixed top-10 left-[55%] bg-green-100 border-l-4 border-green-500 text-green-700 p-4">
-                    <p className="font-bold">Guardado correctamente</p>
-                </div>
-            )}
+            <ToastContainer />
             <form
                 onSubmit={update}
                 className="p-5 flex flex-col justify-between h-screen"
