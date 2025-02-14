@@ -25,9 +25,24 @@ class PDFController extends Controller
     {
         $data = $request->validate([
             'name' => 'nullable|string|',
+            'image' => 'nullable|file|mimes:jpg,jpeg,png,gif',
             'pdf' => 'nullable|file|mimes:pdf',
         ]);
 
+        // Si se sube una nueva imagen, eliminar la anterior y guardar la nueva
+        if ($request->hasFile('image')) {
+            // Eliminar la imagen existente del sistema de archivos
+            if ($pdf->image) {
+                $absolutePath = public_path('storage/' . $pdf->image);
+                if (File::exists($absolutePath)) {
+                    File::delete($absolutePath);
+                }
+            }
+
+            // Guardar la nueva imagen
+            $imagePath = $request->file('image')->store('images', 'public');
+            $data["image"] = $imagePath;
+        }
 
         // Si se sube un nuevo archivo, eliminar el anterior y guardar el nuevo
         if ($request->hasFile('pdf')) {
@@ -58,8 +73,14 @@ class PDFController extends Controller
         $data = $request->validate([
             'pdf' => 'required|file|mimes:pdf|', // Máximo 2MB, solo PDFs
             'name' => 'required|string|max:255',
+            'image' => 'nullable|file|mimes:jpg,jpeg,png,gif', // Máximo 2MB, solo imágenes
         ]);
 
+        // Guardar la imagen
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('images', 'public');
+            $data["image"] = $imagePath;
+        }
 
         $pdfPath = $request->file('pdf')->store('pdfs', 'public');
         $data["pdf"] = $pdfPath;
@@ -74,6 +95,8 @@ class PDFController extends Controller
     // 📥 Descargar PDF
     public function downloadPDF($filename)
     {
+
+
         $path = storage_path("app/public/pdfs/" . $filename); // Ruta correcta
 
         if (file_exists($path)) {
@@ -81,5 +104,27 @@ class PDFController extends Controller
         }
 
         return response()->json(['message' => 'Archivo no encontrado'], 404);
+    }
+
+    public function destroy($id)
+    {
+
+        $pdf = PDF::find($id);
+
+        if ($pdf->image) {
+            $absolutePath = public_path('storage/' . $pdf->image);
+            if (File::exists($absolutePath)) {
+                File::delete($absolutePath);
+            }
+        }
+        if ($pdf->pdf) {
+            $absolutePath = public_path('storage/' . $pdf->pdf);
+            if (File::exists($absolutePath)) {
+                File::delete($absolutePath);
+            }
+        }
+
+        $pdf->delete();
+        return response("", 204);
     }
 }

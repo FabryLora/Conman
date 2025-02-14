@@ -7,7 +7,7 @@ import removeFromCartIcon from "../assets/icons/remove-from-cart.svg";
 import { useStateContext } from "../contexts/ContextProvider";
 import "./numberInputCss.css";
 
-export default function ProductRow({ product }) {
+export default function ProductRow({ product, currency }) {
     const [cantidad, setCantidad] = useState(0);
     const [extraInfo, setExtraInfo] = useState({
         cantidad: 0,
@@ -18,6 +18,25 @@ export default function ProductRow({ product }) {
     const handleChange = (value) => {
         if (value >= 0) setCantidad(value);
     };
+
+    useEffect(() => {
+        if (currency === "pesos") {
+            setExtraInfo({
+                ...extraInfo,
+                descuento: product.discount
+                    ? product.price - product.price * (product.discount / 100)
+                    : product.price,
+            });
+        } else {
+            setExtraInfo({
+                ...extraInfo,
+                descuento: product.discount
+                    ? product.dolar_price -
+                      product.dolar_price * (product.discount / 100)
+                    : product.dolar_price,
+            });
+        }
+    }, [currency]);
 
     const location = useLocation();
 
@@ -42,7 +61,10 @@ export default function ProductRow({ product }) {
             <p className="text-left">{product?.code}</p>
             <p className="text-left">{product?.name}</p>
             <p className="text-center">
-                ${product?.price.toLocaleString("es-AR")}
+                $
+                {currency === "pesos"
+                    ? product?.price.toLocaleString("es-AR")
+                    : product?.dolar_price}
             </p>
             <p className="text-center">{product?.discount}%</p>
             <p className="text-center">

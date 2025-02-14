@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import bannerImage from "../assets/nosotros/nosotros-banner.png";
 import DefaultBanner from "../components/DefaultBanner";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { useStateContext } from "../contexts/ContextProvider";
 export default function DefaultLayout() {
-    const { categoryInfo } = useStateContext();
+    const { categoryInfo, userToken } = useStateContext();
 
     const location = useLocation();
 
@@ -35,6 +35,10 @@ export default function DefaultLayout() {
     // Elimina la primera palabra (índice 0)
 
     // Volver a unir las palabras restantes con '/'
+
+    if (userToken) {
+        return <Navigate to={"/privado"} />;
+    }
 
     return (
         <div className="">

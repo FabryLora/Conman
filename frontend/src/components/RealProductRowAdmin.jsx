@@ -8,12 +8,13 @@ export default function RealProductRowAdmin({ productObject }) {
     const { productInfo, fetchRealProducts } = useStateContext();
     const [editable, setEditable] = useState(false);
 
-    const [name, setName] = useState(productObject.name);
-    const [code, setCode] = useState(productObject.code);
-    const [price, setPrice] = useState(productObject.price);
-    const [discount, setDiscount] = useState(productObject.discount);
-    const [image, setImage] = useState(productObject.image_url);
-    const [productid, setProductId] = useState(productObject.product.id);
+    const [name, setName] = useState(productObject?.name);
+    const [code, setCode] = useState(productObject?.code);
+    const [price, setPrice] = useState(productObject?.price);
+    const [dolarPrice, setDolarPrice] = useState(productObject?.dolar_price);
+    const [discount, setDiscount] = useState(productObject?.discount);
+    const [image, setImage] = useState();
+    const [productid, setProductId] = useState(productObject?.product?.id);
 
     const handleFileChange = (e) => {
         setImage(e.target.files[0]);
@@ -27,8 +28,12 @@ export default function RealProductRowAdmin({ productObject }) {
         formData.append("name", name);
         formData.append("code", code);
         formData.append("price", price);
+        formData.append("dolar_price", dolarPrice);
         formData.append("discount", discount);
-        formData.append("image", image);
+        if (image) {
+            formData.append("image", image);
+        }
+
         formData.append("product_id", productid);
 
         try {
@@ -42,6 +47,7 @@ export default function RealProductRowAdmin({ productObject }) {
                 }
             );
             fetchRealProducts();
+            setEditable(false);
             toast.success("Producto actualizado correctamente");
         } catch (error) {
             toast.error("Error al actualizar el producto");
@@ -92,7 +98,11 @@ export default function RealProductRowAdmin({ productObject }) {
                 ) : (
                     <div className="flex flex-row overflow-x-auto scrollbar-hide gap-2">
                         <div>
-                            <img className="w-20" src={image} alt="" />
+                            <img
+                                className="w-20"
+                                src={productObject?.image_url}
+                                alt=""
+                            />
                         </div>
                     </div>
                 )}
@@ -134,6 +144,19 @@ export default function RealProductRowAdmin({ productObject }) {
                     />
                 ) : (
                     price
+                )}
+            </div>
+
+            <div className="table-cell px-6 py-4 align-middle">
+                {editable ? (
+                    <input
+                        type="text"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-black"
+                        value={dolarPrice}
+                        onChange={(ev) => setDolarPrice(ev.target.value)}
+                    />
+                ) : (
+                    dolarPrice
                 )}
             </div>
 

@@ -23,7 +23,7 @@ export default function ProductosAdmin() {
         useStateContext();
 
     const handleFileChange = (e) => {
-        setImages(e.target.files); // Almacena los archivos seleccionados
+        setImages(e.target.files[0]); // Almacena los archivos seleccionados
     };
 
     const handleSubmit = async (e) => {
@@ -38,9 +38,11 @@ export default function ProductosAdmin() {
                 "sub_category_id",
                 subCategoryId ? subCategoryId : null
             );
-            prodData.append("description", description);
-            prodData.append("image", image);
-            prodData.append("file", file);
+            prodData.append("description", description ? description : "");
+
+            prodData.append("image", image ? image : null);
+
+            prodData.append("file", file ? file : null);
 
             // 1. Crear el producto
             const productResponse = await axiosClient.post(
@@ -58,9 +60,8 @@ export default function ProductosAdmin() {
             // 2. Subir imágenes
             const formData = new FormData();
             formData.append("principal", principal);
-            Array.from(images).forEach((file, index) => {
-                formData.append(`image`, file); // Agregar cada archivo al FormData
-            });
+
+            formData.append("image", images); // Agregar cada archivo al FormData
 
             formData.append("product_id", productId); // Agregar el ID del producto
 
@@ -98,6 +99,7 @@ export default function ProductosAdmin() {
                                     className="block text-sm/6 font-medium text-gray-900"
                                 >
                                     Imagen de Portada
+                                    <apan className="text-red-500">*</apan>
                                 </label>
                                 <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 ">
                                     <div className="flex items-center justify-start p-4 w-1/2">
@@ -113,7 +115,7 @@ export default function ProductosAdmin() {
                                                 >
                                                     Elegir Imagen
                                                 </label>
-                                                {images[0]?.name}
+                                                {images?.name}
                                                 <input
                                                     className="hidden"
                                                     accept="image/*"
@@ -214,6 +216,7 @@ export default function ProductosAdmin() {
                                     className="block text-sm/6 font-medium text-gray-900"
                                 >
                                     Nombre
+                                    <apan className="text-red-500">*</apan>
                                 </label>
                                 <div className="mt-2">
                                     <input
@@ -256,6 +259,7 @@ export default function ProductosAdmin() {
                                     className="block text-sm/6 font-medium text-gray-900"
                                 >
                                     Categoria
+                                    <apan className="text-red-500">*</apan>
                                 </label>
                                 <div className="mt-2">
                                     <select
@@ -288,6 +292,7 @@ export default function ProductosAdmin() {
                                     className="block text-sm/6 font-medium text-gray-900"
                                 >
                                     Sub Categoria
+                                    <apan className="text-red-500">*</apan>
                                 </label>
                                 <div className="mt-2">
                                     <select

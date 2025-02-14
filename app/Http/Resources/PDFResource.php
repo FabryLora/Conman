@@ -22,6 +22,7 @@ class PDFResource extends JsonResource
             "id" => $this->id,
             "name" => $this->name,
             "pdf_url" => $this->pdf ? url("storage/" . $this->pdf) : null,
+            "image_url" => $this->image ? url("storage/" . $this->image) : null,
             "peso" => file_exists($path) ? filesize($path) : null, // Tamaño en bytes
             "formato" => file_exists($path) ? mime_content_type($path) : null, // Tipo MIME
         ];

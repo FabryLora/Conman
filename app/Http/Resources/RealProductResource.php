@@ -20,6 +20,7 @@ class RealProductResource extends JsonResource
             "name" => $this->name,
             "code" => $this->code,
             "price" => $this->price,
+            "dolar_price" => $this->dolar_price,
             "image_url" => $this->image ? url("storage/" . $this->image) : null,
             "discount" => $this->discount,
             "product" => new ProductResource($this->whenLoaded('product')),

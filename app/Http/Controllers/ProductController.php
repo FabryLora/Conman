@@ -25,11 +25,15 @@ class ProductController extends Controller
     {
         $data = $request->validated();
 
-        $imagePath = $request->file('image')->store('images', 'public');
-        $data["image"] = $imagePath;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('images', 'public');
+            $data["image"] = $imagePath;
+        }
 
-        $filePath = $request->file('file')->store('files', 'public');
-        $data["file"] = $filePath;
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('files', 'public');
+            $data["file"] = $filePath;
+        }
         $product = Product::create($data);
         return new ProductResource($product->load(["images", "subCategory", "category", "realProducts"]));
     }

@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link, useLocation } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import shieldIcon from "../assets/icons/shield-icon.svg";
 
 import bannerCalidad from "../assets/inicio/pdc-banner.png";
@@ -25,11 +25,16 @@ export default function Home() {
         calidadInicio,
         novedades,
         metadatos,
+        userToken,
     } = useStateContext();
 
     useEffect(() => {
         fetchNosotrosInicio();
     }, []);
+
+    if (userToken) {
+        return <Navigate to={"/privado"} />;
+    }
 
     return (
         <>

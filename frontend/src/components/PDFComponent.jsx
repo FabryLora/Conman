@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -6,6 +7,7 @@ export default function PDFComponent({ pdfObject, onUpdate }) {
     const { fetchPdfInfo } = useStateContext();
     const [name, setName] = useState(pdfObject?.name);
     const [pdf, setPdf] = useState(null);
+    const [image, setImage] = useState();
     const [loading, setLoading] = useState(false);
 
     const handleFileChange = (e) => {
@@ -48,6 +50,9 @@ export default function PDFComponent({ pdfObject, onUpdate }) {
         if (pdf) {
             formData.append("pdf", pdf);
         }
+        if (image) {
+            formData.append("image", image);
+        }
 
         try {
             await axiosClient.post(
@@ -59,11 +64,17 @@ export default function PDFComponent({ pdfObject, onUpdate }) {
             );
 
             fetchPdfInfo();
+            toast.success("PDF actualizado correctamente");
         } catch (error) {
             console.error("Error al actualizar:", error);
+            toast.error("Error al actualizar el PDF");
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleImageChange = (e) => {
+        setImage(e.target.files[0]);
     };
 
     return (
@@ -72,10 +83,8 @@ export default function PDFComponent({ pdfObject, onUpdate }) {
             onSubmit={handleUpdate}
             className="p-4 border rounded-lg shadow-md"
         >
-            <h2 className="text-lg font-semibold mb-2">{pdfObject?.name}</h2>
-
             <div className="mb-2">
-                <label className="block font-medium">Editar nombre:</label>
+                <label className="block font-bold">Editar nombre:</label>
                 <input
                     type="text"
                     value={name}
@@ -84,12 +93,50 @@ export default function PDFComponent({ pdfObject, onUpdate }) {
                 />
             </div>
 
-            <div className="mb-2">
-                <label className="block font-medium">Subir nuevo PDF:</label>
+            <div className="mb-2 flex flex-col">
+                <div className="flex flex-col justify-between">
+                    <label className="block font-bold">Subir nuevo PDF:</label>
+                    <label
+                        className="bg-indigo-500 text-white text-center rounded-md p-2 cursor-pointer"
+                        htmlFor="pdf"
+                    >
+                        Elegir PDF
+                    </label>
+                    <p>{pdf?.name}</p>
+                </div>
+
                 <input
+                    id="pdf"
                     type="file"
                     onChange={handleFileChange}
-                    className="border p-2 rounded w-full"
+                    className="border p-2 rounded w-full hidden"
+                />
+            </div>
+
+            <div className="mb-2 flex flex-col">
+                <div className="flex flex-col justify-between">
+                    <label className="block font-bold">
+                        Subir nueva Imagen:
+                    </label>
+                    <label
+                        className="bg-indigo-500 text-white text-center rounded-md p-2 cursor-pointer"
+                        htmlFor="imagen"
+                    >
+                        Elegir Imagen
+                    </label>
+                    <p>{image?.name}</p>
+                    <img
+                        className="w-32 h-32 mx-auto py-2"
+                        src={pdfObject?.image_url}
+                        alt=""
+                    />
+                </div>
+
+                <input
+                    id="imagen"
+                    type="file"
+                    onChange={handleImageChange}
+                    className="border p-2 rounded w-full hidden"
                 />
             </div>
 

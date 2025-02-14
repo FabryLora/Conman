@@ -15,7 +15,8 @@ export default function NavbarPrivado() {
     const [tinyMenu, setTinyMenu] = useState(false);
     const [userLoged, setUserLoged] = useState(false);
     const [selectedLink, setSelectedLink] = useState("Productos");
-    const { userToken, userInfo, contactInfo, logos, cart } = useStateContext();
+    const { userToken, userInfo, contactInfo, logos, cart, setUserToken } =
+        useStateContext();
 
     const [cartProd, setCartProd] = useState(cart.length);
 
@@ -89,17 +90,12 @@ export default function NavbarPrivado() {
                                         >
                                             SECCION PRIVADA
                                         </Link>
-                                        <button
+                                        <Link
+                                            onClick={() => setUserToken("")}
+                                            to={"/"}
                                             className="bg-primary-red text-white text-center px-4 py-2"
-                                            to={"/privado"}
                                         >
                                             CERRAR SESION
-                                        </button>
-                                        <Link
-                                            className="bg-primary-red text-white text-center px-4 py-2"
-                                            to={"/actualizar-perfil"}
-                                        >
-                                            ACTUALIZAR PERFIL
                                         </Link>
                                     </motion.div>
                                 )}

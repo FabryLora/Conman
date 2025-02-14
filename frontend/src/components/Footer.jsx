@@ -8,7 +8,7 @@ import whatsappIcon from "../assets/icons/whatsapp-red-icon.svg";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Footer() {
-    const { contactInfo, logos, categoryInfo } = useStateContext();
+    const { contactInfo, logos, categoryInfo, userToken } = useStateContext();
 
     function removeAccents(str) {
         return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -53,6 +53,7 @@ export default function Footer() {
                 <div className="flex flex-col gap-7 order-2 max-sm:px-8">
                     <h2 className="text-xl font-semibold">Secciones</h2>
                     <div className="grid grid-cols-2 grid-rows-4 gap-4 gap-x-10">
+                        {}
                         <Link className="text-base" to={"/inicio/nosotros"}>
                             Nosotros
                         </Link>

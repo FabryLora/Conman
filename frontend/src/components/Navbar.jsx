@@ -139,7 +139,7 @@ export default function Navbar() {
 
     return (
         <div className="sticky top-0 z-50 flex flex-col items-center justify-center font-roboto-condensed">
-            <div className="bg-primary-blue h-[40px] w-full flex items-center justify-between pl-20 pr-4 max-sm:pl-0 max-sm:justify-end">
+            <div className="bg-primary-blue h-[40px] w-full flex items-center justify-between px-20 max-sm:pl-0 max-sm:justify-end">
                 <div className="flex gap-4 items-center text-[14px] text-white h-[16px] max-sm:hidden">
                     <div className="flex gap-2 items-center">
                         <img className="h-[16px]" src={letterIcon} alt="" />
@@ -380,12 +380,6 @@ export default function Navbar() {
                                         >
                                             CERRAR SESION
                                         </button>
-                                        <Link
-                                            className="bg-primary-red text-white text-center px-4 py-2"
-                                            to={"/actualizar-perfil"}
-                                        >
-                                            ACTUALIZAR PERFIL
-                                        </Link>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
@@ -394,7 +388,7 @@ export default function Navbar() {
                 </div>
             </div>
             <nav className="flex bg-white relative flex-row items-center px-20 gap-24 w-full h-[85px] shadow-sm justify-between max-xl:justify-center">
-                <div className="max-h-[57px] max-w-[267px] min-w-[230px] min-h-[50px] w-fit">
+                <div className="w-[267px] h-[57px]">
                     <Link className="" to={"/"}>
                         <img
                             src={logos?.principal_url}

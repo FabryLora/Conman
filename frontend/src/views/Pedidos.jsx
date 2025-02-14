@@ -25,28 +25,56 @@ export default function Pedidos() {
     const [error, setError] = useState(false);
     const [succ, setSucc] = useState(false);
     const [succID, setSuccID] = useState();
+    const [currencyType, setCurrencyType] = useState("pesos");
 
     useEffect(() => {
-        const total = cart.reduce((acc, prod) => {
-            return acc + prod.price * prod.additionalInfo.cantidad;
-        }, 0);
-        setSubtotal(total.toLocaleString("es-AR"));
-        if (pedidosInfo?.descuento > 0 && tipo_entrega === "retiro cliente") {
-            const condescuento = total - (total * pedidosInfo?.descuento) / 100;
-            setSubtotalDescuento(condescuento.toLocaleString("es-AR"));
-            const iva = condescuento * 0.21;
-            setIva(iva.toLocaleString("es-AR"));
-            const descuento = (total * pedidosInfo?.descuento) / 100;
-            setDescuento(descuento.toLocaleString("es-AR"));
-            const totalFinal = condescuento + iva;
-            setTotalFinal(totalFinal.toLocaleString("es-AR"));
+        if (currencyType === "pesos") {
+            const total = cart.reduce((acc, prod) => {
+                return acc + prod.price * prod.additionalInfo.cantidad;
+            }, 0);
+            setSubtotal(total?.toLocaleString("es-AR"));
+            if (
+                pedidosInfo?.descuento > 0 &&
+                tipo_entrega === "retiro cliente"
+            ) {
+                const condescuento =
+                    total - (total * pedidosInfo?.descuento) / 100;
+                setSubtotalDescuento(condescuento?.toLocaleString("es-AR"));
+                const iva = condescuento * 0.21;
+                setIva(iva?.toLocaleString("es-AR"));
+                const descuento = (total * pedidosInfo?.descuento) / 100;
+                setDescuento(descuento?.toLocaleString("es-AR"));
+                const totalFinal = condescuento + iva;
+                setTotalFinal(totalFinal?.toLocaleString("es-AR"));
+            } else {
+                const iva = total * 0.21;
+                setIva(iva?.toLocaleString("es-AR"));
+                setSubtotalDescuento(total?.toLocaleString("es-AR"));
+                setTotalFinal((total + iva)?.toLocaleString("es-AR"));
+            }
         } else {
-            const iva = total * 0.21;
-            setIva(iva.toFixed(2));
-            setSubtotalDescuento(total.toLocaleString("es-AR"));
-            setTotalFinal((total + iva).toLocaleString("es-AR"));
+            const total = cart.reduce((acc, prod) => {
+                return acc + prod.dolar_price * prod.additionalInfo.cantidad;
+            }, 0);
+            setSubtotal(total?.toLocaleString("es-AR"));
+            if (
+                pedidosInfo?.descuento > 0 &&
+                tipo_entrega === "retiro cliente"
+            ) {
+                const condescuento =
+                    total - (total * pedidosInfo?.descuento) / 100;
+                setSubtotalDescuento(condescuento?.toLocaleString("es-AR"));
+
+                const descuento = (total * pedidosInfo?.descuento) / 100;
+                setDescuento(descuento?.toLocaleString("es-AR"));
+                const totalFinal = condescuento;
+                setTotalFinal(totalFinal?.toLocaleString("es-AR"));
+            } else {
+                setSubtotalDescuento(total?.toLocaleString("es-AR"));
+                setTotalFinal(total?.toLocaleString("es-AR"));
+            }
         }
-    }, [cart, tipo_entrega]);
+    }, [cart, tipo_entrega, currencyType]);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -79,7 +107,7 @@ export default function Pedidos() {
         formData.append("descuento", descuento ? descuento : 0);
 
         formData.append("subtotaldescuento", subtotalDescuento);
-        formData.append("iva", iva);
+        formData.append("iva", iva ? iva : 0);
 
         if (totalFinal !== "0.00") {
             formData.append("total", totalFinal);
@@ -189,6 +217,8 @@ export default function Pedidos() {
         }
     }, [error]);
 
+    console.log(currencyType);
+
     return (
         <div className="w-full px-20 py-20 grid grid-cols-2 gap-10 max-sm:px-4">
             <AnimatePresence>
@@ -228,6 +258,15 @@ export default function Pedidos() {
                     </div>
                 )}
             </AnimatePresence>
+            <select
+                onChange={(e) => setCurrencyType(e.target.value)}
+                className="w-fit justify-end"
+                name=""
+                id=""
+            >
+                <option value="pesos">Pesos</option>
+                <option value="usd">USD</option>
+            </select>
             <div className="grid  w-full  items-start col-span-2">
                 <div className="grid grid-cols-8 items-center justify-center bg-[#F5F5F5] h-[52px] text-center font-semibold max-sm:text-sm">
                     <p className="max-sm:hidden"></p>
@@ -248,7 +287,10 @@ export default function Pedidos() {
                                 transition={{ duration: 0.3 }}
                                 key={index}
                             >
-                                <ProductRow product={prod} />
+                                <ProductRow
+                                    product={prod}
+                                    currency={currencyType}
+                                />
                             </motion.div>
                         ))}
                     </AnimatePresence>
@@ -405,15 +447,21 @@ export default function Pedidos() {
                         <p>Subtotal</p>
                         <p>${subtotalDescuento}</p>
                     </div>
-                    <div className="flex flex-row justify-between w-full">
-                        <p>IVA 21%</p>
-                        <p>${iva}</p>
-                    </div>
+                    {currencyType === "pesos" && (
+                        <div className="flex flex-row justify-between w-full">
+                            <p>IVA 21%</p>
+                            <p>${iva}</p>
+                        </div>
+                    )}
                 </div>
                 <div className="flex flex-row justify-between p-3">
                     <p className="font-medium text-2xl">
                         Total{" "}
-                        <span className="text-base">{"(IVA incluido)"}</span>
+                        {currencyType === "pesos" && (
+                            <span className="text-base">
+                                {"(IVA incluido)"}
+                            </span>
+                        )}
                     </p>
                     <p className="text-2xl">${totalFinal}</p>
                 </div>

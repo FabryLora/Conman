@@ -14,6 +14,7 @@ class RealProduct extends Model
         'price',
         'discount',
         'image',
+        'dolar_price',
     ];
 
     public function product()

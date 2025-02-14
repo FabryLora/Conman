@@ -12,8 +12,9 @@ export default function RealProducts() {
     const [code, setCode] = useState("");
     const [price, setPrice] = useState("");
     const [discount, setDiscount] = useState("");
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState();
     const [productid, setProductId] = useState("");
+    const [dolarPrice, setDolarPrice] = useState();
 
     const handleFileChange = (e) => {
         setImage(e.target.files[0]);
@@ -26,8 +27,9 @@ export default function RealProducts() {
         formData.append("name", name);
         formData.append("code", code);
         formData.append("price", price);
-        formData.append("discount", discount);
-        formData.append("image", image);
+        formData.append("dolar_price", dolarPrice);
+        formData.append("discount", discount ? discount : 0);
+        formData.append("image", image ? image : null);
         formData.append("product_id", productid);
 
         try {
@@ -59,6 +61,7 @@ export default function RealProducts() {
                                     className="block text-sm/6 font-medium text-gray-900"
                                 >
                                     Imagen
+                                    <span className="text-red-500">*</span>
                                 </label>
                                 <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 ">
                                     <div className="flex items-center justify-start p-4 w-1/2">
@@ -72,8 +75,9 @@ export default function RealProducts() {
                                                     className="cursor-pointer text-white bg-blue-500 px-4 py-2 rounded-md "
                                                     htmlFor="file-upload"
                                                 >
-                                                    Elegir imagen
+                                                    Elegir imagen{" "}
                                                 </label>
+                                                <p>{image?.name}</p>
                                                 <input
                                                     id="file-upload"
                                                     name="file-upload"
@@ -93,6 +97,7 @@ export default function RealProducts() {
                                     className="block text-sm/6 font-medium text-gray-900"
                                 >
                                     Nombre
+                                    <span className="text-red-500">*</span>
                                 </label>
                                 <div className="mt-2">
                                     <input
@@ -114,6 +119,7 @@ export default function RealProducts() {
                                     className="block text-sm/6 font-medium text-gray-900"
                                 >
                                     Codigo
+                                    <span className="text-red-500">*</span>
                                 </label>
                                 <div className="mt-2">
                                     <input
@@ -134,6 +140,7 @@ export default function RealProducts() {
                                     className="block text-sm/6 font-medium text-gray-900"
                                 >
                                     Precio
+                                    <span className="text-red-500">*</span>
                                 </label>
                                 <div className="mt-2">
                                     <input
@@ -143,6 +150,28 @@ export default function RealProducts() {
                                         }}
                                         id="price"
                                         name="price"
+                                        type="text"
+                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="col-span-full">
+                                <label
+                                    htmlFor="dolar"
+                                    className="block text-sm/6 font-medium text-gray-900"
+                                >
+                                    Precio en dolares
+                                    <span className="text-red-500">*</span>
+                                </label>
+                                <div className="mt-2">
+                                    <input
+                                        value={dolarPrice}
+                                        onChange={(ev) => {
+                                            setDolarPrice(ev.target.value);
+                                        }}
+                                        id="dolar"
+                                        name="dolar"
                                         type="text"
                                         className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                     />
@@ -219,6 +248,9 @@ export default function RealProducts() {
 
                         <div className="table-cell px-6 py-3">Codigo</div>
                         <div className="table-cell px-6 py-3">Precio</div>
+                        <div className="table-cell px-6 py-3">
+                            Precio dolares
+                        </div>
                         <div className="table-cell px-6 py-3">Descuento</div>
                         <div className="table-cell px-6 py-3">
                             Grupo de productos

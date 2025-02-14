@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
+import Footer from "../components/Footer";
 import NavbarPrivado from "../components/NavBarPrivado";
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -33,6 +34,7 @@ export default function PrivateZone() {
             <div>
                 <Outlet />
             </div>
+            <Footer />
         </div>
     );
 }

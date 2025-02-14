@@ -203,7 +203,7 @@ export default function ProductRowAdmin({
                                 </button>
                                 <img
                                     className="w-full h-full object-cover"
-                                    src={image.image_url}
+                                    src={image?.image_url}
                                     alt=""
                                 />
                             </div>
@@ -238,11 +238,13 @@ export default function ProductRowAdmin({
                     </div>
                 ) : (
                     <div className="flex flex-row gap-2 w-[340px] h-[100px]">
-                        <img
-                            className="w-full h-full object-contain "
-                            src={productObject?.image_url}
-                            alt=""
-                        />
+                        {productObject?.image_url && (
+                            <img
+                                className="w-full h-full object-contain "
+                                src={productObject?.image_url}
+                                alt=""
+                            />
+                        )}
                     </div>
                 )}
             </td>
@@ -271,10 +273,12 @@ export default function ProductRowAdmin({
                             />
                         </div>
                     </div>
-                ) : (
+                ) : productObject?.file_url ? (
                     <button className="text-blue-500" onClick={downloadPDF}>
                         Archivo
                     </button>
+                ) : (
+                    <p className="text-gray-300">No hay archivo</p>
                 )}
             </td>
 

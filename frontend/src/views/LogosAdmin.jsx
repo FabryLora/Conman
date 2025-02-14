@@ -52,8 +52,8 @@ export default function LogosAdmin() {
                                 >
                                     Logo Principal
                                 </label>
-                                <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 ">
-                                    <div className=" w-1/2">
+                                <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 w-1/2">
+                                    <div className=" w-1/2 h-[200px]">
                                         <img
                                             className="w-full h-full object-contain"
                                             src={logos?.principal_url}
@@ -66,12 +66,13 @@ export default function LogosAdmin() {
                                                 aria-hidden="true"
                                                 className="mx-auto size-12 text-gray-300"
                                             />
-                                            <div className="mt-4 flex text-sm/6 text-gray-600">
+                                            <div className="mt-4 flex flex-col text-sm/6 text-gray-600">
                                                 <label
                                                     htmlFor="logoprincipal"
                                                     className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                                                 >
                                                     <span>Cambiar Imagen</span>
+
                                                     <input
                                                         id="logoprincipal"
                                                         name="logoprincipal"
@@ -85,6 +86,7 @@ export default function LogosAdmin() {
                                                         className="sr-only"
                                                     />
                                                 </label>
+                                                <p>{principal?.name}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -98,8 +100,8 @@ export default function LogosAdmin() {
                                 >
                                     Logo Secundario
                                 </label>
-                                <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 ">
-                                    <div className=" w-1/2">
+                                <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 w-1/2">
+                                    <div className=" w-1/2 h-[200px]">
                                         <img
                                             className="w-full h-full object-contain"
                                             src={logos?.secundario_url}
@@ -112,12 +114,13 @@ export default function LogosAdmin() {
                                                 aria-hidden="true"
                                                 className="mx-auto size-12 text-gray-300"
                                             />
-                                            <div className="mt-4 flex text-sm/6 text-gray-600">
+                                            <div className="mt-4 flex flex-col text-sm/6 text-gray-600">
                                                 <label
                                                     htmlFor="secundario"
                                                     className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                                                 >
                                                     <span>Cambiar Imagen</span>
+
                                                     <input
                                                         id="secundario"
                                                         name="secundario"
@@ -131,6 +134,7 @@ export default function LogosAdmin() {
                                                         className="sr-only"
                                                     />
                                                 </label>
+                                                <p>{secundario?.name}</p>
                                             </div>
                                         </div>
                                     </div>

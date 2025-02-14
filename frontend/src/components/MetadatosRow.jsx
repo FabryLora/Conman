@@ -30,6 +30,7 @@ export default function MetadatosRow({ metadatosObject }) {
                 }
             );
             toast.success("Metadatos actualizados correctamente");
+            setEdit(false);
         } catch (error) {
             console.log(error);
             toast.error("Error al actualizar los metadatos");
@@ -37,14 +38,14 @@ export default function MetadatosRow({ metadatosObject }) {
     };
 
     return (
-        <div className="table-row">
-            <div className="table-cell">{seccion}</div>
+        <div className="table-row h-[50px] bg-gray-200">
+            <div className="table-cell align-middle">{seccion}</div>
 
-            <div className="table-cell">{keywords}</div>
+            <div className="table-cell align-middle">{keywords}</div>
 
-            <div className="table-cell">{descripcion}</div>
+            <div className="table-cell align-middle">{descripcion}</div>
 
-            <div className="table-cell text-center">
+            <div className="table-cell text-center align-middle">
                 <button onClick={() => setEdit(true)}>
                     <FontAwesomeIcon icon={faPenToSquare} size="xl" />
                 </button>
