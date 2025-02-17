@@ -12,7 +12,7 @@ export default function RealProductRowAdmin({ productObject }) {
     const [code, setCode] = useState(productObject?.code);
     const [price, setPrice] = useState(productObject?.price);
     const [dolarPrice, setDolarPrice] = useState(productObject?.dolar_price);
-    const [discount, setDiscount] = useState(productObject?.discount);
+    const [discount, setDiscount] = useState(0);
     const [image, setImage] = useState();
     const [productid, setProductId] = useState(productObject?.product?.id);
 
@@ -29,7 +29,7 @@ export default function RealProductRowAdmin({ productObject }) {
         formData.append("code", code);
         formData.append("price", price);
         formData.append("dolar_price", dolarPrice);
-        formData.append("discount", discount);
+        formData.append("discount", 0);
         if (image) {
             formData.append("image", image);
         }
@@ -157,19 +157,6 @@ export default function RealProductRowAdmin({ productObject }) {
                     />
                 ) : (
                     dolarPrice
-                )}
-            </div>
-
-            <div className="table-cell px-6 py-4 align-middle">
-                {editable ? (
-                    <input
-                        type="number"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-black"
-                        value={discount}
-                        onChange={(ev) => setDiscount(ev.target.value)}
-                    />
-                ) : (
-                    discount
                 )}
             </div>
 

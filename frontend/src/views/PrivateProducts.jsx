@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import ProductRow from "../components/ProductRow";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -24,6 +24,10 @@ export default function PrivateProducts() {
                 : true)
         );
     });
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div className="w-full px-20 py-20 flex flex-col gap-20 max-sm:px-0">
@@ -70,13 +74,13 @@ export default function PrivateProducts() {
                 </div>
             </div>
             <div className="grid w-full max-sm:hidden">
-                <div className="grid grid-cols-8 items-center justify-center bg-[#F5F5F5] h-[52px] font-semibold">
+                <div className="grid grid-cols-7 items-center justify-center bg-[#F5F5F5] h-[52px] font-semibold">
                     <p></p>
                     <p>Código</p>
                     <p>Producto</p>
-                    <p className="text-center">Precio x un.</p>
-                    <p className="text-center">Descuento</p>
-                    <p className="text-center">Precio con %</p>
+                    <p className="text-center">Precio x unidad {"(Pesos)"}</p>
+                    <p className="text-center">Precio x unidad {"(USD)"}</p>
+
                     <p className="text-center">Cantidad</p>
                     <p className="text-center"></p>
                 </div>

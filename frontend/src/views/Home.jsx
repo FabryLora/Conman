@@ -32,6 +32,10 @@ export default function Home() {
         fetchNosotrosInicio();
     }, []);
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     if (userToken) {
         return <Navigate to={"/privado"} />;
     }

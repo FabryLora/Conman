@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('code');
             $table->string('price');
-            $table->string('discount');
-            $table->string('price_discount');
+            $table->string('dolar_price');
+
             $table->string("cantidad");
             $table->foreignIdFor(Pedido::class, "pedido_id")->constrained();
             $table->timestamps();

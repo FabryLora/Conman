@@ -107,14 +107,12 @@ export default function PedidosRowAdmin({ pedidoObject }) {
                                             Nombre
                                         </th>
                                         <th className="p-2 border border-gray-300">
-                                            Precio x un.
+                                            Precio x unidad {"(Pesos)"}
                                         </th>
                                         <th className="p-2 border border-gray-300">
-                                            Descuento
+                                            Precio x unidad {"(USD)"}
                                         </th>
-                                        <th className="p-2 border border-gray-300">
-                                            Precio con %
-                                        </th>
+
                                         <th className="p-2 border border-gray-300">
                                             Cantidad
                                         </th>
@@ -141,11 +139,9 @@ export default function PedidosRowAdmin({ pedidoObject }) {
                                                     ${item?.price}
                                                 </td>
                                                 <td className="p-2 border border-gray-300">
-                                                    {item?.discount}%
+                                                    ${item?.dolar_price}
                                                 </td>
-                                                <td className="p-2 border border-gray-300">
-                                                    ${item?.descuento}
-                                                </td>
+
                                                 <td className="p-2 border border-gray-300">
                                                     {item?.cantidad}
                                                 </td>

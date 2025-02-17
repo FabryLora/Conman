@@ -7,6 +7,10 @@ import { useStateContext } from "../contexts/ContextProvider.jsx";
 export default function GeneralView() {
     const { categoryInfo, productInfo, linkInfo } = useStateContext();
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const location = useLocation();
 
     const [categoryName, setCategoryName] = useState();

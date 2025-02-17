@@ -1,8 +1,13 @@
+import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import NovedadesCard from "../components/NovedadesCard";
 import { useStateContext } from "../contexts/ContextProvider";
 export default function Novedades() {
     const { novedades, metadatos } = useStateContext();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div className="py-20 bg-special-white">

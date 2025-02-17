@@ -11,6 +11,10 @@ export default function MultipleView() {
     const { id } = useParams();
     const location = useLocation();
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const [cleanPathname, setCleanPathname] = useState(
         location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
     );

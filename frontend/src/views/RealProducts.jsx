@@ -28,7 +28,7 @@ export default function RealProducts() {
         formData.append("code", code);
         formData.append("price", price);
         formData.append("dolar_price", dolarPrice);
-        formData.append("discount", discount ? discount : 0);
+        formData.append("discount", 0);
         formData.append("image", image ? image : null);
         formData.append("product_id", productid);
 
@@ -180,27 +180,6 @@ export default function RealProducts() {
 
                             <div className="col-span-full">
                                 <label
-                                    htmlFor="discount"
-                                    className="block text-sm/6 font-medium text-gray-900"
-                                >
-                                    Descuento
-                                </label>
-                                <div className="mt-2">
-                                    <input
-                                        value={discount}
-                                        onChange={(ev) => {
-                                            setDiscount(ev.target.value);
-                                        }}
-                                        id="discount"
-                                        name="discount"
-                                        type="text"
-                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="col-span-full">
-                                <label
                                     htmlFor="categoria"
                                     className="block text-sm/6 font-medium text-gray-900"
                                 >
@@ -251,7 +230,7 @@ export default function RealProducts() {
                         <div className="table-cell px-6 py-3">
                             Precio dolares
                         </div>
-                        <div className="table-cell px-6 py-3">Descuento</div>
+
                         <div className="table-cell px-6 py-3">
                             Grupo de productos
                         </div>

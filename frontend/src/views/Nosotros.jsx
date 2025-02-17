@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import "react-quill/dist/quill.snow.css";
 import mision from "../assets/nosotros/mision-icon.svg";
@@ -26,6 +27,10 @@ export default function Nosotros() {
             text: nosotrosSecond?.sustentabilidad,
         },
     ];
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div>
@@ -62,16 +67,18 @@ export default function Nosotros() {
                 <style>
                     {`
                             .custom-content div > span {
-    font-size: 16px !important; /* Cambia 1.25rem a 1rem */
-}
-    .custom-content {
-                        
-    }
+                                font-size: 16px !important;
+                                
+                            }
+                                .custom-content p {
+                                line-height: normal !important;
+                                
+                            }
                             `}
                 </style>
 
                 <div className="flex flex-col h-full w-full lg:w-1/2 md:max-w-full lg:max-w-none items-center">
-                    <div className="flex flex-col gap-6 items-start overflow-y-auto max-h-[678px] w-full">
+                    <div className="flex flex-col gap-6 items-start  w-full">
                         <div
                             dangerouslySetInnerHTML={{
                                 __html: nosotrosFirstInfo?.text || "",
@@ -85,7 +92,7 @@ export default function Nosotros() {
             <div className="h-fit w-full bg-special-white flex justify-center pb-20">
                 <div className="w-[90%]">
                     <h2 className="font-bold text-[40px] py-20">
-                        ¿Porque elegirnos?
+                        ¿Por qué elegirnos?
                     </h2>
                     <div className="flex flex-row flex-wrap gap-y-20 justify-between max-lg:justify-center">
                         {nosotrosInfo.map((info, index) => (

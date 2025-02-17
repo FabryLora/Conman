@@ -49,17 +49,14 @@ export default function ProductCard({ product }) {
                     <p>{product?.name}</p>
                 </div>
                 <div className="flex flex-row justify-between border-b">
-                    <p>Precio x uni.:</p>
+                    <p>Precio x unidad {"(Pesos)"}:</p>
                     <p>${product?.price.toLocaleString("es-AR")}</p>
                 </div>
                 <div className="flex flex-row justify-between border-b">
-                    <p>Codigo:</p>
-                    <p>{product?.discount}%</p>
+                    <p>Precio x unidad {"(USD)"}:</p>
+                    <p>${product?.dolar_price}</p>
                 </div>
-                <div className="flex flex-row justify-between border-b">
-                    <p>Precio con descuento:</p>
-                    <p>${extraInfo.descuento.toLocaleString("es-AR")}</p>
-                </div>
+
                 <div className="flex flex-row gap-3 justify-end py-4">
                     <div className="flex justify-center">
                         {location.pathname === "/privado/pedido" ? (

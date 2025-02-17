@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import barsIcon from "../assets/icons/bars-solid.svg";
 import chevronDownWhite from "../assets/icons/chevron-down-white.svg";
@@ -19,6 +19,21 @@ export default function NavbarPrivado() {
         useStateContext();
 
     const [cartProd, setCartProd] = useState(cart.length);
+
+    const userMenu = useRef(null);
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (userMenu.current && !userMenu.current.contains(event.target)) {
+                setUserLoged(false); // Cierra el contenedor si se hace clic fuera
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     useEffect(() => {
         setCartProd(cart.length);
@@ -41,7 +56,7 @@ export default function NavbarPrivado() {
 
     return (
         <div className="sticky top-0 flex flex-col items-center justify-center font-roboto-condensed z-[100]">
-            <div className="bg-primary-blue h-[40px] w-full flex items-center justify-between pl-20 pr-14 max-sm:p-0 max-sm:justify-end max-sm:pr-10">
+            <div className="bg-primary-blue h-[40px] w-full flex items-center justify-between px-20 max-sm:p-0 max-sm:justify-end max-sm:pr-10">
                 <div className="flex gap-4 items-center text-[14px] text-white h-[16px] max-sm:hidden">
                     <div className="flex gap-2 items-center">
                         <img className="h-[16px]" src={letterIcon} alt="" />
@@ -75,6 +90,7 @@ export default function NavbarPrivado() {
                             <AnimatePresence>
                                 {userLoged && (
                                     <motion.div
+                                        ref={userMenu}
                                         initial={{ opacity: 0, y: -30 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -30 }}
@@ -84,12 +100,6 @@ export default function NavbarPrivado() {
                                         }}
                                         className="absolute flex flex-col gap-4 top-10 right-0 border broder-gray bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-fit z-20"
                                     >
-                                        <Link
-                                            className="bg-primary-red text-white text-center px-4 py-2"
-                                            to={"/privado"}
-                                        >
-                                            SECCION PRIVADA
-                                        </Link>
                                         <Link
                                             onClick={() => setUserToken("")}
                                             to={"/"}
@@ -104,7 +114,7 @@ export default function NavbarPrivado() {
                     )}
                 </div>
             </div>
-            <nav className="flex relative flex-row items-center pl-20 pr-4 gap-20 w-full h-[85px] shadow-sm max-lg:justify-center bg-white">
+            <nav className="flex relative flex-row items-center px-20 gap-20 w-full h-[85px] shadow-sm max-lg:justify-center bg-white">
                 <Link className="w-[267px] h-[57px]" to={"/"}>
                     <img
                         src={logos?.principal_url}
@@ -112,7 +122,7 @@ export default function NavbarPrivado() {
                         className="w-full h-full object-contain"
                     />
                 </Link>
-                <ul className="flex flex-row gap-5 w-full justify-end pr-10 max-lg:hidden">
+                <ul className="flex flex-row gap-5 w-full justify-end max-lg:hidden">
                     {links.map((linkInfo) => (
                         <li
                             className="relative"

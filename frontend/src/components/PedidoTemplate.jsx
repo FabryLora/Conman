@@ -1,4 +1,4 @@
-export default function PedidoTemplate({ cart, extraInfo, user }) {
+export default function PedidoTemplate({ cart, extraInfo, user, currency }) {
     return (
         <div
             style={{
@@ -89,7 +89,7 @@ export default function PedidoTemplate({ cart, extraInfo, user }) {
                                     border: "1px solid #ddd",
                                 }}
                             >
-                                Precio x un.
+                                Precio x unidad {"Pesos"}
                             </th>
                             <th
                                 style={{
@@ -97,16 +97,9 @@ export default function PedidoTemplate({ cart, extraInfo, user }) {
                                     border: "1px solid #ddd",
                                 }}
                             >
-                                Descuento
+                                Precio x unidad {"USD"}
                             </th>
-                            <th
-                                style={{
-                                    padding: "10px",
-                                    border: "1px solid #ddd",
-                                }}
-                            >
-                                Precio con %
-                            </th>
+
                             <th
                                 style={{
                                     padding: "10px",
@@ -156,16 +149,9 @@ export default function PedidoTemplate({ cart, extraInfo, user }) {
                                         border: "1px solid #ddd",
                                     }}
                                 >
-                                    {item?.discount}%
+                                    ${item.dolar_price}
                                 </td>
-                                <td
-                                    style={{
-                                        padding: "10px",
-                                        border: "1px solid #ddd",
-                                    }}
-                                >
-                                    ${item.additionalInfo.descuento}
-                                </td>
+
                                 <td
                                     style={{
                                         padding: "10px",
@@ -183,6 +169,9 @@ export default function PedidoTemplate({ cart, extraInfo, user }) {
                 </p>
                 <p>
                     <strong>Tipo de entrega:</strong> {extraInfo.tipo_entrega}
+                </p>
+                <p>
+                    <strong>Divisa:</strong> {currency}
                 </p>
                 <div
                     style={{
@@ -203,9 +192,12 @@ export default function PedidoTemplate({ cart, extraInfo, user }) {
                         <strong>Subtotal con descuento:</strong> $
                         {extraInfo.subtotalDescuento}
                     </p>
-                    <p>
-                        <strong>Porcentaje de IVA:</strong> ${extraInfo.iva}
-                    </p>
+                    {currency !== "usd" && (
+                        <p>
+                            <strong>IVA:</strong> ${extraInfo.iva}
+                        </p>
+                    )}
+
                     <p style={{ fontSize: "18px", fontWeight: "bold" }}>
                         <strong>Total del pedido:</strong> ${extraInfo.total}
                     </p>

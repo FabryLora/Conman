@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactDOMServer from "react-dom/server";
 import { Helmet } from "react-helmet-async";
 import { ToastContainer, toast } from "react-toastify";
@@ -12,6 +12,10 @@ import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Contacto() {
     const { contactInfo, metadatos } = useStateContext();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     const contactoInfo = [
         { icon: locationIcon, text: contactInfo?.location },

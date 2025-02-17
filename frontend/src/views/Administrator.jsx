@@ -175,7 +175,7 @@ export default function Administrator() {
                         animate={{ x: 0 }}
                         exit={{ x: -300 }}
                         transition={{ ease: "linear", duration: 0.2 }}
-                        className="flex flex-col h-screen w-[300px] bg-primary-blue text-white"
+                        className="flex flex-col h-screen w-[300px] bg-primary-blue text-white overflow-y-auto"
                     >
                         <Link to={"/"} className="p-6">
                             <img src={conmanWhiteLogo} alt="" />

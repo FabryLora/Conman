@@ -1,9 +1,14 @@
+import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import FileComponent from "../components/FileComponent";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Calidad() {
     const { pdfInfo, metadatos, calidadInfo } = useStateContext();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div className="font-roboto-condensed">
@@ -30,6 +35,10 @@ export default function Calidad() {
                 {`
                             .custom-content div > span {
     font-size: 16px !important; /* Cambia 1.25rem a 1rem */
+}
+
+.custom-content p {
+    line-height: normal !important; /* Cambia 1.25rem a 1rem */
 }
  
    

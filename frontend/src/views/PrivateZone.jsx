@@ -29,7 +29,10 @@ export default function PrivateZone() {
             <div className="absolute flex flex-row gap-1 items-center justify-center  text-[#515A53] left-20 top-[150px] max-sm:left-10">
                 <Link to={"/"}>Inicio</Link>
                 <p>{">"}</p>
-                <Link to={"#"}>{cleanPathname[1]}</Link>
+                <Link className="font-bold" to={"#"}>
+                    {cleanPathname[1]?.charAt(0)?.toUpperCase() +
+                        cleanPathname[1]?.slice(1)}
+                </Link>
             </div>
             <div>
                 <Outlet />

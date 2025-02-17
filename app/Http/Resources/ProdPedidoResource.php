@@ -19,8 +19,7 @@ class ProdPedidoResource extends JsonResource
             "name" => $this->name,
             "code" => $this->code,
             "price" => $this->price,
-            "discount" => $this->discount,
-            "price_discount" => $this->price_discount,
+            "dolar_price" => $this->dolar_price,
             "cantidad" => $this->cantidad,
             "image" => $this->image,
         ];

@@ -28,6 +28,10 @@ export default function Pedidos() {
     const [currencyType, setCurrencyType] = useState("pesos");
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
         if (currencyType === "pesos") {
             const total = cart.reduce((acc, prod) => {
                 return acc + prod.price * prod.additionalInfo.cantidad;
@@ -152,11 +156,7 @@ export default function Pedidos() {
                 formProds.append("price", prod.price);
                 formProds.append("cantidad", prod.additionalInfo.cantidad);
                 formProds.append("code", prod.code);
-                formProds.append("discount", prod.discount);
-                formProds.append(
-                    "price_discount",
-                    prod.additionalInfo.descuento
-                );
+                formProds.append("dolar_price", prod.dolar_price);
                 formProds.append("pedido_id", pedidoId);
 
                 axiosClient.post(`/prodpedidos`, formProds, {
@@ -179,6 +179,7 @@ export default function Pedidos() {
                         total: totalFinal,
                     }}
                     user={userInfo}
+                    currency={currencyType}
                 />
             );
 
@@ -216,8 +217,6 @@ export default function Pedidos() {
             return () => clearTimeout(timer);
         }
     }, [error]);
-
-    console.log(currencyType);
 
     return (
         <div className="w-full px-20 py-20 grid grid-cols-2 gap-10 max-sm:px-4">
@@ -258,24 +257,16 @@ export default function Pedidos() {
                     </div>
                 )}
             </AnimatePresence>
-            <select
-                onChange={(e) => setCurrencyType(e.target.value)}
-                className="w-fit justify-end"
-                name=""
-                id=""
-            >
-                <option value="pesos">Pesos</option>
-                <option value="usd">USD</option>
-            </select>
+
             <div className="grid  w-full  items-start col-span-2">
-                <div className="grid grid-cols-8 items-center justify-center bg-[#F5F5F5] h-[52px] text-center font-semibold max-sm:text-sm">
+                <div className="grid grid-cols-7 items-center justify-center bg-[#F5F5F5] h-[52px] text-center font-semibold max-sm:text-sm">
                     <p className="max-sm:hidden"></p>
                     <p className="text-left">Codigo</p>
                     <p className="text-left">Producto</p>
-                    <p>Precio x un.</p>
-                    <p>Descuento</p>
-                    <p>Precio con %</p>
-                    <p>cantidad</p>
+                    <p>Precio x unidad {"(Pesos)"}</p>
+                    <p>Precio x unidad {"(USD)"}</p>
+
+                    <p>Cantidad</p>
                     <p></p>
                 </div>
 
@@ -405,6 +396,7 @@ export default function Pedidos() {
                     </div>
                 </div>
             </div>
+
             <div className="h-[206px] flex flex-col gap-3 max-sm:col-span-2 max-sm:order-2">
                 <div className="">
                     <h2 className=" text-xl font-bold">
@@ -421,7 +413,22 @@ export default function Pedidos() {
                     id=""
                 ></textarea>
             </div>
+
             <div className="h-fit border max-sm:col-span-2 max-sm:order-5">
+                <div className="h-fit border max-sm:col-span-2 p-3">
+                    <div className="w-full flex justify-between">
+                        <h2>Elegir divisa:</h2>
+                        <select
+                            onChange={(e) => setCurrencyType(e.target.value)}
+                            className="w-fit justify-end"
+                            name=""
+                            id=""
+                        >
+                            <option value="pesos">Pesos</option>
+                            <option value="usd">USD</option>
+                        </select>
+                    </div>
+                </div>
                 <div className="bg-[#EAEAEA]">
                     <h2 className="p-3 text-xl font-bold">Pedido</h2>
                 </div>
@@ -466,6 +473,7 @@ export default function Pedidos() {
                     <p className="text-2xl">${totalFinal}</p>
                 </div>
             </div>
+
             <div className="flex flex-col gap-3 max-sm:col-span-2 max-sm:order-4">
                 <h2 className="font-bold text-2xl">Adjuntar un archivo</h2>
                 <div className="w-full border flex items-center justify-between">
@@ -484,6 +492,7 @@ export default function Pedidos() {
                     />
                 </div>
             </div>
+
             <div className="flex flex-row gap-3 w-full max-sm:col-span-2 max-sm:order-6">
                 <button
                     onClick={clearCart}
