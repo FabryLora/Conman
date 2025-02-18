@@ -96,20 +96,13 @@ export default function PDFComponent({ pdfObject, onUpdate }) {
             <div className="mb-2 flex flex-col">
                 <div className="flex flex-col justify-between">
                     <label className="block font-bold">Subir nuevo PDF:</label>
-                    <label
-                        className="bg-indigo-500 text-white text-center rounded-md p-2 cursor-pointer"
-                        htmlFor="pdf"
-                    >
-                        Elegir PDF
-                    </label>
-                    <p>{pdf?.name}</p>
                 </div>
 
                 <input
                     id="pdf"
                     type="file"
                     onChange={handleFileChange}
-                    className="border p-2 rounded w-full hidden"
+                    className="border p-2 rounded w-full"
                 />
             </div>
 
@@ -118,26 +111,18 @@ export default function PDFComponent({ pdfObject, onUpdate }) {
                     <label className="block font-bold">
                         Subir nueva Imagen:
                     </label>
-                    <label
-                        className="bg-indigo-500 text-white text-center rounded-md p-2 cursor-pointer"
-                        htmlFor="imagen"
-                    >
-                        Elegir Imagen
-                    </label>
-                    <p>{image?.name}</p>
+                    <input
+                        id="imagen"
+                        type="file"
+                        onChange={handleImageChange}
+                        className="border p-2 rounded w-full "
+                    />
                     <img
                         className="w-32 h-32 mx-auto py-2"
                         src={pdfObject?.image_url}
                         alt=""
                     />
                 </div>
-
-                <input
-                    id="imagen"
-                    type="file"
-                    onChange={handleImageChange}
-                    className="border p-2 rounded w-full hidden"
-                />
             </div>
 
             <div className="flex gap-2">

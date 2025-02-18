@@ -34,7 +34,7 @@ export default function FileComponent({ fileObject }) {
                 <div className="w-[78px] h-[78px] flex items-center justify-center bg-white flex-shrink-0">
                     <img
                         className="w-full h-full object-contain"
-                        /* src={fileObject.image} */
+                        src={fileObject?.image_url}
                         alt=""
                     />
                 </div>

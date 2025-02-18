@@ -28,7 +28,10 @@ const CalidadAdmin = () => {
 
         const formData = new FormData();
         formData.append("pdf", file);
-        formData.append("image", image);
+        if (image) {
+            formData.append("image", image);
+        }
+
         formData.append("name", name);
 
         try {
