@@ -90,7 +90,7 @@ export default function Nosotros() {
             </div>
 
             <div className="h-fit w-full bg-special-white flex justify-center pb-20">
-                <div className="w-[90%]">
+                <div className="w-[1240px]">
                     <h2 className="font-bold text-[40px] py-20">
                         ¿Por qué elegirnos?
                     </h2>

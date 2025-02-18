@@ -138,353 +138,377 @@ export default function Navbar() {
     }, [categoryInfo]);
 
     return (
-        <div className="sticky top-0 z-50 flex flex-col items-center justify-center font-roboto-condensed">
-            <div className="bg-primary-blue h-[40px] w-full flex items-center justify-between px-20 max-sm:pl-0 max-sm:justify-end">
-                <div className="flex gap-4 items-center text-[14px] text-white h-[16px] max-sm:hidden">
-                    <div className="flex gap-2 items-center">
-                        <img className="h-[16px]" src={letterIcon} alt="" />
-                        <p>{contactInfo?.mail}</p>
+        <div className="sticky top-0 z-50  flex flex-col items-center justify-center font-roboto-condensed ">
+            <div className="bg-primary-blue w-full">
+                <div className="max-w-[1240px] mx-auto h-[40px] w-full flex items-center justify-between  max-sm:pl-0 max-sm:justify-end">
+                    <div className="flex gap-4 items-center text-[14px] text-white h-[16px] max-sm:hidden">
+                        <div className="flex gap-2 items-center">
+                            <img className="h-[16px]" src={letterIcon} alt="" />
+                            <p>{contactInfo?.mail}</p>
+                        </div>
+                        <div className="flex gap-2 items-center">
+                            <img className="h-[16px]" src={phoneIcon} alt="" />
+                            <p>{contactInfo?.phone}</p>
+                        </div>
                     </div>
-                    <div className="flex gap-2 items-center">
-                        <img className="h-[16px]" src={phoneIcon} alt="" />
-                        <p>{contactInfo?.phone}</p>
-                    </div>
-                </div>
-                <div className="flex fle-row gap-4 h-full items-center">
-                    <div
-                        ref={searchBarRef}
-                        className="relative flex flex-row items-center max-sm:justify-end gap-3"
-                    >
-                        <AnimatePresence>
-                            <div
-                                className={`flex flex-row items-center gap-2 rounded-md  ${
-                                    search ? "border px-2" : ""
-                                } ${userToken ? "max-sm:w-[60%]" : ""}`}
-                            >
-                                <motion.div
-                                    className={`flex items-center rounded-md overflow-hidden w-fit text-white
-                                }`}
-                                    animate={{ width: search ? 250 : 40 }} // Controla la expansión
-                                    initial={{ width: 40 }}
-                                    exit={{ width: 40 }}
-                                    transition={{
-                                        duration: 0.3,
-                                        ease: "easeInOut",
-                                    }}
-                                >
-                                    <input
-                                        id="searchid"
-                                        type="text"
-                                        value={searchTerm}
-                                        onChange={(e) =>
-                                            setSearchTerm(e.target.value)
-                                        }
-                                        className={`bg-transparent outline-none w-full transition-opacity duration-300 text-base ${
-                                            search ? "opacity-100" : "opacity-0"
-                                        }`}
-                                        autoFocus={search}
-                                    />
-                                </motion.div>
-
-                                <label
-                                    className="cursor-pointer max-sm:min-w-[15px] max-sm:h-[15px]"
-                                    htmlFor="searchid"
-                                    onClick={() => {
-                                        setSearch(!search);
-                                        setSearchTerm("");
-                                    }}
-                                >
-                                    <img
-                                        src={searchIcon}
-                                        alt="Buscar"
-                                        className=" max-sm:w-full max-sm:h-full max-sm:object-contain"
-                                    />
-                                </label>
-                            </div>
-                        </AnimatePresence>
-                        <AnimatePresence>
-                            {search && searchTerm && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: -8 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -8 }}
-                                    className="absolute flex flex-col top-8 bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-[439px] z-40 max-sm:-right-44"
-                                >
-                                    <h2 className="font-bold text-[24px] py-5">
-                                        Resultados de busqueda
-                                    </h2>
-                                    <div className="flex flex-col overflow-y-auto">
-                                        {productInfo
-                                            .filter((product) =>
-                                                product.name
-                                                    .toLowerCase()
-                                                    .includes(
-                                                        searchTerm.toLowerCase()
-                                                    )
-                                            )
-                                            .map((product, index) => (
-                                                <SearchCard
-                                                    key={index}
-                                                    searchObject={product}
-                                                />
-                                            ))}
-                                    </div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
-                    {socials.map((social, index) => (
-                        <a
-                            key={index}
-                            target="_blanck"
-                            href={social.href}
-                            rel="noopener noreferrer"
-                            className="max-sm:hidden"
+                    <div className="flex flex-row gap-4 max-sm:pr-4 h-full items-center">
+                        <div
+                            ref={searchBarRef}
+                            className="relative flex flex-row items-center max-sm:justify-end gap-3"
                         >
-                            <img src={social.logo} alt="" />
-                        </a>
-                    ))}
-                    <div className="flex flex-row gap-4 h-[16px] items-center justify-center ">
-                        {!userToken && (
-                            <>
-                                <button onClick={() => setUserMenu(!userMenu)}>
-                                    <img
-                                        className="h-[15px] w-[15px]"
-                                        src={userIcon}
-                                        alt=""
-                                    />
-                                </button>
-                                <AnimatePresence>
-                                    {userMenu && (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: -20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, y: -20 }}
-                                            transition={{
-                                                duration: 0.2,
-                                                ease: "linear",
-                                            }}
-                                            ref={loginRef}
-                                            className="absolute flex flex-col top-10 right-10 max-sm:right-4 bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-[439px] z-40 border"
-                                        >
-                                            {error && (
-                                                <p className="text-red-500">
-                                                    {errorMessage}
-                                                </p>
-                                            )}
-                                            <h2 className="font-bold text-[24px] py-5">
-                                                Iniciar sesion
-                                            </h2>
-                                            <form
-                                                onSubmit={onSubmit}
-                                                className="w-full h-full flex flex-col justify-around gap-3"
-                                                action=""
-                                            >
-                                                <div>
-                                                    <div className="flex flex-col gap-2">
-                                                        <label htmlFor="user">
-                                                            Usuario
-                                                        </label>
-                                                        <input
-                                                            value={user}
-                                                            onChange={(ev) =>
-                                                                setUser(
-                                                                    ev.target
-                                                                        .value
-                                                                )
-                                                            }
-                                                            className="w-[328px] h-[45px] border pl-2"
-                                                            type="text"
-                                                            name="user"
-                                                            id="user"
-                                                        />
-                                                    </div>
-                                                    <div className="flex flex-col gap-2">
-                                                        <label htmlFor="password">
-                                                            Contraseña
-                                                        </label>
-                                                        <input
-                                                            value={password}
-                                                            onChange={(ev) =>
-                                                                setPassword(
-                                                                    ev.target
-                                                                        .value
-                                                                )
-                                                            }
-                                                            className="w-[328px] h-[45px] border pl-2"
-                                                            type="password"
-                                                            name="password"
-                                                            id="password"
-                                                        />
-                                                    </div>
-                                                </div>
-
-                                                <button
-                                                    className="w-[325px] h-[47px] bg-primary-red text-white self-center"
-                                                    type="submit"
-                                                >
-                                                    {login
-                                                        ? "Iniciando sesion..."
-                                                        : "Iniciar sesion"}
-                                                </button>
-                                            </form>
-                                            <div className="flex flex-col items-center">
-                                                <p>¿No tenes usuario?</p>
-                                                <Link
-                                                    className="text-primary-red"
-                                                    to={"/registro"}
-                                                >
-                                                    REGISTRATE
-                                                </Link>
-                                            </div>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </>
-                        )}
-                    </div>
-                    {userToken && (
-                        <div className="h-full relative">
-                            <button
-                                onClick={() => setUserLoged(!userLoged)}
-                                className="w-[139px] h-full flex justify-center items-center bg-white"
-                            >
-                                <h2 className="font-medium text-sm text-primary-blue">
-                                    {userInfo?.name
-                                        ? userInfo?.name.toUpperCase()
-                                        : ""}
-                                </h2>
-                            </button>
                             <AnimatePresence>
-                                {userLoged && (
+                                <div
+                                    className={`flex flex-row items-center gap-2 rounded-md  ${
+                                        search ? "border px-2" : ""
+                                    } ${userToken ? "max-sm:w-[60%]" : ""}`}
+                                >
                                     <motion.div
-                                        initial={{ opacity: 0, y: -30 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -30 }}
+                                        className={`flex items-center rounded-md overflow-hidden w-fit text-white
+                                }`}
+                                        animate={{ width: search ? 250 : 40 }} // Controla la expansión
+                                        initial={{ width: 40 }}
+                                        exit={{ width: 40 }}
                                         transition={{
-                                            duration: 0.1,
-                                            ease: "linear",
+                                            duration: 0.3,
+                                            ease: "easeInOut",
                                         }}
-                                        className="absolute flex flex-col gap-4 top-10 right-0 border broder-gray bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-fit z-20"
                                     >
-                                        <Link
-                                            className="bg-primary-red text-white text-center px-4 py-2"
-                                            to={"/privado"}
-                                        >
-                                            SECCION PRIVADA
-                                        </Link>
-                                        <button
-                                            onClick={() => setUserToken("")}
-                                            type="button"
-                                            className="bg-primary-red text-white text-center px-4 py-2"
-                                        >
-                                            CERRAR SESION
-                                        </button>
+                                        <input
+                                            id="searchid"
+                                            type="text"
+                                            value={searchTerm}
+                                            onChange={(e) =>
+                                                setSearchTerm(e.target.value)
+                                            }
+                                            className={`bg-transparent outline-none w-full transition-opacity duration-300 text-base ${
+                                                search
+                                                    ? "opacity-100"
+                                                    : "opacity-0"
+                                            }`}
+                                            autoFocus={search}
+                                        />
+                                    </motion.div>
+
+                                    <label
+                                        className="cursor-pointer max-sm:min-w-[15px] max-sm:h-[15px]"
+                                        htmlFor="searchid"
+                                        onClick={() => {
+                                            setSearch(!search);
+                                            setSearchTerm("");
+                                        }}
+                                    >
+                                        <img
+                                            src={searchIcon}
+                                            alt="Buscar"
+                                            className=" max-sm:w-full max-sm:h-full max-sm:object-contain"
+                                        />
+                                    </label>
+                                </div>
+                            </AnimatePresence>
+                            <AnimatePresence>
+                                {search && searchTerm && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: -8 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -8 }}
+                                        className="absolute flex flex-col top-8 bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-[439px] z-40 max-sm:-right-9"
+                                    >
+                                        <h2 className="font-bold text-[24px] py-5">
+                                            Resultados de busqueda
+                                        </h2>
+                                        <div className="flex flex-col overflow-y-auto scrollbar-hide">
+                                            {productInfo
+                                                .filter((product) =>
+                                                    product.name
+                                                        .toLowerCase()
+                                                        .includes(
+                                                            searchTerm.toLowerCase()
+                                                        )
+                                                )
+                                                .map((product, index) => (
+                                                    <SearchCard
+                                                        key={index}
+                                                        searchObject={product}
+                                                    />
+                                                ))}
+                                        </div>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
                         </div>
-                    )}
-                </div>
-            </div>
-            <nav className="flex bg-white relative flex-row items-center px-20 gap-24 w-full h-[85px] shadow-sm justify-between max-xl:justify-center">
-                <div className="w-[267px] h-[57px]">
-                    <Link className="" to={"/"}>
-                        <img
-                            src={logos?.principal_url}
-                            alt="Logo"
-                            className="w-full h-full object-contain"
-                        />
-                    </Link>
-                </div>
-
-                <ul className="flex flex-row gap-10 w-fit max-xl:hidden items-center">
-                    <Link
-                        className="hover:text-gray-500"
-                        to={"/inicio/nosotros"}
-                    >
-                        Nosotros
-                    </Link>
-                    {dropdowns
-                        .sort((a, b) => {
-                            if (a.order_value < b.order_value) return -1;
-                            if (a.order_value > b.order_value) return 1;
-                            return 0;
-                        })
-                        .map((drop) => (
-                            <div
-                                onMouseEnter={() => toggleDropdown(drop.id)}
-                                onMouseLeave={() => toggleDropdown(drop.id)}
-                                className={`relative flex gap-1 max-xl:text-sm items-center `}
-                                key={drop.id}
+                        {socials.map((social, index) => (
+                            <a
+                                key={index}
+                                target="_blanck"
+                                href={social.href}
+                                rel="noopener noreferrer"
+                                className="max-sm:hidden"
                             >
-                                <div className="flex flex-row items-center gap-1">
-                                    <Link
-                                        onClick={() => setLinkInfo("")}
-                                        className="hover:text-gray-500 whitespace-nowrap"
-                                        to={drop.href}
+                                <img src={social.logo} alt="" />
+                            </a>
+                        ))}
+                        <div className="relative flex flex-row gap-4 h-[16px] items-center justify-center ">
+                            {!userToken && (
+                                <>
+                                    <button
+                                        onClick={() => setUserMenu(!userMenu)}
                                     >
-                                        {drop.id}
-                                    </Link>
-                                    {drop.chevron && (
-                                        <img src={chevronDown} alt="Chevron" />
-                                    )}
-                                </div>
-
-                                <AnimatePresence>
-                                    {drop.open && drop.subHref && (
-                                        <motion.div
-                                            initial={{ height: 0 }}
-                                            animate={{ height: "fit-content" }}
-                                            exit={{ height: 0 }}
-                                            className="absolute flex flex-col top-6 left-0 bg-[#CBCBCB] shadow-md font-roboto-condensed w-[200px] h-fit max-h-[600px] overflow-y-auto z-40 overflow-hidden"
-                                        >
-                                            {drop.subHref.map((sub) => (
-                                                <Link
-                                                    onClick={() =>
-                                                        setLinkInfo(sub.title)
-                                                    }
-                                                    className="flex flex-row items-center justify-between px-2 border-b border-white hover:text-gray-700"
-                                                    key={sub.title}
-                                                    to={`${drop.href}`}
+                                        <img
+                                            className="h-[15px] w-[15px]"
+                                            src={userIcon}
+                                            alt=""
+                                        />
+                                    </button>
+                                    <AnimatePresence>
+                                        {userMenu && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: -20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -20 }}
+                                                transition={{
+                                                    duration: 0.2,
+                                                    ease: "linear",
+                                                }}
+                                                ref={loginRef}
+                                                className="absolute flex flex-col top-10 right-0 max-sm:right-4 bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-[439px] z-40 border"
+                                            >
+                                                {error && (
+                                                    <p className="text-red-500">
+                                                        {errorMessage}
+                                                    </p>
+                                                )}
+                                                <h2 className="font-bold text-[24px] py-5">
+                                                    Iniciar sesion
+                                                </h2>
+                                                <form
+                                                    onSubmit={onSubmit}
+                                                    className="w-full h-full flex flex-col justify-around gap-3"
+                                                    action=""
                                                 >
-                                                    {sub.title}
-                                                    <FontAwesomeIcon
-                                                        icon={faChevronRight}
-                                                        color={"#000"}
-                                                    />
-                                                </Link>
-                                            ))}
+                                                    <div>
+                                                        <div className="flex flex-col gap-2">
+                                                            <label htmlFor="user">
+                                                                Usuario
+                                                            </label>
+                                                            <input
+                                                                value={user}
+                                                                onChange={(
+                                                                    ev
+                                                                ) =>
+                                                                    setUser(
+                                                                        ev
+                                                                            .target
+                                                                            .value
+                                                                    )
+                                                                }
+                                                                className="w-[328px] h-[45px] border pl-2"
+                                                                type="text"
+                                                                name="user"
+                                                                id="user"
+                                                            />
+                                                        </div>
+                                                        <div className="flex flex-col gap-2">
+                                                            <label htmlFor="password">
+                                                                Contraseña
+                                                            </label>
+                                                            <input
+                                                                value={password}
+                                                                onChange={(
+                                                                    ev
+                                                                ) =>
+                                                                    setPassword(
+                                                                        ev
+                                                                            .target
+                                                                            .value
+                                                                    )
+                                                                }
+                                                                className="w-[328px] h-[45px] border pl-2"
+                                                                type="password"
+                                                                name="password"
+                                                                id="password"
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <button
+                                                        className="w-[325px] h-[47px] bg-primary-red text-white self-center"
+                                                        type="submit"
+                                                    >
+                                                        {login
+                                                            ? "Iniciando sesion..."
+                                                            : "Iniciar sesion"}
+                                                    </button>
+                                                </form>
+                                                <div className="flex flex-col items-center">
+                                                    <p>¿No tenes usuario?</p>
+                                                    <Link
+                                                        className="text-primary-red"
+                                                        to={"/registro"}
+                                                    >
+                                                        REGISTRATE
+                                                    </Link>
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </>
+                            )}
+                        </div>
+                        {userToken && (
+                            <div className="h-full relative">
+                                <button
+                                    onClick={() => setUserLoged(!userLoged)}
+                                    className="w-[139px] h-full flex justify-center items-center bg-white"
+                                >
+                                    <h2 className="font-medium text-sm text-primary-blue">
+                                        {userInfo?.name
+                                            ? userInfo?.name.toUpperCase()
+                                            : ""}
+                                    </h2>
+                                </button>
+                                <AnimatePresence>
+                                    {userLoged && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: -30 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -30 }}
+                                            transition={{
+                                                duration: 0.1,
+                                                ease: "linear",
+                                            }}
+                                            className="absolute flex flex-col gap-4 top-10 right-0 border broder-gray bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-fit z-20"
+                                        >
+                                            <Link
+                                                className="bg-primary-red text-white text-center px-4 py-2"
+                                                to={"/privado"}
+                                            >
+                                                SECCION PRIVADA
+                                            </Link>
+                                            <button
+                                                onClick={() => setUserToken("")}
+                                                type="button"
+                                                className="bg-primary-red text-white text-center px-4 py-2"
+                                            >
+                                                CERRAR SESION
+                                            </button>
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
                             </div>
-                        ))}
-                    <Link
-                        className="hover:text-gray-500"
-                        to={"/inicio/calidad"}
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            <nav className="flex bg-white relative flex-row gap-24 w-full h-[85px] shadow-sm justify-between max-xl:justify-center">
+                <div className="w-[1240px] mx-auto flex relative flex-row justify-between items-center max-sm:justify-center">
+                    <div className="w-[267px] h-[57px]">
+                        <Link className="" to={"/"}>
+                            <img
+                                src={logos?.principal_url}
+                                alt="Logo"
+                                className="w-full h-full object-contain"
+                            />
+                        </Link>
+                    </div>
+
+                    <ul className="flex flex-row gap-6 justify-end w-full max-xl:hidden items-center">
+                        <Link
+                            className="hover:text-gray-500"
+                            to={"/inicio/nosotros"}
+                        >
+                            Nosotros
+                        </Link>
+                        {dropdowns
+                            .sort((a, b) => {
+                                if (a.order_value < b.order_value) return -1;
+                                if (a.order_value > b.order_value) return 1;
+                                return 0;
+                            })
+                            .map((drop) => (
+                                <div
+                                    onMouseEnter={() => toggleDropdown(drop.id)}
+                                    onMouseLeave={() => toggleDropdown(drop.id)}
+                                    className={`relative flex gap-1 max-xl:text-sm items-center `}
+                                    key={drop.id}
+                                >
+                                    <div className="flex flex-row items-center gap-1">
+                                        <Link
+                                            onClick={() => setLinkInfo("")}
+                                            className="hover:text-gray-500 whitespace-nowrap"
+                                            to={drop.href}
+                                        >
+                                            {drop.id}
+                                        </Link>
+                                        {drop.chevron && (
+                                            <img
+                                                src={chevronDown}
+                                                alt="Chevron"
+                                            />
+                                        )}
+                                    </div>
+
+                                    <AnimatePresence>
+                                        {drop.open && drop.subHref && (
+                                            <motion.div
+                                                initial={{ height: 0 }}
+                                                animate={{
+                                                    height: "fit-content",
+                                                }}
+                                                exit={{ height: 0 }}
+                                                className="absolute flex flex-col top-6 left-0 bg-[#CBCBCB] shadow-md font-roboto-condensed w-[200px] h-fit max-h-[600px] overflow-y-auto scrollbar-hide z-40 overflow-hidden"
+                                            >
+                                                {drop.subHref.map((sub) => (
+                                                    <Link
+                                                        onClick={() =>
+                                                            setLinkInfo(
+                                                                sub.title
+                                                            )
+                                                        }
+                                                        className="flex flex-row items-center justify-between px-2 border-b border-white hover:text-gray-700"
+                                                        key={sub.title}
+                                                        to={`${drop.href}`}
+                                                    >
+                                                        {sub.title}
+                                                        <FontAwesomeIcon
+                                                            icon={
+                                                                faChevronRight
+                                                            }
+                                                            color={"#000"}
+                                                        />
+                                                    </Link>
+                                                ))}
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
+                            ))}
+                        <Link
+                            className="hover:text-gray-500"
+                            to={"/inicio/calidad"}
+                        >
+                            Calidad
+                        </Link>
+                        <Link
+                            className="hover:text-gray-500"
+                            to={"/inicio/novedades"}
+                        >
+                            Novedades
+                        </Link>
+                        <Link
+                            className="hover:text-gray-500"
+                            to={"/inicio/contacto"}
+                        >
+                            Contacto
+                        </Link>
+                    </ul>
+                    <button
+                        onClick={() => setTinyMenu(!tinyMenu)}
+                        className="w-[20px] h-[20px] absolute left-20 max-sm:left-6 xl:hidden"
                     >
-                        Calidad
-                    </Link>
-                    <Link
-                        className="hover:text-gray-500"
-                        to={"/inicio/novedades"}
-                    >
-                        Novedades
-                    </Link>
-                    <Link
-                        className="hover:text-gray-500"
-                        to={"/inicio/contacto"}
-                    >
-                        Contacto
-                    </Link>
-                </ul>
-                <button
-                    onClick={() => setTinyMenu(!tinyMenu)}
-                    className="w-[20px] h-[20px] absolute left-20 max-sm:left-6 xl:hidden"
-                >
-                    <img src={barsIcon} alt="" />
-                </button>
+                        <img src={barsIcon} alt="" />
+                    </button>
+                </div>
             </nav>
             <AnimatePresence>
                 {tinyMenu && (

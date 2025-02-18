@@ -95,7 +95,7 @@ export default function PDFComponent({ pdfObject, onUpdate }) {
 
             <div className="mb-2 flex flex-col">
                 <div className="flex flex-col justify-between">
-                    <label className="block font-bold">Subir nuevo PDF:</label>
+                    <h2 className="block font-bold">Subir nuevo PDF:</h2>
                 </div>
 
                 <input
@@ -107,16 +107,14 @@ export default function PDFComponent({ pdfObject, onUpdate }) {
             </div>
 
             <div className="mb-2 flex flex-col">
+                <h2 className="block font-bold">Subir nueva Imagen:</h2>
+                <input
+                    id="imagen"
+                    type="file"
+                    onChange={handleImageChange}
+                    className="border p-2 rounded w-full"
+                />
                 <div className="flex flex-col justify-between">
-                    <label className="block font-bold">
-                        Subir nueva Imagen:
-                    </label>
-                    <input
-                        id="imagen"
-                        type="file"
-                        onChange={handleImageChange}
-                        className="border p-2 rounded w-full "
-                    />
                     <img
                         className="w-32 h-32 mx-auto py-2"
                         src={pdfObject?.image_url}

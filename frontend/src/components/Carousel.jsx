@@ -45,50 +45,51 @@ const Carousel = ({ autoScrollInterval = 5000 }) => {
                         />
                     ))}
             </div>
+            <div className="absolute max-w-[1240px] mx-auto inset-0 flex flex-col justify-between h-[400px] my-20 mt-auto gap-16  text-white font-roboto z-30">
+                {/* Contenido estático */}
+                <div className="  flex flex-col justify-center gap-16  max-sm:pl-6 text-white font-roboto z-30">
+                    <div>
+                        <div className="relative text-6xl font-bold">
+                            <span className="absolute bottom-[2px] text-primary-blue">
+                                {sliderInfo.title}
+                            </span>
+                            <span className="text-gray-700">
+                                {sliderInfo.title}
+                            </span>
+                        </div>
+                        <div className="relative text-[25px]">
+                            <span className="absolute bottom-[1px] text-primary-blue">
+                                {sliderInfo.subtitle}
+                            </span>
+                            <span className="text-gray-700">
+                                {sliderInfo.subtitle}
+                            </span>
+                        </div>
+                    </div>
 
-            {/* Contenido estático */}
-            <div className="absolute inset-0 flex flex-col justify-center gap-16 pl-20 max-sm:pl-6 text-white font-roboto z-30">
-                <div>
-                    <div className="relative text-6xl font-bold">
-                        <span className="absolute bottom-[2px] text-primary-blue">
-                            {sliderInfo.title}
-                        </span>
-                        <span className="text-gray-700">
-                            {sliderInfo.title}
-                        </span>
-                    </div>
-                    <div className="relative text-[25px]">
-                        <span className="absolute bottom-[1px] text-primary-blue">
-                            {sliderInfo.subtitle}
-                        </span>
-                        <span className="text-gray-700">
-                            {sliderInfo.subtitle}
-                        </span>
-                    </div>
+                    <Link
+                        to={sliderInfo.link}
+                        className=" flex justify-center items-center bg-primary-red text-white w-[172px] h-[47px] font-roboto-condensed"
+                    >
+                        MAS INFO
+                    </Link>
                 </div>
 
-                <Link
-                    to={sliderInfo.link}
-                    className=" flex justify-center items-center bg-primary-red text-white w-[172px] h-[47px] font-roboto-condensed"
-                >
-                    MAS INFO
-                </Link>
-            </div>
-
-            {/* Indicadores */}
-            <div className="absolute bottom-16 left-20 max-sm:left-6 flex space-x-2 z-30">
-                {sliderInfo.images &&
-                    sliderInfo.images.map((_, index) => (
-                        <button
-                            key={index}
-                            onClick={() => goToSlide(index)}
-                            className={`w-[37px] h-[8px] bg-white transition-opacity duration-300 ${
-                                index === currentIndex
-                                    ? "opacity-100"
-                                    : "opacity-50"
-                            }`}
-                        ></button>
-                    ))}
+                {/* Indicadores */}
+                <div className=" flex space-x-2 z-30 max-sm:pl-6">
+                    {sliderInfo.images &&
+                        sliderInfo.images.map((_, index) => (
+                            <button
+                                key={index}
+                                onClick={() => goToSlide(index)}
+                                className={`w-[37px] h-[8px] bg-white transition-opacity duration-300 ${
+                                    index === currentIndex
+                                        ? "opacity-100"
+                                        : "opacity-50"
+                                }`}
+                            ></button>
+                        ))}
+                </div>
             </div>
         </div>
     );

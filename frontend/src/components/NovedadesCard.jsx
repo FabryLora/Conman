@@ -38,7 +38,12 @@ export default function NovedadesCard({ newsObject }) {
                 </div>
             )}
 
-            <div className={"bg-white h-[493px] w-[392px] font-roboto border"}>
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className={
+                    "bg-white h-[493px] w-[392px] font-roboto border text-left"
+                }
+            >
                 <div className={"flex flex-col p-4 gap-3 h-full"}>
                     <div className={isOpen ? "w-1/2" : "h-[246px]"}>
                         <img
@@ -64,7 +69,7 @@ export default function NovedadesCard({ newsObject }) {
                         </button>
                     </div>
                 </div>
-            </div>
+            </button>
         </div>
     );
 }
