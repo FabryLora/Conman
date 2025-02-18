@@ -30,7 +30,7 @@ export default function Novedades() {
                         .join(",")}
                 />
             </Helmet>
-            <div className="flex relative flex-wrap flex-row justify-start px-20 gap-5">
+            <div className="flex relative flex-wrap flex-row justify-start w-[1240px] mx-auto gap-5">
                 {novedades.map((novedad, index) => (
                     <NovedadesCard key={index} newsObject={novedad} />
                 ))}

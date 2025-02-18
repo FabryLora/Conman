@@ -92,7 +92,7 @@ export default function Contacto() {
                         .join(",")}
                 />
             </Helmet>
-            <div className="font-roboto-condensed text-[#515A53] py-20 flex flex-col gap-20 w-[90%]">
+            <div className="font-roboto-condensed text-[#515A53] py-20 flex flex-col gap-20 w-[1240px]">
                 <div className="flex flex-row justify-between max-md:flex-col max-md:items-center max-md:w-full max-md:gap-10">
                     <div className="w-1/2 flex flex-col gap-10 max-md:w-full">
                         <p className="text-[18px]">

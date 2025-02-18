@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('calidad_infos', function (Blueprint $table) {
             $table->id();
-            $table->text('text');
+            $table->longText('text');
             $table->string('image');
             $table->timestamps();
         });

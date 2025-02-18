@@ -53,14 +53,13 @@ export default function Calidad() {
                                     __html: calidadInfo?.text || "",
                                 }}
                                 className="custom-content font-roboto-condensed px-12 prose prose-sm sm:prose lg:prose-lg xl:prose-xl w-full min-w-full max-w-full 
-    [&_ul]:list-none 
-    [&_ul_li]:relative 
-    [&_ul_li]:pl-8 
-    [&_ul_li:before]:absolute 
-    [&_ul_li:before]:left-0 
-    [&_ul_li:before]:top-1 
-    
-    [&_ul_li:before]:content-[url('/src/assets/icons/item-icon.svg')]"
+                                [&_ul]:list-none 
+                                [&_ul_li]:relative 
+                                [&_ul_li]:pl-8 
+                                [&_ul_li:before]:absolute 
+                                [&_ul_li:before]:left-0 
+                                [&_ul_li:before]:top-1 
+                                [&_ul_li:before]:content-[url('/src/assets/icons/item-icon.svg')]"
                             ></div>
                         </div>
                     </div>
