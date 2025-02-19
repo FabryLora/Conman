@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import fileRed from "../assets/icons/file-red-icon.svg";
 import axiosClient from "../axios";
 
@@ -27,6 +28,7 @@ export default function ListadeproductosPrivadoRow({ archivoObject }) {
             window.URL.revokeObjectURL(url);
         } catch (error) {
             console.error("Error al descargar el PDF:", error);
+            toast.error("Error al descargar el archivo");
         }
     };
 
@@ -36,7 +38,10 @@ export default function ListadeproductosPrivadoRow({ archivoObject }) {
                 <img className="mx-auto" src={fileRed} alt="" />
             </td>
             <td>{archivoObject?.nombre}</td>
-            <td>{archivoObject?.formato || "Desconocido"}</td>
+            <td>
+                {archivoObject?.formato?.split("/")[1].toUpperCase() ||
+                    "Desconocido"}
+            </td>
             <td>
                 {archivoObject?.peso
                     ? `${(archivoObject.peso / 1024).toFixed(2)} KB`
@@ -44,12 +49,18 @@ export default function ListadeproductosPrivadoRow({ archivoObject }) {
             </td>
             <td className="w-[500px]">
                 <button
-                    onClick={() => setShowViewer(true)}
-                    className="border mx-6 border-primary-red text-primary-red w-[184px] h-[47px]"
+                    onClick={() =>
+                        window.open(archivoObject?.archivo_url, "_blank")
+                    }
+                    className="border mx-6 border-primary-red text-primary-red w-[184px] h-[47px] hover:text-white hover:bg-primary-red"
                 >
                     VER ONLINE
                 </button>
-                <button className="bg-primary-red text-white h-[47px] w-[184px]">
+
+                <button
+                    onClick={downloadPDF}
+                    className="bg-primary-red text-white h-[47px] w-[184px] hover:text-primary-red hover:bg-white hover:border-primary-red hover:border"
+                >
                     DESCARGAR
                 </button>
             </td>

@@ -59,7 +59,7 @@ export default function GeneralView() {
           );
 
     return (
-        <div className="flex flex-row w-full py-20 px-20 gap-10 font-roboto-condensed min-h-[526px] max-sm:flex-col max-sm:px-6 max-sm:items-center">
+        <div className="flex flex-row w-[1240px] mx-auto max-sm:w-full py-20 gap-10 font-roboto-condensed min-h-[526px] max-sm:flex-col max-sm:px-6 max-sm:items-center">
             {/* Lista de subcategorías */}
             <div className="w-[20%] max-sm:w-full">
                 <button

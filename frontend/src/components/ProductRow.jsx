@@ -2,8 +2,11 @@ import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+import carritoHover from "../assets/icons/carrito-hover.svg";
 import carritoRed from "../assets/icons/carrito-icon.svg";
 import removeFromCartIcon from "../assets/icons/remove-from-cart.svg";
+import trashHover from "../assets/icons/trash-hover.svg";
 import { useStateContext } from "../contexts/ContextProvider";
 import "./numberInputCss.css";
 
@@ -15,6 +18,8 @@ export default function ProductRow({ product, currency }) {
             ? product.price - product.price * (product.discount / 100)
             : product.price,
     });
+    const [carrito, setCarrito] = useState(false);
+    const [trash, setTrash] = useState(false);
     const handleChange = (value) => {
         if (value >= 0) setCantidad(value);
     };
@@ -109,12 +114,45 @@ export default function ProductRow({ product, currency }) {
             </div>
             <div className="flex justify-center">
                 {location.pathname === "/privado/pedido" ? (
-                    <button onClick={() => removeFromCart(product.id)}>
-                        <img src={removeFromCartIcon} alt="" />
+                    <button
+                        onMouseEnter={() => setTrash(true)}
+                        onMouseLeave={() => setTrash(false)}
+                        onClick={() => removeFromCart(product.id)}
+                    >
+                        {trash ? (
+                            <img src={trashHover} alt="" />
+                        ) : (
+                            <img src={removeFromCartIcon} alt="" />
+                        )}
                     </button>
                 ) : (
-                    <button onClick={() => addToCart(product, extraInfo)}>
-                        <img src={carritoRed} alt="" />
+                    <button
+                        onMouseEnter={() => setCarrito(true)}
+                        onMouseLeave={() => setCarrito(false)}
+                        onClick={() => {
+                            extraInfo?.cantidad == 0
+                                ? toast.error(
+                                      "La cantidad tiene que ser mayor a 0",
+                                      {
+                                          position: "bottom-right",
+                                          autoClose: 2200,
+                                      }
+                                  )
+                                : (addToCart(product, extraInfo),
+                                  toast.success(
+                                      "Producto agregado al carrito",
+                                      {
+                                          position: "bottom-right",
+                                          autoClose: 2200,
+                                      }
+                                  ));
+                        }}
+                    >
+                        {carrito ? (
+                            <img src={carritoHover} alt="" />
+                        ) : (
+                            <img src={carritoRed} alt="" />
+                        )}
                     </button>
                 )}
             </div>

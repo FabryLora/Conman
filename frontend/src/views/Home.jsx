@@ -196,7 +196,7 @@ export default function Home() {
                             </Link>
                         </div>
 
-                        <div className="flex flex-row flex-wrap gap-5 justify-start max-md:justify-center">
+                        <div className="flex flex-row flex-wrap gap-5 justify-between max-md:justify-center">
                             {novedades
                                 .filter((nove) => nove.featured === 1)
                                 .map((novedad, index) => (

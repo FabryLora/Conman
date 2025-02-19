@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import fbIcon from "../assets/icons/fbIcon.svg";
 import igIcon from "../assets/icons/igIcon.svg";
 import letterIcon from "../assets/icons/letter-red-icon.svg";
@@ -11,8 +12,23 @@ export default function Footer() {
     const { contactInfo, logos, categoryInfo, userToken } = useStateContext();
 
     function removeAccents(str) {
-        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return str?.normalize("NFD")?.replace(/[\u0300-\u036f]/g, "");
     }
+
+    const soloDejarNumeros = (str) => {
+        return str?.replace(/\D/g, "");
+    };
+    const location = useLocation();
+
+    const [cleanPathname, setCleanPathname] = useState(
+        location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
+    );
+
+    useEffect(() => {
+        setCleanPathname(
+            location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
+        );
+    }, [location]);
 
     const social = [
         { logo: fbIcon, href: contactInfo?.fb },
@@ -28,9 +44,10 @@ export default function Footer() {
         { icon: letterIcon, text: contactInfo?.mail },
         { icon: whatsappIcon, text: contactInfo?.wp },
     ];
+
     return (
         <footer className="bg-primary-blue h-[402px] max-sm:h-fit font-roboto-condensed text-white flex flex-col justify-between">
-            <div className="flex flex-row flex-wrap gap-10 justify-evenly max-sm:justify-start items-center h-full order-1">
+            <div className="flex flex-row flex-wrap gap-10 justify-between w-[1240px] mx-auto max-sm:justify-start items-center h-full order-1 max-sm:flex-col max-sm:w-full">
                 {/* logos y redes */}
                 <div className="flex flex-col justify-center items-center gap-8 order-1 max-sm:mx-auto">
                     <div className="flex flex-col max-sm:py-5">
@@ -50,10 +67,13 @@ export default function Footer() {
                 </div>
 
                 {/* footer nav */}
-                <div className="flex flex-col gap-7 order-2 max-sm:px-8">
+                <div
+                    className={`flex flex-col gap-7 order-2 max-sm:px-8 ${
+                        cleanPathname[0] === "privado" ? "hidden" : ""
+                    }`}
+                >
                     <h2 className="text-xl font-semibold">Secciones</h2>
                     <div className="grid grid-cols-2 grid-rows-4 gap-4 gap-x-10">
-                        {}
                         <Link className="text-base" to={"/inicio/nosotros"}>
                             Nosotros
                         </Link>
@@ -85,7 +105,23 @@ export default function Footer() {
                     <h2 className="text-xl font-semibold">Datos de Contacto</h2>
                     <div className="flex flex-col gap-3">
                         {contactoInfo.map((item, index) => (
-                            <div
+                            <a
+                                href={
+                                    item.icon === locationIcon
+                                        ? `https://maps.app.goo.gl/6oT6qDq5dr1cyWQV8`
+                                        : item.icon === phoneIcon
+                                        ? `tel:${soloDejarNumeros(
+                                              contactInfo?.phone
+                                          )}`
+                                        : item.icon === letterIcon
+                                        ? `mailto:${contactInfo?.mail}`
+                                        : item.icon === whatsappIcon
+                                        ? `https://wa.me/${soloDejarNumeros(
+                                              contactInfo?.wp
+                                          )}`
+                                        : ""
+                                }
+                                target="_blank"
                                 className="flex flex-row gap-4 items-center"
                                 key={index}
                             >
@@ -97,20 +133,22 @@ export default function Footer() {
                                 <p className="text-base break-words max-w-[300px]">
                                     {item.text}
                                 </p>
-                            </div>
+                            </a>
                         ))}
                     </div>
                 </div>
             </div>
 
             {/* copy y derechos */}
-            <div className="h-[60px] flex flex-row justify-between items-center px-5 text-[14px] bg-primary-blue-dark order-2">
-                <p>
-                    © Copyright 2024{" "}
-                    <span className="font-semibold">Conman</span>. Todos los
-                    derechos reservados
-                </p>
-                <p>by Osole</p>
+            <div className="bg-primary-blue-dark order-2">
+                <div className="h-[60px] w-[1240px] mx-auto flex flex-row justify-between items-center text-[14px]">
+                    <p>
+                        © Copyright 2025{" "}
+                        <span className="font-semibold">Conman</span>. Todos los
+                        derechos reservados
+                    </p>
+                    <p>by Osole</p>
+                </div>
             </div>
         </footer>
     );

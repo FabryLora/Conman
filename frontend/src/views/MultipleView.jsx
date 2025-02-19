@@ -38,7 +38,7 @@ export default function MultipleView() {
     }, [id]);
 
     if (!productInfo) {
-        return <div>Loading...</div>; // Mostrar un mensaje mientras se carga la información
+        return <div className="w-screen h-screen">Loading...</div>; // Mostrar un mensaje mientras se carga la información
     }
 
     const downloadPDF = async () => {
@@ -68,23 +68,19 @@ export default function MultipleView() {
     };
 
     return (
-        <div className="font-roboto-condensed w-[80%] mx-auto py-20">
+        <div className="font-roboto-condensed w-[1240px] mx-auto ">
+            <div className="flex flex-row gap-1 items-center justify-start -top-14 -left-24 text-[#515A53] max-lg:-left-0 w-[1240px] mx-auto py-10">
+                <Link to={"/"}>{cleanPathname[0]}</Link>
+                <p>{">"}</p>
+                <Link to={`/inicio/${cleanPathname[1].split(" ").join("-")}`}>
+                    {cleanPathname[1]}
+                </Link>
+                <p>{">"}</p>
+                <Link>{productInfo?.name}</Link>
+            </div>
             <div className="grid grid-cols-2 grid-rows-2 gap-4 gap-y-10 max-lg:grid-cols-1 max-lg:grid-rows-4">
                 <div className="relative flex flex-row w-full gap-3">
-                    <div className="flex flex-row gap-1 items-center justify-center absolute -top-14 -left-24 text-[#515A53] max-lg:-left-0">
-                        <Link to={"/"}>{cleanPathname[0]}</Link>
-                        <p>{">"}</p>
-                        <Link
-                            to={`/inicio/${cleanPathname[1]
-                                .split(" ")
-                                .join("-")}`}
-                        >
-                            {cleanPathname[1]}
-                        </Link>
-                        <p>{">"}</p>
-                        <Link>{productInfo?.name}</Link>
-                    </div>
-                    <div className="lg:absolute -left-24 flex flex-col h-[300px] w-fit  gap-y-3">
+                    <div className=" -left-24 flex flex-col h-[300px] w-fit  gap-y-3">
                         {productInfo.images.map((image, index) => (
                             <button
                                 className={` border-[3px] border-gray-300 w-[80px] h-[80px] ${
@@ -137,6 +133,13 @@ export default function MultipleView() {
                         </div>
                     </div>
                 </div>
+                <div className="w-full h-[333px] self-center ">
+                    <img
+                        className="w-full h-full object-contain"
+                        src={productInfo?.image_url}
+                        alt=""
+                    />
+                </div>
                 <div>
                     <div>
                         <table className="border-y w-full">
@@ -162,14 +165,6 @@ export default function MultipleView() {
                             </tbody>
                         </table>
                     </div>
-                </div>
-
-                <div className="w-full h-[333px] self-center ">
-                    <img
-                        className="w-full h-full object-contain"
-                        src={productInfo?.image_url}
-                        alt=""
-                    />
                 </div>
             </div>
             <WhatsappComponent />

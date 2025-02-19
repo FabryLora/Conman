@@ -34,25 +34,25 @@ export default function Calidad() {
             <style>
                 {`
                             .custom-content div > span {
-    font-size: 16px !important; /* Cambia 1.25rem a 1rem */
-}
+                                font-size: 16px !important; /* Cambia 1.25rem a 1rem */
+                            }
 
-.custom-content p {
-    line-height: normal !important; /* Cambia 1.25rem a 1rem */
-}
+                            .custom-content p {
+                                line-height: normal !important; /* Cambia 1.25rem a 1rem */
+                            }
  
    
-                            `}
+                `}
             </style>
-            <div className="flex flex-col gap-20 py-20">
-                <div className="flex flex-row gap-10 max-lg:flex-col">
-                    <div className="flex flex-col h-full w-full lg:w-1/2 md:max-w-full lg:max-w-none items-center max-lg:order-2">
-                        <div className="flex flex-col gap-6 items-start overflow-y-auto max-h-[700pxpx] w-full">
+            <div className="flex flex-col gap-20 py-20 items-end">
+                <div className="flex flex-row gap-10 w-[1570px] ml-auto max-lg:flex-col">
+                    <div className="flex flex-col h-full w-full  md:max-w-full lg:max-w-none items-center max-lg:order-2">
+                        <div className="flex flex-col gap-6 items-start overflow-y-auto w-full max-h-[700pxpx]">
                             <div
                                 dangerouslySetInnerHTML={{
                                     __html: calidadInfo?.text || "",
                                 }}
-                                className="custom-content font-roboto-condensed px-12 prose prose-sm sm:prose lg:prose-lg xl:prose-xl w-full min-w-full max-w-full 
+                                className="custom-content font-roboto-condensed  prose prose-sm sm:prose lg:prose-lg xl:prose-xl w-full min-w-full max-w-full 
                                 [&_ul]:list-none 
                                 [&_ul_li]:relative 
                                 [&_ul_li]:pl-8 
@@ -64,7 +64,7 @@ export default function Calidad() {
                         </div>
                     </div>
 
-                    <div className="w-1/2 max-lg:order-1 max-lg:w-full max-lg:h-[500px]">
+                    <div className=" max-lg:order-1 w-full max-lg:h-[500px]">
                         <img
                             className="w-full h-full object-cover"
                             src={calidadInfo?.image_url}
@@ -72,7 +72,7 @@ export default function Calidad() {
                         />
                     </div>
                 </div>
-                <div className="flex flex-row justify-evenly max-md:flex-col max-md:items-center max-md:gap-10">
+                <div className="flex flex-row justify-between w-[1240px] mx-auto max-md:flex-col max-md:items-center max-md:gap-10">
                     {pdfInfo.map((fileObject, index) => (
                         <FileComponent key={index} fileObject={fileObject} />
                     ))}

@@ -2,7 +2,7 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import barsIcon from "../assets/icons/bars-solid.svg";
 import chevronDownWhite from "../assets/icons/chevron-down-white.svg";
 import chevronDown from "../assets/icons/chevron-down.svg";
@@ -31,11 +31,12 @@ export default function Navbar() {
     const searchBarRef = useRef(null);
     const tinyMenuRef = useRef(null);
     const loginRef = useRef(null);
+    const [signup, setSignup] = useState(false);
 
     const { setLinkInfo, categoryInfo, logos } = useStateContext();
 
     function removeAccents(str) {
-        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return str?.normalize("NFD")?.replace(/[\u0300-\u036f]/g, "");
     }
 
     useEffect(() => {
@@ -90,6 +91,10 @@ export default function Navbar() {
             });
     };
 
+    const soloDejarNumeros = (str) => {
+        return str?.replace(/\D/g, "");
+    };
+
     const toggleDropdown = (id) => {
         setDropdowns((prevDropdowns) =>
             prevDropdowns.map((drop) =>
@@ -137,19 +142,67 @@ export default function Navbar() {
         ]);
     }, [categoryInfo]);
 
+    const { provincias } = useStateContext();
+
+    const [userSubmitInfo, setUserSubmitInfo] = useState({
+        name: "",
+        email: "",
+        password: "",
+        password_confirmation: "",
+        razon_social: "",
+        dni: "",
+        telefono: "",
+        direccion: "",
+        provincia: "",
+        localidad: "",
+        codigo_postal: "",
+    });
+
+    const onSubmitt = (ev) => {
+        ev.preventDefault();
+
+        axiosClient
+            .post("/signup", userSubmitInfo)
+            .then(({ data }) => {
+                setUserToken(data.token);
+            })
+            .catch((error) => {
+                if (error.response) {
+                    setError(
+                        Object.values(error.response.data.errors || {})
+                            .flat()
+                            .join(" ")
+                    );
+                } else {
+                    setError("Ocurrió un error. Intenta nuevamente.");
+                }
+            });
+    };
+
+    const handleInputChange = (ev) => {
+        const { name, value } = ev.target;
+        setUserSubmitInfo({ ...userSubmitInfo, [name]: value });
+    };
+
     return (
         <div className="sticky top-0 z-50  flex flex-col items-center justify-center font-roboto-condensed ">
             <div className="bg-primary-blue w-full">
                 <div className="max-w-[1240px] mx-auto h-[40px] w-full flex items-center justify-between  max-sm:pl-0 max-sm:justify-end">
                     <div className="flex gap-4 items-center text-[14px] text-white h-[16px] max-sm:hidden">
-                        <div className="flex gap-2 items-center">
+                        <a
+                            href={`mailto:${contactInfo?.mail}`}
+                            className="flex gap-2 items-center"
+                        >
                             <img className="h-[16px]" src={letterIcon} alt="" />
                             <p>{contactInfo?.mail}</p>
-                        </div>
-                        <div className="flex gap-2 items-center">
+                        </a>
+                        <a
+                            href={`tel:${soloDejarNumeros(contactInfo?.phone)}`}
+                            className="flex gap-2 items-center"
+                        >
                             <img className="h-[16px]" src={phoneIcon} alt="" />
                             <p>{contactInfo?.phone}</p>
-                        </div>
+                        </a>
                     </div>
                     <div className="flex flex-row gap-4 max-sm:pr-4 h-full items-center">
                         <div
@@ -251,7 +304,10 @@ export default function Navbar() {
                             {!userToken && (
                                 <>
                                     <button
-                                        onClick={() => setUserMenu(!userMenu)}
+                                        onClick={() => {
+                                            setUserMenu(!userMenu);
+                                            setSignup(false);
+                                        }}
                                     >
                                         <img
                                             className="h-[15px] w-[15px]"
@@ -270,7 +326,7 @@ export default function Navbar() {
                                                     ease: "linear",
                                                 }}
                                                 ref={loginRef}
-                                                className="absolute flex flex-col top-10 right-0 max-sm:right-4 bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-[439px] z-40 border"
+                                                className="absolute flex flex-col top-10 right-0 max-sm:-right-1 bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-[439px] z-40 border"
                                             >
                                                 {error && (
                                                     <p className="text-red-500">
@@ -341,12 +397,334 @@ export default function Navbar() {
                                                 </form>
                                                 <div className="flex flex-col items-center">
                                                     <p>¿No tenes usuario?</p>
-                                                    <Link
+                                                    <button
+                                                        onClick={() => {
+                                                            setSignup(true);
+                                                            setUserMenu(false);
+                                                        }}
                                                         className="text-primary-red"
-                                                        to={"/registro"}
                                                     >
                                                         REGISTRATE
-                                                    </Link>
+                                                    </button>
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                        {signup && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: -20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -20 }}
+                                                transition={{
+                                                    duration: 0.2,
+                                                    ease: "linear",
+                                                }}
+                                                className="absolute flex flex-col top-10 right-0 max-sm:-right-4 bg-white shadow-md p-5 font-roboto-condensed z-40 border w-[400px]"
+                                            >
+                                                <h2 className="text-2xl font-bold pb-5">
+                                                    Registro
+                                                </h2>
+                                                <form
+                                                    onSubmit={onSubmitt}
+                                                    className="w-fit h-full flex flex-col gap-3"
+                                                >
+                                                    <div className="grid grid-cols-2 gap-3">
+                                                        <div className="flex flex-col gap-2 col-span-2">
+                                                            <label htmlFor="name">
+                                                                Nombre de
+                                                                usuario
+                                                            </label>
+                                                            <input
+                                                                value={
+                                                                    userSubmitInfo.name
+                                                                }
+                                                                onChange={
+                                                                    handleInputChange
+                                                                }
+                                                                className="w-full h-[45px] border pl-2"
+                                                                type="text"
+                                                                name="name"
+                                                                id="name"
+                                                                required
+                                                            />
+                                                        </div>
+                                                        <div className="flex flex-col gap-2">
+                                                            <label htmlFor="password">
+                                                                Contraseña
+                                                            </label>
+                                                            <input
+                                                                value={
+                                                                    userSubmitInfo.password
+                                                                }
+                                                                onChange={
+                                                                    handleInputChange
+                                                                }
+                                                                className="w-full h-[45px] border pl-2"
+                                                                type="password"
+                                                                name="password"
+                                                                id="password"
+                                                                required
+                                                            />
+                                                        </div>
+                                                        <div className="flex flex-col gap-2">
+                                                            <label htmlFor="password_confirmation">
+                                                                Confirmar
+                                                                contraseña
+                                                            </label>
+                                                            <input
+                                                                value={
+                                                                    userSubmitInfo.password_confirmation
+                                                                }
+                                                                onChange={
+                                                                    handleInputChange
+                                                                }
+                                                                className="w-full h-[45px] border pl-2"
+                                                                type="password"
+                                                                name="password_confirmation"
+                                                                id="password_confirmation"
+                                                                required
+                                                            />
+                                                        </div>
+                                                        <div className="flex flex-col gap-2">
+                                                            <label htmlFor="email">
+                                                                Email
+                                                            </label>
+                                                            <input
+                                                                value={
+                                                                    userSubmitInfo.email
+                                                                }
+                                                                onChange={
+                                                                    handleInputChange
+                                                                }
+                                                                className="w-full h-[45px] border pl-2"
+                                                                type="email"
+                                                                name="email"
+                                                                id="email"
+                                                                required
+                                                            />
+                                                        </div>
+                                                        <div className="flex flex-col gap-2">
+                                                            <label htmlFor="razon_social">
+                                                                Razón Social
+                                                            </label>
+                                                            <input
+                                                                value={
+                                                                    userSubmitInfo.razon_social
+                                                                }
+                                                                onChange={
+                                                                    handleInputChange
+                                                                }
+                                                                className="w-full h-[45px] border pl-2"
+                                                                type="text"
+                                                                name="razon_social"
+                                                                id="razon_social"
+                                                                required
+                                                            />
+                                                        </div>
+                                                        <div className="flex flex-col gap-2">
+                                                            <label htmlFor="dni">
+                                                                DNI / CUIT
+                                                            </label>
+                                                            <input
+                                                                value={
+                                                                    userSubmitInfo.dni
+                                                                }
+                                                                onChange={
+                                                                    handleInputChange
+                                                                }
+                                                                className="w-full h-[45px] border pl-2"
+                                                                type="text"
+                                                                name="dni"
+                                                                id="dni"
+                                                                required
+                                                            />
+                                                        </div>
+                                                        <div className="flex flex-col gap-2">
+                                                            <label htmlFor="telefono">
+                                                                Teléfono
+                                                            </label>
+                                                            <input
+                                                                value={
+                                                                    userSubmitInfo.telefono
+                                                                }
+                                                                onChange={
+                                                                    handleInputChange
+                                                                }
+                                                                className="w-full h-[45px] border pl-2"
+                                                                type="text"
+                                                                name="telefono"
+                                                                id="telefono"
+                                                                required
+                                                            />
+                                                        </div>
+                                                        <div className="flex flex-col gap-2 col-span-2">
+                                                            <label htmlFor="direccion">
+                                                                Dirección
+                                                            </label>
+                                                            <input
+                                                                value={
+                                                                    userSubmitInfo.direccion
+                                                                }
+                                                                onChange={
+                                                                    handleInputChange
+                                                                }
+                                                                className="w-full h-[45px] border pl-2"
+                                                                type="text"
+                                                                name="direccion"
+                                                                id="direccion"
+                                                                required
+                                                            />
+                                                        </div>
+                                                        <div className="grid grid-cols-3 col-span-2 gap-5">
+                                                            <div className="flex flex-col gap-2">
+                                                                <label htmlFor="provincia">
+                                                                    Provincia
+                                                                </label>
+                                                                <select
+                                                                    value={
+                                                                        userSubmitInfo.provincia
+                                                                    }
+                                                                    onChange={(
+                                                                        ev
+                                                                    ) =>
+                                                                        setUserSubmitInfo(
+                                                                            {
+                                                                                ...userSubmitInfo,
+                                                                                provincia:
+                                                                                    ev
+                                                                                        .target
+                                                                                        .value,
+                                                                                localidad:
+                                                                                    "",
+                                                                            }
+                                                                        )
+                                                                    }
+                                                                    className="py-2 border h-[45px]"
+                                                                    name="provincia"
+                                                                    id="provincia"
+                                                                >
+                                                                    <option value="">
+                                                                        Selecciona
+                                                                        una
+                                                                        provincia
+                                                                    </option>
+                                                                    {provincias.map(
+                                                                        (
+                                                                            pr
+                                                                        ) => (
+                                                                            <option
+                                                                                key={
+                                                                                    pr.id
+                                                                                }
+                                                                                value={
+                                                                                    pr.name
+                                                                                }
+                                                                            >
+                                                                                {
+                                                                                    pr.name
+                                                                                }
+                                                                            </option>
+                                                                        )
+                                                                    )}
+                                                                </select>
+                                                            </div>
+                                                            <div className="flex flex-col gap-2">
+                                                                <label htmlFor="localidad">
+                                                                    Localidad
+                                                                </label>
+                                                                <select
+                                                                    value={
+                                                                        userSubmitInfo.localidad
+                                                                    }
+                                                                    onChange={(
+                                                                        ev
+                                                                    ) =>
+                                                                        setUserSubmitInfo(
+                                                                            {
+                                                                                ...userSubmitInfo,
+                                                                                localidad:
+                                                                                    ev
+                                                                                        .target
+                                                                                        .value,
+                                                                            }
+                                                                        )
+                                                                    }
+                                                                    className="py-2 border h-[45px]"
+                                                                    name="localidad"
+                                                                    id="localidad"
+                                                                >
+                                                                    <option value="">
+                                                                        Selecciona
+                                                                        una
+                                                                        localidad
+                                                                    </option>
+                                                                    {provincias
+                                                                        .find(
+                                                                            (
+                                                                                pr
+                                                                            ) =>
+                                                                                pr.name ===
+                                                                                userSubmitInfo.provincia
+                                                                        )
+                                                                        ?.localidades.map(
+                                                                            (
+                                                                                loc,
+                                                                                index
+                                                                            ) => (
+                                                                                <option
+                                                                                    key={
+                                                                                        index
+                                                                                    }
+                                                                                    value={
+                                                                                        loc.name
+                                                                                    }
+                                                                                >
+                                                                                    {
+                                                                                        loc.name
+                                                                                    }
+                                                                                </option>
+                                                                            )
+                                                                        )}
+                                                                </select>
+                                                            </div>
+                                                            <div className="flex flex-col gap-2">
+                                                                <label htmlFor="codigo_postal">
+                                                                    Codigo
+                                                                    postal
+                                                                </label>
+                                                                <input
+                                                                    value={
+                                                                        userSubmitInfo.codigo_postal
+                                                                    }
+                                                                    onChange={
+                                                                        handleInputChange
+                                                                    }
+                                                                    className="border py-2 pl-2 h-[45px]"
+                                                                    type="text"
+                                                                    name="codigo_postal"
+                                                                    id="codigo_postal"
+                                                                    required
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <button
+                                                        className="w-[325px] h-[47px] bg-primary-red text-white self-center my-5"
+                                                        type="submit"
+                                                    >
+                                                        REGISTRARSE
+                                                    </button>
+                                                </form>
+                                                <div className="flex flex-col items-center">
+                                                    <p>¿Ya tenes usuario?</p>
+                                                    <button
+                                                        onClick={() => {
+                                                            setSignup(false);
+                                                            setUserMenu(true);
+                                                        }}
+                                                        className="text-primary-red"
+                                                    >
+                                                        INICIAR SESION
+                                                    </button>
                                                 </div>
                                             </motion.div>
                                         )}
@@ -412,7 +790,7 @@ export default function Navbar() {
                         </Link>
                     </div>
 
-                    <ul className="flex flex-row gap-6 justify-end w-full max-xl:hidden items-center">
+                    <ul className="flex flex-row gap-5 justify-end w-full max-xl:hidden items-center">
                         <Link
                             className="hover:text-gray-500"
                             to={"/inicio/nosotros"}
@@ -432,7 +810,7 @@ export default function Navbar() {
                                     className={`relative flex gap-1 max-xl:text-sm items-center `}
                                     key={drop.id}
                                 >
-                                    <div className="flex flex-row items-center gap-1">
+                                    <div className="relative flex flex-row items-center gap-1">
                                         <Link
                                             onClick={() => setLinkInfo("")}
                                             className="hover:text-gray-500 whitespace-nowrap"
@@ -442,6 +820,7 @@ export default function Navbar() {
                                         </Link>
                                         {drop.chevron && (
                                             <img
+                                                className=""
                                                 src={chevronDown}
                                                 alt="Chevron"
                                             />
@@ -465,7 +844,7 @@ export default function Navbar() {
                                                                 sub.title
                                                             )
                                                         }
-                                                        className="flex flex-row items-center justify-between px-2 border-b border-white hover:text-gray-700"
+                                                        className="flex flex-row items-center justify-between px-2 border-b border-white hover:text-gray-700 py-1"
                                                         key={sub.title}
                                                         to={`${drop.href}`}
                                                     >
@@ -490,13 +869,13 @@ export default function Navbar() {
                             Calidad
                         </Link>
                         <Link
-                            className="hover:text-gray-500"
+                            className="hover:text-gray-500 pl-[13px]"
                             to={"/inicio/novedades"}
                         >
                             Novedades
                         </Link>
                         <Link
-                            className="hover:text-gray-500"
+                            className="hover:text-gray-500 pl-[13px]"
                             to={"/inicio/contacto"}
                         >
                             Contacto

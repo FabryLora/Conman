@@ -145,6 +145,19 @@ export default function Administrator() {
                 },
             ],
         },
+        {
+            id: "cargadedatos",
+            open: false,
+            title: "Carga de datos",
+            icon: faHouse,
+            href: "#",
+            subHref: [
+                {
+                    title: "Cargar Mangueras",
+                    href: "/dashboard/carga-de-datos",
+                },
+            ],
+        },
     ]);
 
     const [userMenu, setUserMenu] = useState(false);

@@ -308,15 +308,15 @@ export default function Pedidos() {
                     {pedidosInfo?.informacion}
                 </p>
             </div>
-            <div className="w-full border bg-gray-50 max-sm:col-span-2 max-sm:order-3">
+            <div className="w-full border bg-gray-50 h-[206px] max-sm:col-span-2 max-sm:order-3">
                 <div className="bg-[#EAEAEA] p-3">
                     <h2 className="text-lg font-semibold">Entrega</h2>
                 </div>
 
-                <div className="space-y-3 p-4">
+                <div className="flex flex-col gap-6 justify-center w-full h-[160px]">
                     {/* Opción: Retiro Cliente */}
                     <div
-                        className={`flex items-center justify-between p-3 rounded-lg  cursor-pointer`}
+                        className={`flex items-center justify-between pl-3 rounded-lg  cursor-pointer`}
                         onClick={() => {
                             setSelected("retiro");
                             setTipo_entrega("retiro cliente");
@@ -347,7 +347,7 @@ export default function Pedidos() {
 
                     {/* Opción: Reparto Conman */}
                     <div
-                        className={`flex items-center p-3 rounded-lg  cursor-pointer`}
+                        className={`flex items-center pl-3 rounded-lg  cursor-pointer`}
                         onClick={() => {
                             setSelected("reparto");
                             setTipo_entrega("Reparto Conman");
@@ -373,7 +373,7 @@ export default function Pedidos() {
 
                     {/* Opción: A convenir */}
                     <div
-                        className={`flex items-center p-3 rounded-lg  cursor-pointer`}
+                        className={`flex items-center pl-3 rounded-lg  cursor-pointer`}
                         onClick={() => {
                             setSelected("acon");
                             setTipo_entrega("A Convenir");
@@ -411,6 +411,8 @@ export default function Pedidos() {
                     className="border h-[222px] w-full p-3"
                     name=""
                     id=""
+                    rows={10}
+                    placeholder="Dias especiales de entrega, cambios de domicilio, expresos, requerimientos especiales en la mercaderia, exenciones."
                 ></textarea>
             </div>
 
@@ -433,7 +435,7 @@ export default function Pedidos() {
                     <h2 className="p-3 text-xl font-bold">Pedido</h2>
                 </div>
 
-                <div className="flex flex-col justify-between px-4 text-xl gap-2 border-b py-2">
+                <div className="flex flex-col justify-between px-4 text-xl gap-6 py-6 border-b">
                     {pedidosInfo?.descuento > 0 &&
                         tipo_entrega === "retiro cliente" && (
                             <div className="flex flex-row justify-between w-full">
@@ -493,7 +495,7 @@ export default function Pedidos() {
                 </div>
             </div>
 
-            <div className="flex flex-row gap-3 w-full max-sm:col-span-2 max-sm:order-6">
+            <div className="flex flex-row gap-3 w-full max-sm:col-span-2 max-sm:order-6 items-end">
                 <button
                     onClick={clearCart}
                     className="h-[47px] w-full border border-primary-red text-primary-red"

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
 import ProductCard from "../components/ProductCard";
 import ProductRow from "../components/ProductRow";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -31,6 +32,7 @@ export default function PrivateProducts() {
 
     return (
         <div className="w-full px-20 py-20 flex flex-col gap-20 max-sm:px-0">
+            <ToastContainer />
             <div className="h-[134px] w-full bg-primary-blue text-white max-sm:h-fit">
                 <div className="flex flex-col gap-2 justify-center h-full p-10 max-sm:px-10 max-sm:w-full">
                     <h2>Buscar por:</h2>
@@ -91,7 +93,7 @@ export default function PrivateProducts() {
                     ))}
                 </div>
             </div>
-            <div className="flex flex-col gap-3 sm:hidden">
+            <div className="flex flex-col gap-3 sm:hidden px-5">
                 {filteredProducts.map((prod, index) => (
                     <ProductCard key={index} product={prod} />
                 ))}

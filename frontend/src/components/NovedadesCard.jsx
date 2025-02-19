@@ -45,7 +45,7 @@ export default function NovedadesCard({ newsObject }) {
                 }
             >
                 <div className={"flex flex-col p-4 gap-3 h-full"}>
-                    <div className={isOpen ? "w-1/2" : "h-[246px]"}>
+                    <div className={isOpen ? "w-1/2" : "min-h-[246px]"}>
                         <img
                             className={"w-full h-full object-cover"}
                             src={newsObject.image_url}

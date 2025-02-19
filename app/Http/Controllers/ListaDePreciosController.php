@@ -58,10 +58,10 @@ class ListaDePreciosController extends Controller
             "nombre" => "nullable|string",
         ]);
 
-        if ($request->hasFile('image')) {
+        if ($request->hasFile('archivo')) {
             // Eliminar la imagen existente del sistema de archivos
             if ($listaDePrecios->archivo) {
-                $absolutePath = public_path('storage/' . $listaDePrecios->image);
+                $absolutePath = public_path('storage/' . $listaDePrecios->archivo);
                 if (File::exists($absolutePath)) {
                     File::delete($absolutePath);
                 }

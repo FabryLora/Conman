@@ -115,6 +115,7 @@ export default function ListaDePreciosRow({ listaObject }) {
                     Descargar Archivo
                 </button>
                 <button
+                    type="button"
                     onClick={deleteArchivo}
                     className="bg-red-500 text-white px-3 py-2 rounded-md ml-2 hover:bg-red-700"
                 >
