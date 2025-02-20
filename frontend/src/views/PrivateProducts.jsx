@@ -76,13 +76,13 @@ export default function PrivateProducts() {
                 </div>
             </div>
             <div className="grid w-full max-sm:hidden">
-                <div className="grid grid-cols-7 items-center justify-center bg-[#F5F5F5] h-[52px] font-semibold">
+                <div className="grid grid-cols-8 items-center justify-center bg-[#F5F5F5] h-[52px] font-semibold">
                     <p></p>
                     <p>Código</p>
                     <p>Producto</p>
                     <p className="text-center">Precio x unidad {"(Pesos)"}</p>
                     <p className="text-center">Precio x unidad {"(USD)"}</p>
-
+                    <p className="text-center">Descuento de Cliente</p>
                     <p className="text-center">Cantidad</p>
                     <p className="text-center"></p>
                 </div>

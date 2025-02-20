@@ -32,6 +32,8 @@ class AuthController extends Controller
             'provincia' => $data['provincia'],
             'localidad' => $data['localidad'],
             'codigo_postal' => $data['codigo_postal'],
+            'autorizado' => $data['autorizado'] ?? false,
+            'discount' => $data['discount'] ?? null,
             'password' => bcrypt($data['password'])
         ]);
         $token = $user->createToken('main')->plainTextToken;
@@ -56,6 +58,14 @@ class AuthController extends Controller
         }
         /**  @var \App\Models\User $user */
         $user = Auth::user();
+
+        if (!$user->autorizado) {
+            Auth::logout();
+            return response([
+                'error' => 'Your account is not authorized. Please contact support.'
+            ], 403);
+        }
+
         $token = $user->createToken('main')->plainTextToken;
 
         return response([
@@ -106,6 +116,8 @@ class AuthController extends Controller
             'localidad' => 'nullable|string|max:255',
             'codigo_postal' => 'nullable|string|max:20',
             'password' => 'nullable|string|min:6|confirmed',
+            'discount' => 'nullable|string|max:255',
+            'autorizado' => 'nullable|boolean'
         ]);
 
         // Solo actualiza la contraseña si se proporciona

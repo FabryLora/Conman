@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string("provincia");
             $table->string("localidad");
             $table->string("codigo_postal");
+            $table->boolean('autorizado')->default(false);
+            $table->string("discount")->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

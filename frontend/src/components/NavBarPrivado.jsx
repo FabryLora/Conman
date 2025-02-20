@@ -15,8 +15,15 @@ export default function NavbarPrivado() {
     const [tinyMenu, setTinyMenu] = useState(false);
     const [userLoged, setUserLoged] = useState(false);
     const [selectedLink, setSelectedLink] = useState("Productos");
-    const { userToken, userInfo, contactInfo, logos, cart, setUserToken } =
-        useStateContext();
+    const {
+        userToken,
+        userInfo,
+        contactInfo,
+        logos,
+        cart,
+        setUserToken,
+        clearCart,
+    } = useStateContext();
 
     const [cartProd, setCartProd] = useState(cart.length);
 
@@ -101,7 +108,10 @@ export default function NavbarPrivado() {
                                         className="absolute flex flex-col gap-4 top-10 right-0 border broder-gray bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-fit z-20"
                                     >
                                         <Link
-                                            onClick={() => setUserToken("")}
+                                            onClick={() => {
+                                                setUserToken("");
+                                                clearCart;
+                                            }}
                                             to={"/"}
                                             className="bg-primary-red text-white text-center px-4 py-2"
                                         >

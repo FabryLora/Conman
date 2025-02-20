@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 import barsIcon from "../assets/icons/bars-solid.svg";
 import chevronDownWhite from "../assets/icons/chevron-down-white.svg";
 import chevronDown from "../assets/icons/chevron-down.svg";
@@ -31,7 +32,9 @@ export default function Navbar() {
     const searchBarRef = useRef(null);
     const tinyMenuRef = useRef(null);
     const loginRef = useRef(null);
+    const signupRef = useRef(null);
     const [signup, setSignup] = useState(false);
+    const [registro, setRegistro] = useState(false);
 
     const { setLinkInfo, categoryInfo, logos } = useStateContext();
 
@@ -61,6 +64,13 @@ export default function Navbar() {
             ) {
                 setUserMenu(false);
             }
+            if (
+                // Cierra el menú si se hace clic fuera
+                signupRef.current &&
+                !signupRef.current.contains(event.target)
+            ) {
+                setSignup(false);
+            }
         }
 
         document.addEventListener("mousedown", handleClickOutside);
@@ -84,10 +94,33 @@ export default function Navbar() {
                 setUserToken(data.token);
                 setLogin(false);
             })
-            .catch((err) => {
+            .catch((error) => {
+                if (error.response && error.response.data.error) {
+                    const errorMessage = error.response.data.error;
+                    if (
+                        errorMessage ===
+                        "The provided credentials are not correct"
+                    ) {
+                        setErrorMessage(
+                            "Las credenciales proporcionadas son incorrectas."
+                        );
+                    } else if (
+                        errorMessage ===
+                        "Your account is not authorized. Please contact support."
+                    ) {
+                        setErrorMessage("Tu cuenta no está autorizada.");
+                    } else {
+                        setErrorMessage(
+                            "Ocurrió un error inesperado. Inténtalo de nuevo."
+                        );
+                    }
+                } else {
+                    setErrorMessage(
+                        "Ocurrió un problema con la conexión. Inténtalo nuevamente."
+                    );
+                }
                 setError(true);
                 setLogin(false);
-                setErrorMessage("Credenciales incorrectas");
             });
     };
 
@@ -156,15 +189,22 @@ export default function Navbar() {
         provincia: "",
         localidad: "",
         codigo_postal: "",
+        autorizado: "0",
+        discount: "0",
     });
 
     const onSubmitt = (ev) => {
         ev.preventDefault();
-
+        setRegistro(true);
         axiosClient
             .post("/signup", userSubmitInfo)
             .then(({ data }) => {
-                setUserToken(data.token);
+                setSignup(false);
+                toast.success(
+                    "Tu usuario fue creado con exito. Espera que un administrador lo apruebe.",
+                    { position: "top-center", autoClose: 6000 }
+                );
+                setRegistro(false);
             })
             .catch((error) => {
                 if (error.response) {
@@ -176,6 +216,10 @@ export default function Navbar() {
                 } else {
                     setError("Ocurrió un error. Intenta nuevamente.");
                 }
+                setRegistro(false);
+                toast.error("El correo electrónico ya ha sido tomado", {
+                    position: "top-center",
+                });
             });
     };
 
@@ -186,6 +230,7 @@ export default function Navbar() {
 
     return (
         <div className="sticky top-0 z-50  flex flex-col items-center justify-center font-roboto-condensed ">
+            <ToastContainer />
             <div className="bg-primary-blue w-full">
                 <div className="max-w-[1240px] mx-auto h-[40px] w-full flex items-center justify-between  max-sm:pl-0 max-sm:justify-end">
                     <div className="flex gap-4 items-center text-[14px] text-white h-[16px] max-sm:hidden">
@@ -411,6 +456,7 @@ export default function Navbar() {
                                         )}
                                         {signup && (
                                             <motion.div
+                                                ref={signupRef}
                                                 initial={{ opacity: 0, y: -20 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0, y: -20 }}
@@ -580,6 +626,7 @@ export default function Navbar() {
                                                                     Provincia
                                                                 </label>
                                                                 <select
+                                                                    required
                                                                     value={
                                                                         userSubmitInfo.provincia
                                                                     }
@@ -632,6 +679,7 @@ export default function Navbar() {
                                                                     Localidad
                                                                 </label>
                                                                 <select
+                                                                    required
                                                                     value={
                                                                         userSubmitInfo.localidad
                                                                     }
@@ -711,7 +759,9 @@ export default function Navbar() {
                                                         className="w-[325px] h-[47px] bg-primary-red text-white self-center my-5"
                                                         type="submit"
                                                     >
-                                                        REGISTRARSE
+                                                        {registro
+                                                            ? "REGISTRANDO..."
+                                                            : "REGISTRARSE"}
                                                     </button>
                                                 </form>
                                                 <div className="flex flex-col items-center">

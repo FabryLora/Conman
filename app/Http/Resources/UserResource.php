@@ -25,6 +25,8 @@ class UserResource extends JsonResource
             'provincia' => $this->provincia,
             'localidad' => $this->localidad,
             'codigo_postal' => $this->codigo_postal,
+            'autorizado' => $this->autorizado,
+            'discount' => $this->discount,
         ];
     }
 }

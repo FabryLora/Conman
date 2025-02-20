@@ -32,53 +32,47 @@ export default function Pedidos() {
     }, []);
 
     useEffect(() => {
-        if (currencyType === "pesos") {
-            const total = cart.reduce((acc, prod) => {
-                return acc + prod.price * prod.additionalInfo.cantidad;
-            }, 0);
-            setSubtotal(total?.toLocaleString("es-AR"));
-            if (
-                pedidosInfo?.descuento > 0 &&
-                tipo_entrega === "retiro cliente"
-            ) {
-                const condescuento =
-                    total - (total * pedidosInfo?.descuento) / 100;
-                setSubtotalDescuento(condescuento?.toLocaleString("es-AR"));
-                const iva = condescuento * 0.21;
-                setIva(iva?.toLocaleString("es-AR"));
-                const descuento = (total * pedidosInfo?.descuento) / 100;
-                setDescuento(descuento?.toLocaleString("es-AR"));
-                const totalFinal = condescuento + iva;
-                setTotalFinal(totalFinal?.toLocaleString("es-AR"));
-            } else {
-                const iva = total * 0.21;
-                setIva(iva?.toLocaleString("es-AR"));
-                setSubtotalDescuento(total?.toLocaleString("es-AR"));
-                setTotalFinal((total + iva)?.toLocaleString("es-AR"));
-            }
-        } else {
-            const total = cart.reduce((acc, prod) => {
-                return acc + prod.dolar_price * prod.additionalInfo.cantidad;
-            }, 0);
-            setSubtotal(total?.toLocaleString("es-AR"));
-            if (
-                pedidosInfo?.descuento > 0 &&
-                tipo_entrega === "retiro cliente"
-            ) {
-                const condescuento =
-                    total - (total * pedidosInfo?.descuento) / 100;
-                setSubtotalDescuento(condescuento?.toLocaleString("es-AR"));
+        const isPesos = currencyType === "pesos";
+        const getPrice = (prod) => (isPesos ? prod.price : prod.dolar_price);
 
-                const descuento = (total * pedidosInfo?.descuento) / 100;
-                setDescuento(descuento?.toLocaleString("es-AR"));
-                const totalFinal = condescuento;
-                setTotalFinal(totalFinal?.toLocaleString("es-AR"));
-            } else {
-                setSubtotalDescuento(total?.toLocaleString("es-AR"));
-                setTotalFinal(total?.toLocaleString("es-AR"));
-            }
+        // Cálculo del subtotal
+        const total = cart.reduce(
+            (acc, prod) => acc + getPrice(prod) * prod.additionalInfo.cantidad,
+            0
+        );
+
+        // Obtener los descuentos individuales
+        const pedidoDescuento = pedidosInfo?.descuento || 0;
+        const usuarioDescuento = userInfo?.discount || 0;
+
+        // Aplicar los descuentos por separado
+        let subtotalDescuento = total;
+        let descuentoPedido = 0;
+        let descuentoUsuario = 0;
+
+        if (pedidoDescuento > 0) {
+            descuentoPedido = (subtotalDescuento * pedidoDescuento) / 100;
+            subtotalDescuento -= descuentoPedido;
         }
-    }, [cart, tipo_entrega, currencyType]);
+
+        if (usuarioDescuento > 0) {
+            descuentoUsuario = (subtotalDescuento * usuarioDescuento) / 100;
+            subtotalDescuento -= descuentoUsuario;
+        }
+
+        // Calcular el IVA solo si es en pesos
+        let iva = isPesos ? subtotalDescuento * 0.21 : 0;
+        let totalFinal = subtotalDescuento + iva;
+
+        // Aplicar formato solo al final para mejorar rendimiento
+        setSubtotal(total.toLocaleString("es-AR"));
+        setSubtotalDescuento(subtotalDescuento.toLocaleString("es-AR"));
+        setDescuento(
+            (descuentoPedido + descuentoUsuario).toLocaleString("es-AR")
+        );
+        setIva(iva.toLocaleString("es-AR"));
+        setTotalFinal(totalFinal.toLocaleString("es-AR"));
+    }, [cart, tipo_entrega, currencyType, pedidosInfo, userInfo]);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -180,6 +174,7 @@ export default function Pedidos() {
                     }}
                     user={userInfo}
                     currency={currencyType}
+                    descuentoCliente={userInfo?.discount}
                 />
             );
 
@@ -259,13 +254,13 @@ export default function Pedidos() {
             </AnimatePresence>
 
             <div className="grid  w-full  items-start col-span-2">
-                <div className="grid grid-cols-7 items-center justify-center bg-[#F5F5F5] h-[52px] text-center font-semibold max-sm:text-sm">
+                <div className="grid grid-cols-8 items-center justify-center bg-[#F5F5F5] h-[52px] text-center font-semibold max-sm:text-sm">
                     <p className="max-sm:hidden"></p>
                     <p className="text-left">Codigo</p>
                     <p className="text-left">Producto</p>
                     <p>Precio x unidad {"(Pesos)"}</p>
                     <p>Precio x unidad {"(USD)"}</p>
-
+                    <p>Descuento por cliente</p>
                     <p>Cantidad</p>
                     <p></p>
                 </div>
@@ -436,13 +431,14 @@ export default function Pedidos() {
                 </div>
 
                 <div className="flex flex-col justify-between px-4 text-xl gap-6 py-6 border-b">
-                    {pedidosInfo?.descuento > 0 &&
-                        tipo_entrega === "retiro cliente" && (
-                            <div className="flex flex-row justify-between w-full">
-                                <p>Subtotal {"(sin descuento)"}</p>
-                                <p>${subtotal}</p>
-                            </div>
-                        )}
+                    {pedidosInfo?.descuento > 0 ||
+                        (userInfo?.discount > 0 &&
+                            tipo_entrega === "retiro cliente" && (
+                                <div className="flex flex-row justify-between w-full">
+                                    <p>Subtotal {"(sin descuento)"}</p>
+                                    <p>${subtotal}</p>
+                                </div>
+                            ))}
                     {pedidosInfo?.descuento > 0 &&
                         tipo_entrega === "retiro cliente" && (
                             <div className="flex flex-row justify-between w-full">
@@ -452,6 +448,15 @@ export default function Pedidos() {
                                 <p className="text-green-600">-${descuento}</p>
                             </div>
                         )}
+
+                    {userInfo?.discount > 0 && (
+                        <div className="flex flex-row justify-between w-full">
+                            <p>
+                                Descuento cliente {`(${userInfo?.discount}%)`}
+                            </p>
+                            <p className="text-green-600">-${descuento}</p>
+                        </div>
+                    )}
                     <div className="flex flex-row justify-between w-full">
                         <p>Subtotal</p>
                         <p>${subtotalDescuento}</p>
@@ -496,12 +501,13 @@ export default function Pedidos() {
             </div>
 
             <div className="flex flex-row gap-3 w-full max-sm:col-span-2 max-sm:order-6 items-end">
-                <button
+                <Link
+                    to={"/privado/productos"}
                     onClick={clearCart}
-                    className="h-[47px] w-full border border-primary-red text-primary-red"
+                    className="h-[47px] w-full border flex items-center justify-center border-primary-red text-primary-red"
                 >
                     CANCELAR PEDIDO
-                </button>
+                </Link>
                 <button
                     onClick={handleSubmit}
                     className={`w-full h-[47px] text-white ${

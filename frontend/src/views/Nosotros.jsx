@@ -5,6 +5,7 @@ import mision from "../assets/nosotros/mision-icon.svg";
 import sustent from "../assets/nosotros/sustent-icon.svg";
 import vision from "../assets/nosotros/vision-icon.svg";
 import NosotrosCard from "../components/NosotrosCard";
+import WhatsappComponent from "../components/WhatsappComponent";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Nosotros() {

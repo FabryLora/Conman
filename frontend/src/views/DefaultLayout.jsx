@@ -4,6 +4,7 @@ import bannerImage from "../assets/nosotros/nosotros-banner.png";
 import DefaultBanner from "../components/DefaultBanner";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
+import WhatsappComponent from "../components/WhatsappComponent";
 import { useStateContext } from "../contexts/ContextProvider";
 export default function DefaultLayout() {
     const { categoryInfo, userToken } = useStateContext();
@@ -50,6 +51,7 @@ export default function DefaultLayout() {
                     bannerImage={bannerImage}
                 />
             )}
+            <WhatsappComponent />
             <Outlet />
             <Footer />
         </div>

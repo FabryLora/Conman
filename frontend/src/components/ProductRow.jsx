@@ -11,6 +11,8 @@ import { useStateContext } from "../contexts/ContextProvider";
 import "./numberInputCss.css";
 
 export default function ProductRow({ product, currency }) {
+    const { addToCart, removeFromCart, userInfo } = useStateContext();
+
     const [cantidad, setCantidad] = useState(0);
     const [extraInfo, setExtraInfo] = useState({
         cantidad: 0,
@@ -45,8 +47,6 @@ export default function ProductRow({ product, currency }) {
 
     const location = useLocation();
 
-    const { addToCart, removeFromCart } = useStateContext();
-
     useEffect(() => {
         setExtraInfo({
             ...extraInfo,
@@ -55,7 +55,7 @@ export default function ProductRow({ product, currency }) {
     }, [cantidad]);
 
     return (
-        <div className="grid grid-cols-7 items-center justify-center py-2 border-b text-[#515A53]">
+        <div className="grid grid-cols-8 items-center justify-center py-2 border-b text-[#515A53]">
             <div className="flex justify-center w-[85px] h-[85px] border max-sm:hidden">
                 <img
                     src={product?.image_url}
@@ -69,6 +69,7 @@ export default function ProductRow({ product, currency }) {
                 ${product?.price.toLocaleString("es-AR")}
             </p>
             <p className="text-center">${product?.dolar_price}</p>
+            <p className="text-center">{userInfo?.discount}%</p>
 
             <div className="flex justify-center">
                 {location.pathname === "/privado/pedido" ? (

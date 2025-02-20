@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
 import NavbarPrivado from "../components/NavBarPrivado";
+import WhatsappComponent from "../components/WhatsappComponent";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function PrivateZone() {
@@ -37,6 +38,7 @@ export default function PrivateZone() {
             <div>
                 <Outlet />
             </div>
+            <WhatsappComponent />
             <Footer />
         </div>
     );

@@ -20,7 +20,12 @@ export default function UsuariosAdmin() {
         provincia: "",
         localidad: "",
         codigo_postal: "",
+        discount: "",
+        autorizado: "1",
     });
+
+    const [nombre, setNombre] = useState("");
+    const [email, setEmail] = useState("");
 
     const onSubmit = (ev) => {
         ev.preventDefault();
@@ -49,7 +54,7 @@ export default function UsuariosAdmin() {
                 onSubmit={onSubmit}
                 className="w-fit h-full flex flex-col gap-3 py-20"
             >
-                <h2 className="text-2xl">AGREGAR USUARIO</h2>
+                <h2 className="text-2xl">AGREGAR CLIENTE</h2>
 
                 <div className="grid grid-cols-2 gap-3">
                     <div className="flex flex-col gap-2 col-span-2">
@@ -138,7 +143,7 @@ export default function UsuariosAdmin() {
                             required
                         />
                     </div>
-                    <div className="flex flex-col gap-2 col-span-2">
+                    <div className="flex flex-col gap-2 ">
                         <label htmlFor="direccion">Dirección</label>
                         <input
                             value={userSubmitInfo.direccion}
@@ -147,6 +152,23 @@ export default function UsuariosAdmin() {
                             type="text"
                             name="direccion"
                             id="direccion"
+                            required
+                        />
+                    </div>
+                    <div className="flex flex-col gap-2 ">
+                        <label htmlFor="descuento">Descuento</label>
+                        <input
+                            value={userSubmitInfo?.discount}
+                            onChange={(ev) =>
+                                setUserSubmitInfo({
+                                    ...userSubmitInfo,
+                                    discount: ev.target.value,
+                                })
+                            }
+                            className="w-full h-[45px] border pl-2"
+                            type="number"
+                            name="descuento"
+                            id="descuento"
                             required
                         />
                     </div>
@@ -225,10 +247,31 @@ export default function UsuariosAdmin() {
                     className="w-[325px] h-[47px] bg-primary-red text-white self-center my-5"
                     type="submit"
                 >
-                    AGREGAR USUARIO
+                    AGREGAR CLIENTE
                 </button>
             </form>
-
+            <h2 className="font-bold text-4xl self-start pl-4 py-2">
+                Clientes
+            </h2>
+            <h2 className="font-bold text-xl self-start pl-4 py-2">
+                Filtrar clientes:
+            </h2>
+            <div className="w-full py-5 pl-4 flex flex-row gap-5">
+                <input
+                    value={nombre}
+                    onChange={(ev) => setNombre(ev.target.value)}
+                    className="py-2 px-4 border"
+                    type="text"
+                    placeholder="Nombre"
+                />
+                <input
+                    value={email}
+                    onChange={(ev) => setEmail(ev.target.value)}
+                    className="py-2 px-4 border"
+                    type="text"
+                    placeholder="Email"
+                />
+            </div>
             <div className="w-full">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -236,17 +279,18 @@ export default function UsuariosAdmin() {
                             <th scope="col" className="px-6 py-3">
                                 Usuario
                             </th>
+
                             <th scope="col" className="px-6 py-3">
-                                Razon social
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                DNI / CUIT
+                                Descuento
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 Provincia
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 Localidad
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Autorizar
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 Email
@@ -257,9 +301,19 @@ export default function UsuariosAdmin() {
                         </tr>
                     </thead>
                     <tbody>
-                        {allUsers.map((user, index) => (
-                            <UserAdmin key={index} user={user} />
-                        ))}
+                        {allUsers
+                            ?.filter(
+                                (user) =>
+                                    user?.email
+                                        ?.toLowerCase()
+                                        ?.includes(email?.toLowerCase()) &&
+                                    user?.name
+                                        ?.toLowerCase()
+                                        ?.includes(nombre?.toLowerCase())
+                            )
+                            .map((user, index) => (
+                                <UserAdmin key={index} user={user} />
+                            ))}
                     </tbody>
                 </table>
             </div>
