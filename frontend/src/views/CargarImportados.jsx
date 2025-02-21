@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axiosClient from "../axios";
 
-const CargaDeDatos = () => {
+const CargarImportados = () => {
     const [file, setFile] = useState(null);
     const [mensaje, setMensaje] = useState("");
 
@@ -51,4 +51,4 @@ const CargaDeDatos = () => {
     );
 };
 
-export default CargaDeDatos;
+export default CargarImportados;

@@ -50,7 +50,7 @@ export default function ProductCard({ product }) {
                 </div>
                 <div className="flex flex-row justify-between border-b">
                     <p>Precio x unidad {"(Pesos)"}:</p>
-                    <p>${product?.price.toLocaleString("es-AR")}</p>
+                    <p>${product?.price?.toLocaleString("es-AR")}</p>
                 </div>
                 <div className="flex flex-row justify-between border-b">
                     <p>Precio x unidad {"(USD)"}:</p>

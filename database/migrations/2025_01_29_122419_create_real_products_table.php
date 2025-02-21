@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code');
-            $table->double('price');
-            $table->double("dolar_price");
+            $table->double('price')->nullable();
+            $table->double("dolar_price")->nullable();
             $table->string("image")->nullable();
             $table->unsignedInteger('discount');
             $table->foreignIdFor(Product::class, 'product_id')->constrained()->cascadeOnDelete();

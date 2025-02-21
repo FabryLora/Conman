@@ -10,12 +10,12 @@ export default function ContactoAdmin() {
 
     useState(() => {
         setContacto({
-            mail: contactInfo?.mail,
-            phone: contactInfo?.phone,
-            wp: contactInfo?.wp,
-            location: contactInfo?.location,
-            ig: contactInfo?.ig,
-            fb: contactInfo?.fb,
+            mail: contactInfo?.mail ? contactInfo?.mail : null,
+            phone: contactInfo?.phone ? contactInfo?.phone : null,
+            wp: contactInfo?.wp ? contactInfo?.wp : null,
+            location: contactInfo?.location ? contactInfo?.location : null,
+            ig: contactInfo?.ig ? contactInfo?.ig : null,
+            fb: contactInfo?.fb ? contactInfo?.fb : null,
         });
     }, [contactInfo]);
 

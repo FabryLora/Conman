@@ -22,13 +22,13 @@ class ContactInfoUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "mail" => "required|string|max:100",
-            "phone" => "required|string|max:100",
-            "wp" => "required|string|max:100",
-            "location" => "required|string|max:100",
+            "mail" => "nullable|string|max:100",
+            "phone" => "nullable|string|max:100",
+            "wp" => "nullable|string|max:100",
+            "location" => "nullable|string|max:100",
             "iframe" => "nullable|string",
-            "ig" => "required|string|max:100",
-            "fb" => "required|string|max:100",
+            "ig" => "nullable|string|max:100",
+            "fb" => "nullable|string|max:100",
         ];
     }
 }

@@ -9,6 +9,8 @@ use App\Http\Controllers\CategoryInicioController;
 use App\Http\Controllers\ContactInfoController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ImportController;
+use App\Http\Controllers\ImportImportadosController;
+use App\Http\Controllers\ImportTerminalesController;
 use App\Http\Controllers\ListaDePreciosController;
 use App\Http\Controllers\LogosController;
 use App\Http\Controllers\MetadatosController;
@@ -78,5 +80,6 @@ Route::apiResource("/logos", LogosController::class);
 Route::apiResource("/calidadinfo", CalidadInfoController::class);
 Route::get('/downloadarchivo/{filename}', [ListaDePreciosController::class, 'downloadPDF']);
 Route::get('/downloadpedido/{filename}', [PedidoController::class, 'downloadPDF']);
-
 Route::post('/importar-excel', [ImportController::class, 'importar']);
+Route::post('/importar-terminales', [ImportTerminalesController::class, 'importar']);
+Route::post('/importar-importados', [ImportImportadosController::class, 'importar']);

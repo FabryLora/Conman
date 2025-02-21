@@ -156,6 +156,14 @@ export default function Administrator() {
                     title: "Cargar Mangueras",
                     href: "/dashboard/carga-de-datos",
                 },
+                {
+                    title: "Cargar Terminales",
+                    href: "/dashboard/terminales",
+                },
+                {
+                    title: "Cargar Importados",
+                    href: "/dashboard/importados",
+                },
             ],
         },
     ]);

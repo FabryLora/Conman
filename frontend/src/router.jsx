@@ -7,6 +7,8 @@ import CalidadAdmin from "./views/CalidadAdmin";
 import CalidadContenido from "./views/CalidadContenido";
 import CalidadInicioAdmin from "./views/CalidadInicioAdmin";
 import CargaDeDatos from "./views/CargaDeDatos";
+import CargarImportados from "./views/CargarImportados";
+import CargarTerminales from "./views/CargarTerminales";
 import CategoriasAdmin from "./views/CategoriasAdmin";
 import Contacto from "./views/Contacto";
 import ContactoAdmin from "./views/ContactoAdmin";
@@ -178,6 +180,14 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/carga-de-datos",
                 element: <CargaDeDatos />,
+            },
+            {
+                path: "/dashboard/terminales",
+                element: <CargarTerminales />,
+            },
+            {
+                path: "/dashboard/importados",
+                element: <CargarImportados />,
             },
         ],
     },

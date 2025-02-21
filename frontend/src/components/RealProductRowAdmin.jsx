@@ -59,6 +59,7 @@ export default function RealProductRowAdmin({ productObject }) {
         try {
             await axiosClient.delete(`/realproducts/${productObject.id}`);
             fetchRealProducts();
+            setEditable(false);
             toast.success("Producto eliminado correctamente");
         } catch (error) {
             toast.error("Error al eliminar el producto");
@@ -81,14 +82,17 @@ export default function RealProductRowAdmin({ productObject }) {
                         />
                         <div className=" flex text-sm/6 text-gray-600">
                             <label
-                                htmlFor="file-upload"
+                                htmlFor="a"
                                 className="cursor-pointer text-white bg-blue-500 p-2 rounded-md"
                             >
                                 Seleccionar imagen
                             </label>
                             <input
-                                onChange={handleFileChange}
-                                id="file-upload"
+                                onChange={(ev) => {
+                                    setImage(ev.target.files[0]);
+                                    console.log(image);
+                                }}
+                                id="a"
                                 name="file-upload"
                                 type="file"
                                 className="hidden"
@@ -143,7 +147,7 @@ export default function RealProductRowAdmin({ productObject }) {
                         onChange={(ev) => setPrice(ev.target.value)}
                     />
                 ) : (
-                    price
+                    <p>${price}</p>
                 )}
             </div>
 
@@ -156,7 +160,7 @@ export default function RealProductRowAdmin({ productObject }) {
                         onChange={(ev) => setDolarPrice(ev.target.value)}
                     />
                 ) : (
-                    dolarPrice
+                    <p>${dolarPrice}</p>
                 )}
             </div>
 
@@ -189,6 +193,7 @@ export default function RealProductRowAdmin({ productObject }) {
                 {editable ? (
                     <div className="flex flex-col gap-2">
                         <button
+                            type="button"
                             className="bg-blue-500 rounded-md py-2"
                             onClick={() => setEditable(false)}
                         >
@@ -201,6 +206,7 @@ export default function RealProductRowAdmin({ productObject }) {
                             Actualizar
                         </button>
                         <div
+                            type="button"
                             className="bg-red-500 rounded-md py-2 cursor-pointer flex justify-center items-center"
                             onClick={deleteProduct}
                         >
@@ -209,6 +215,7 @@ export default function RealProductRowAdmin({ productObject }) {
                     </div>
                 ) : (
                     <button
+                        type="button"
                         onClick={() => setEditable(true)}
                         className="bg-blue-500 rounded-md px-4 py-2"
                     >

@@ -87,7 +87,7 @@ export default function PrivateProducts() {
                     <p className="text-center"></p>
                 </div>
 
-                <div className="max-h-[800px] h-[800px] overflow-y-auto">
+                <div className="h-fit">
                     {filteredProducts.map((prod, index) => (
                         <ProductRow key={index} product={prod} />
                     ))}

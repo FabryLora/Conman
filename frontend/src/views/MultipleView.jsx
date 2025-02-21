@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
+import PulseLoader from "react-spinners/PulseLoader";
+import defaultPhoto from "../assets/default-card-image.png";
 import axiosClient from "../axios";
 import WhatsappComponent from "../components/WhatsappComponent";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -38,7 +40,11 @@ export default function MultipleView() {
     }, [id]);
 
     if (!productInfo) {
-        return <div className="w-screen h-screen">Loading...</div>; // Mostrar un mensaje mientras se carga la información
+        return (
+            <div className=" w-screen h-screen flex items-center justify-center">
+                <PulseLoader />
+            </div>
+        ); // Mostrar un mensaje mientras se carga la información
     }
 
     const downloadPDF = async () => {
@@ -101,9 +107,9 @@ export default function MultipleView() {
                             </button>
                         ))}
                     </div>
-                    <div className="h-[500px] w-full border border-gray-300">
+                    <div className="h-full w-full border border-gray-300">
                         <img
-                            src={currentImage}
+                            src={currentImage ? currentImage : defaultPhoto}
                             className="object-contain h-full w-full"
                             alt=""
                         />
@@ -118,12 +124,15 @@ export default function MultipleView() {
                             <p>{productInfo?.description}</p>
                         </div>
                         <div className="flex flex-row gap-10">
-                            <button
-                                onClick={downloadPDF}
-                                className="h-[47px] w-full text-primary-red border border-primary-red"
-                            >
-                                FICHA TECNICA
-                            </button>
+                            {productInfo?.file_url && (
+                                <button
+                                    onClick={downloadPDF}
+                                    className="h-[47px] w-full text-primary-red border border-primary-red"
+                                >
+                                    FICHA TECNICA
+                                </button>
+                            )}
+
                             <Link
                                 to={"/inicio/contacto"}
                                 className="h-[47px] w-full bg-primary-red text-white flex items-center justify-center"
@@ -134,32 +143,45 @@ export default function MultipleView() {
                     </div>
                 </div>
                 <div className="w-full h-[333px] self-center ">
-                    <img
-                        className="w-full h-full object-contain"
-                        src={productInfo?.image_url}
-                        alt=""
-                    />
+                    {productInfo?.image_url && (
+                        <img
+                            className="w-full h-full object-contain"
+                            src={productInfo?.image_url}
+                            alt=""
+                        />
+                    )}
                 </div>
                 <div>
                     <div>
                         <table className="border-y w-full">
                             <thead>
                                 <tr className="border-b bg-gray-200">
-                                    <td>CODIGO</td>
-                                    <td>NOMBRE</td>
+                                    <td className="p-2">CODIGO</td>
+                                    <td className="p-2">NOMBRE</td>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody className="h-fit">
                                 {realProducts
                                     .filter(
                                         (realProduct) =>
                                             realProduct.product.name ===
                                             productInfo.name
                                     )
-                                    .map((cosas) => (
-                                        <tr key={cosas.id}>
-                                            <td>{cosas?.code}</td>
-                                            <td>{cosas?.name}</td>
+                                    .map((cosas, index) => (
+                                        <tr
+                                            key={cosas.id}
+                                            className={
+                                                index % 2 === 0
+                                                    ? "bg-gray-100"
+                                                    : "bg-white"
+                                            }
+                                        >
+                                            <td className="p-2">
+                                                {cosas?.code}
+                                            </td>
+                                            <td className="p-2">
+                                                {cosas?.name}
+                                            </td>
                                         </tr>
                                     ))}
                             </tbody>

@@ -66,7 +66,7 @@ export default function ProductRow({ product, currency }) {
             <p className="text-left">{product?.code}</p>
             <p className="text-left">{product?.name}</p>
             <p className="text-center">
-                ${product?.price.toLocaleString("es-AR")}
+                ${product?.price?.toLocaleString("es-AR")}
             </p>
             <p className="text-center">${product?.dolar_price}</p>
             <p className="text-center">{userInfo?.discount}%</p>

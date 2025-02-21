@@ -13,7 +13,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
 
-class ImportarManguerasJob implements ShouldQueue
+class ImportarTerminalesJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -44,15 +44,13 @@ class ImportarManguerasJob implements ShouldQueue
 
             // 📌 Si la columna A tiene texto y C está vacía, es un nuevo Product (por celda combinada)
             if (!empty($colA) && empty($most)) {
-                $currentProduct = Product::updateOrCreate(
-                    ['name' => $colA], // Buscar por nombre
-                    [
-                        'category_id' => 2, // Ajusta según sea necesario
-                        'description' => $colA,
-                        'image' => null,
-                        'file' => null,
-                    ]
-                );
+                $currentProduct = Product::firstOrCreate([
+                    'name' => $colA, // Solo usamos A porque B está vacía por la celda combinada
+                    'category_id' => 2, // Ajusta según sea necesario
+                    'description' => $colA,
+                    'image' => null,
+                    'file' => null,
+                ]);
                 continue;
             }
 
@@ -69,20 +67,16 @@ class ImportarManguerasJob implements ShouldQueue
                     $imagenPath = $imagen;
                 }
 
-                // Crear o actualizar RealProduct
-                RealProduct::updateOrCreate(
-                    [
-                        'code' => $colA,
-                        'product_id' => $currentProduct->id, // Buscar por código y producto asociado
-                    ],
-                    [
-                        'name'        => $colB,
-                        'price'       => null,
-                        'dolar_price' => (float) $most30,
-                        'image'       => $imagenPath,
-                        'discount'    => 0,
-                    ]
-                );
+                // Crear RealProduct
+                RealProduct::create([
+                    'code'        => $colA,
+                    'name'        => $colB,
+                    'price'       => (float) $most,
+                    'dolar_price' => (float) $most30,
+                    'image'       => null,
+                    'discount'    => 0,
+                    'product_id'  => $currentProduct->id,
+                ]);
             }
         }
     }

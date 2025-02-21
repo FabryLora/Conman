@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('metadatos', function (Blueprint $table) {
             $table->id();
             $table->string("seccion");
-            $table->string("descripcion");
-            $table->string("keywords");
+            $table->text("descripcion");
+            $table->text("keywords");
             $table->timestamps();
         });
     }

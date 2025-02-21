@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContactInfo;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 
@@ -11,8 +12,14 @@ class SendContactInfoController extends Controller
     {
         $htmlContent = $request->input('html'); // Recibe el HTML renderizado
 
-        Mail::send([], [], function ($message) use ($htmlContent) {
-            $message->to('fabriloco2002@gmail.com')
+        $contactInfo = ContactInfo::first();
+
+        if (!$contactInfo) {
+            return response()->json(['error' => 'No se encontró información de contacto'], 404);
+        }
+
+        Mail::send([], [], function ($message) use ($htmlContent, $contactInfo) {
+            $message->to($contactInfo->mail)
                 ->subject('Correo de Contacto')
                 ->html($htmlContent);
         });

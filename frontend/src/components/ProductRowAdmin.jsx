@@ -47,13 +47,16 @@ export default function ProductRowAdmin({
         const prodForm = new FormData();
         prodForm.append("name", name);
         prodForm.append("description", description);
-        prodForm.append("sub_category_id", sub_category_id);
+        if (sub_category_id) {
+            prodForm.append("sub_category_id", sub_category_id);
+        }
+
         prodForm.append("category_id", category_id);
         if (image) {
-            prodForm.append("image", image);
+            prodForm.append("image", image ? image : null);
         }
         if (file) {
-            prodForm.append("file", file);
+            prodForm.append("file", file ? file : null);
         }
 
         try {
@@ -160,7 +163,7 @@ export default function ProductRowAdmin({
 
     return (
         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 h-[134px]">
-            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[340px] overflow-x-auto">
+            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[340px] overflow-x-auto scrollbar-hide">
                 {editable ? (
                     <div className="text-center items-center h-fit self-center flex flex-col justify-start gap-3">
                         <PhotoIcon
@@ -212,7 +215,7 @@ export default function ProductRowAdmin({
                 )}
             </td>
 
-            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[340px] overflow-x-auto">
+            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[340px] overflow-x-auto scrollbar-hide">
                 {editable ? (
                     <div className="text-center items-center h-fit self-center flex flex-col justify-start gap-3">
                         <PhotoIcon
@@ -249,7 +252,7 @@ export default function ProductRowAdmin({
                 )}
             </td>
 
-            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[340px] overflow-x-auto">
+            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[340px] overflow-x-auto scrollbar-hide">
                 {editable ? (
                     <div className="text-center items-center h-fit self-center flex flex-col justify-start gap-3">
                         <PhotoIcon
@@ -301,6 +304,7 @@ export default function ProductRowAdmin({
                         className="w-full px-3 py-2 border border-gray-300 rounded-md text-black"
                         value={description}
                         onChange={(ev) => setDescription(ev.target.value)}
+                        rows={4}
                     />
                 ) : (
                     description

@@ -86,12 +86,12 @@ export default function GeneralView() {
             </div>
 
             {/* Lista de productos */}
-            <div className="flex flex-row flex-wrap justify-start w-[80%] gap-4">
+            <div className="flex flex-row flex-wrap justify-between w-[75%] gap-y-10">
                 {filteredProducts.map((product, index) => (
                     <DefaultCard
                         key={index}
                         cardObject={product}
-                        images={product.images}
+                        images={product?.images ? product.images : null}
                     />
                 ))}
             </div>

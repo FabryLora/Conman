@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axiosClient from "../axios";
 
-const CargaDeDatos = () => {
+const CargarTerminales = () => {
     const [file, setFile] = useState(null);
     const [mensaje, setMensaje] = useState("");
 
@@ -20,7 +20,7 @@ const CargaDeDatos = () => {
 
         try {
             const response = await axiosClient.post(
-                "/importar-excel",
+                "/importar-terminales",
                 formData,
                 {
                     headers: {
@@ -38,7 +38,7 @@ const CargaDeDatos = () => {
 
     return (
         <div className="p-4 border rounded-md shadow-lg">
-            <h2 className="text-lg font-bold mb-2">Importar Excel</h2>
+            <h2 className="text-lg font-bold mb-2">Importar Terminales</h2>
             <input type="file" onChange={handleFileChange} className="mb-2" />
             <button
                 onClick={handleUpload}
@@ -51,4 +51,4 @@ const CargaDeDatos = () => {
     );
 };
 
-export default CargaDeDatos;
+export default CargarTerminales;
