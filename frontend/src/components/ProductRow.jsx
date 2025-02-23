@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import defaultPhoto from "../assets/default-card-image.png";
 import carritoHover from "../assets/icons/carrito-hover.svg";
 import carritoRed from "../assets/icons/carrito-icon.svg";
 import removeFromCartIcon from "../assets/icons/remove-from-cart.svg";
@@ -58,7 +59,7 @@ export default function ProductRow({ product, currency }) {
         <div className="grid grid-cols-8 items-center justify-center py-2 border-b text-[#515A53]">
             <div className="flex justify-center w-[85px] h-[85px] border max-sm:hidden">
                 <img
-                    src={product?.image_url}
+                    src={product?.image_url ? product?.image_url : defaultPhoto}
                     alt={product?.name}
                     className="object-cover h-full w-full"
                 />
@@ -66,7 +67,10 @@ export default function ProductRow({ product, currency }) {
             <p className="text-left">{product?.code}</p>
             <p className="text-left">{product?.name}</p>
             <p className="text-center">
-                ${product?.price?.toLocaleString("es-AR")}
+                $
+                {product?.price?.toLocaleString("es-AR")
+                    ? product?.price?.toLocaleString("es-AR")
+                    : 0}
             </p>
             <p className="text-center">${product?.dolar_price}</p>
             <p className="text-center">{userInfo?.discount}%</p>

@@ -17,13 +17,17 @@ export default function MultipleView() {
         window.scrollTo(0, 0);
     }, []);
 
+    const primeraMayuscula = (string) => {
+        return string?.charAt(0).toUpperCase() + string.slice(1);
+    };
+
     const [cleanPathname, setCleanPathname] = useState(
-        location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
+        location.pathname?.replace(/^\/+/, "").replace(/-/g, " ").split("/")
     );
 
     useEffect(() => {
         setCleanPathname(
-            location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
+            location.pathname?.replace(/^\/+/, "").replace(/-/g, " ").split("/")
         );
     }, [location]);
 
@@ -75,14 +79,14 @@ export default function MultipleView() {
 
     return (
         <div className="font-roboto-condensed w-[1240px] mx-auto ">
-            <div className="flex flex-row gap-1 items-center justify-start -top-14 -left-24 text-[#515A53] max-lg:-left-0 w-[1240px] mx-auto py-10">
-                <Link to={"/"}>{cleanPathname[0]}</Link>
+            <div className="flex flex-row gap-1 items-center justify-start -top-14 -left-24  max-lg:-left-0 w-[1240px] mx-auto py-10">
+                <Link to={"/"}>{primeraMayuscula(cleanPathname[0])}</Link>
                 <p>{">"}</p>
                 <Link to={`/inicio/${cleanPathname[1].split(" ").join("-")}`}>
-                    {cleanPathname[1]}
+                    {primeraMayuscula(cleanPathname[1])}
                 </Link>
                 <p>{">"}</p>
-                <Link>{productInfo?.name}</Link>
+                <Link className="font-bold">{productInfo?.name}</Link>
             </div>
             <div className="grid grid-cols-2 grid-rows-2 gap-4 gap-y-10 max-lg:grid-cols-1 max-lg:grid-rows-4">
                 <div className="relative flex flex-row w-full gap-3">

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('link');
             $table->string('order_value');
             $table->boolean('destacado');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

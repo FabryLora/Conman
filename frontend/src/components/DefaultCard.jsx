@@ -17,7 +17,7 @@ export default function DefaultCard({ cardObject, images }) {
             className="h-[366px] w-[288px] flex flex-col font-roboto-condensed  border border-[#EAEAEA] shadow-sm"
         >
             <Link
-                className="flex justify-center h-[287px]"
+                className="flex justify-center min-h-[287px]"
                 to={`/inicio/${removeAccents(
                     cardObject.category.name.split(" ").join("-").toLowerCase()
                 )}/${cardObject.id}`}

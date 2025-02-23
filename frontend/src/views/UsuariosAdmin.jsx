@@ -33,12 +33,11 @@ export default function UsuariosAdmin() {
         axiosClient
             .post("/signup", userSubmitInfo)
             .then(({ data }) => {
-                setUserToken(data.token);
                 fetchAllUsers();
-                toast.success("Usuario creado correctamente");
+                toast.success("Cliente creado correctamente");
             })
             .catch((err) => {
-                toast.error("Error al crear el usuario");
+                toast.error("Error al crear el cliente");
             });
     };
 

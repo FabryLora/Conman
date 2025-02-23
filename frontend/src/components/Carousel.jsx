@@ -1,6 +1,9 @@
+import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
+
+const MotionLink = motion.create(Link);
 
 const Carousel = ({ autoScrollInterval = 5000 }) => {
     const { sliderInfo } = useStateContext();
@@ -67,12 +70,14 @@ const Carousel = ({ autoScrollInterval = 5000 }) => {
                         </div>
                     </div>
 
-                    <Link
+                    <MotionLink
+                        initial={{ scale: 1 }}
+                        whileHover={{ scale: 0.95 }}
                         to={sliderInfo.link}
                         className=" flex justify-center items-center bg-primary-red text-white w-[172px] h-[47px] font-roboto-condensed"
                     >
                         MAS INFO
-                    </Link>
+                    </MotionLink>
                 </div>
 
                 {/* Indicadores */}

@@ -1,11 +1,10 @@
 import { motion } from "motion/react";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link, Navigate, useLocation } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import shieldIcon from "../assets/icons/shield-icon.svg";
 
 import bannerCalidad from "../assets/inicio/pdc-banner.png";
-import quienes from "../assets/inicio/quienes.png";
 import iqnetLogo from "../assets/logos/iqnet-logo.png";
 import iramLogo from "../assets/logos/iram-logo.png";
 import Carousel from "../components/Carousel";
@@ -28,6 +27,8 @@ export default function Home() {
         userToken,
     } = useStateContext();
 
+    const MotionLink = motion.create(Link);
+
     useEffect(() => {
         fetchNosotrosInicio();
     }, []);
@@ -41,7 +42,7 @@ export default function Home() {
     }
 
     return (
-        <>
+        <div className="overflow-hidden">
             <Helmet>
                 <title>Conman</title>
                 <meta
@@ -136,12 +137,14 @@ export default function Home() {
                             ></div>
                         </div>
                         <div className="">
-                            <Link
+                            <MotionLink
+                                initial={{ scale: 1 }}
+                                whileHover={{ scale: 0.95 }}
                                 to={"/inicio/nosotros"}
                                 className="bg-primary-red w-[289px] h-[47px] text-white flex justify-center items-center  max-xl:mt-0"
                             >
                                 MÁS INFO
-                            </Link>
+                            </MotionLink>
                         </div>
                     </motion.div>
                 </div>
@@ -171,12 +174,14 @@ export default function Home() {
                                 <img src={iramLogo} alt="" />
                                 <img src={iqnetLogo} alt="" />
                             </div>
-                            <Link
+                            <MotionLink
+                                initial={{ scale: 1 }}
+                                whileHover={{ scale: 0.95 }}
                                 to={"/inicio/calidad"}
                                 className="absolute w-full h-[47px] -bottom-28 border border-white flex justify-center items-center"
                             >
                                 MAS INFO
-                            </Link>
+                            </MotionLink>
                         </div>
                     </div>
                 </div>
@@ -188,12 +193,14 @@ export default function Home() {
                             <h2 className="text-[40px] font-bold font-roboto-condensed max-sm:text-center">
                                 Enterate de nuestra ultimas novedades
                             </h2>
-                            <Link
+                            <MotionLink
+                                initial={{ scale: 1 }}
+                                whileHover={{ scale: 0.95 }}
                                 to={"/inicio/novedades"}
                                 className="text-[16px] text-primary-red font-medium border border-primary-red w-[172px] h-[47px] bg-white flex justify-center items-center"
                             >
                                 VER TODAS
-                            </Link>
+                            </MotionLink>
                         </div>
 
                         <div className="flex flex-row flex-wrap gap-5 justify-between max-md:justify-center">
@@ -211,6 +218,6 @@ export default function Home() {
             </div>
             <WhatsappComponent />
             <Footer />
-        </>
+        </div>
     );
 }

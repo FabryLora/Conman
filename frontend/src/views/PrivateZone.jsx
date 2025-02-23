@@ -27,7 +27,7 @@ export default function PrivateZone() {
     return (
         <div className="font-roboto-condensed w-full overflow-y-hidden">
             <NavbarPrivado />
-            <div className="absolute flex flex-row gap-1 items-center justify-center  text-[#515A53] left-20 top-[150px] max-sm:left-10">
+            <div className="flex flex-row gap-1 items-center justify-start  w-[1240px] mx-auto pt-10 max-sm:pl-6">
                 <Link to={"/"}>Inicio</Link>
                 <p>{">"}</p>
                 <Link className="font-bold" to={"#"}>
@@ -35,7 +35,7 @@ export default function PrivateZone() {
                         cleanPathname[1]?.slice(1)}
                 </Link>
             </div>
-            <div>
+            <div className="max-w-[1240px] mx-auto">
                 <Outlet />
             </div>
             <WhatsappComponent />

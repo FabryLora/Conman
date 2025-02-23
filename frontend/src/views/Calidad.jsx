@@ -10,6 +10,13 @@ export default function Calidad() {
         window.scrollTo(0, 0);
     }, []);
 
+    useEffect(() => {
+        document.body.style.overflowX = "hidden"; // Desactivar scroll
+        return () => {
+            document.body.style.overflowX = "auto"; // Restaurar scroll al desmontar
+        };
+    }, []);
+
     return (
         <div className="font-roboto-condensed">
             <Helmet>
@@ -45,7 +52,7 @@ export default function Calidad() {
                 `}
             </style>
             <div className="flex flex-col gap-20 py-20 items-end">
-                <div className="flex flex-row gap-10 w-[1570px] ml-auto max-lg:flex-col">
+                <div className="flex flex-row gap-10 w-[1240px] mx-auto max-lg:flex-col">
                     <div className="flex flex-col h-full w-full  md:max-w-full lg:max-w-none items-center max-lg:order-2">
                         <div className="flex flex-col gap-6 items-start overflow-y-auto w-full max-h-[700pxpx]">
                             <div
@@ -64,9 +71,9 @@ export default function Calidad() {
                         </div>
                     </div>
 
-                    <div className=" max-lg:order-1 w-full max-lg:h-[500px]">
+                    <div className="max-lg:order-1 w-full max-lg:h-[500px]">
                         <img
-                            className="w-full h-full object-cover"
+                            className="absolute w-[950px] object-contain"
                             src={calidadInfo?.image_url}
                             alt=""
                         />

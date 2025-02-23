@@ -68,6 +68,13 @@ export default function NosotrosAdmin() {
             });
     };
 
+    useEffect(() => {
+        document.body.style.overflow = "hidden"; // Desactivar scroll
+        return () => {
+            document.body.style.overflow = "auto"; // Restaurar scroll al desmontar
+        };
+    }, []);
+
     return (
         <div>
             <ToastContainer />
@@ -105,7 +112,7 @@ export default function NosotrosAdmin() {
                                 <label className="block font-medium text-gray-900 text-xl">
                                     Imagen
                                 </label>
-                                <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25">
+                                <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 h-[300px] w-[900px]">
                                     <div className="w-1/2">
                                         <img
                                             className="w-full h-full object-contain"

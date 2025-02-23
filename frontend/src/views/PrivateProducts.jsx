@@ -31,10 +31,10 @@ export default function PrivateProducts() {
     }, []);
 
     return (
-        <div className="w-full px-20 py-20 flex flex-col gap-20 max-sm:px-0">
+        <div className="w-full pb-20 flex flex-col gap-20 max-sm:px-0">
             <ToastContainer />
             <div className="h-[134px] w-full bg-primary-blue text-white max-sm:h-fit">
-                <div className="flex flex-col gap-2 justify-center h-full p-10 max-sm:px-10 max-sm:w-full">
+                <div className="flex flex-col gap-2 justify-center h-full p-10 max-sm:px-6 max-sm:w-full">
                     <h2>Buscar por:</h2>
                     <div className="flex flex-row justify-evenly w-full gap-5 max-sm:flex-col">
                         <select

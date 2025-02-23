@@ -32,7 +32,11 @@ export default function CategoriasAdmin() {
     const submit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append("image", image);
+
+        if (image) {
+            formData.append("image", image);
+        }
+
         formData.append("name", name);
         formData.append("destacado", destacado ? 1 : 0);
         formData.append("order_value", order);

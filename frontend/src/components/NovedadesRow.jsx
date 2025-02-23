@@ -126,9 +126,10 @@ export default function NovedadesRow({ novedadesObject }) {
                         className="w-full px-3 py-2 border border-gray-300 rounded-md text-black"
                         value={text}
                         onChange={(e) => setText(e.target.value)}
+                        rows={8}
                     />
                 ) : (
-                    <p className="overflow-hidden max-w-[200px]">
+                    <p className="overflow-hidden max-w-[200px] max-h-[100px]">
                         {novedadesObject?.text}...
                     </p>
                 )}

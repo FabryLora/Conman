@@ -2,6 +2,7 @@ import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 import carritoRed from "../assets/icons/carrito-icon.svg";
 import removeFromCartIcon from "../assets/icons/remove-from-cart.svg";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -113,7 +114,24 @@ export default function ProductCard({ product }) {
                             </button>
                         ) : (
                             <button
-                                onClick={() => addToCart(product, extraInfo)}
+                                onClick={() => {
+                                    extraInfo?.cantidad == 0
+                                        ? toast.error(
+                                              "La cantidad tiene que ser mayor a 0",
+                                              {
+                                                  position: "top-center",
+                                                  autoClose: 2200,
+                                              }
+                                          )
+                                        : (addToCart(product, extraInfo),
+                                          toast.success(
+                                              "Producto agregado al carrito",
+                                              {
+                                                  position: "top-center",
+                                                  autoClose: 2200,
+                                              }
+                                          ));
+                                }}
                             >
                                 <img src={carritoRed} alt="" />
                             </button>

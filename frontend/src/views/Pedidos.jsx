@@ -26,6 +26,7 @@ export default function Pedidos() {
     const [succ, setSucc] = useState(false);
     const [succID, setSuccID] = useState();
     const [currencyType, setCurrencyType] = useState("pesos");
+    const [descuentoCliente, setDescuentoCliente] = useState(0);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -65,13 +66,42 @@ export default function Pedidos() {
         let totalFinal = subtotalDescuento + iva;
 
         // Aplicar formato solo al final para mejorar rendimiento
-        setSubtotal(total.toLocaleString("es-AR"));
-        setSubtotalDescuento(subtotalDescuento.toLocaleString("es-AR"));
-        setDescuento(
-            (descuentoPedido + descuentoUsuario).toLocaleString("es-AR")
+        setSubtotal(
+            total.toLocaleString("es-AR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            })
         );
-        setIva(iva.toLocaleString("es-AR"));
-        setTotalFinal(totalFinal.toLocaleString("es-AR"));
+        setSubtotalDescuento(
+            subtotalDescuento.toLocaleString("es-AR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            })
+        );
+        setDescuento(
+            descuentoPedido.toLocaleString("es-AR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            })
+        );
+        setDescuentoCliente(
+            descuentoUsuario.toLocaleString("es-AR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            })
+        );
+        setIva(
+            iva.toLocaleString("es-AR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            })
+        );
+        setTotalFinal(
+            totalFinal.toLocaleString("es-AR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            })
+        );
     }, [cart, tipo_entrega, currencyType, pedidosInfo, userInfo]);
 
     const handleFileChange = (event) => {
@@ -204,6 +234,8 @@ export default function Pedidos() {
         }
     };
 
+    const MotionLink = motion.create(Link);
+
     useEffect(() => {
         if (error) {
             const timer = setTimeout(() => {
@@ -214,7 +246,7 @@ export default function Pedidos() {
     }, [error]);
 
     return (
-        <div className="w-full px-20 py-20 grid grid-cols-2 gap-10 max-sm:px-4">
+        <div className="w-full py-20 grid grid-cols-2 gap-10 max-sm:px-4">
             <AnimatePresence>
                 {error && (
                     <motion.div
@@ -286,7 +318,7 @@ export default function Pedidos() {
                 <div className="">
                     <Link
                         to={"/privado/productos"}
-                        className="h-[47px] border border-primary-red text-primary-red font-semibold py-2 px-5"
+                        className="h-[47px] border border-primary-red text-primary-red font-semibold py-2 px-5 hover:bg-primary-red hover:text-white"
                     >
                         SEGUIR COMPRANDO
                     </Link>
@@ -334,7 +366,7 @@ export default function Pedidos() {
                             </label>
                         </div>
                         {pedidosInfo?.descuento > 0 && (
-                            <span className="text-green-600 font-medium">
+                            <span className="text-green-600 font-medium pr-6">
                                 {pedidosInfo?.descuento}% descuento
                             </span>
                         )}
@@ -410,77 +442,120 @@ export default function Pedidos() {
                     placeholder="Dias especiales de entrega, cambios de domicilio, expresos, requerimientos especiales en la mercaderia, exenciones."
                 ></textarea>
             </div>
-
-            <div className="h-fit border max-sm:col-span-2 max-sm:order-5">
-                <div className="h-fit border max-sm:col-span-2 p-3">
-                    <div className="w-full flex justify-between">
-                        <h2>Elegir divisa:</h2>
-                        <select
-                            onChange={(e) => setCurrencyType(e.target.value)}
-                            className="w-fit justify-end"
-                            name=""
-                            id=""
-                        >
-                            <option value="pesos">Pesos</option>
-                            <option value="usd">USD</option>
-                        </select>
+            <AnimatePresence>
+                <motion.div
+                    transition={{ ease: "linear" }}
+                    layout
+                    className="h-fit border max-sm:col-span-2 max-sm:order-5"
+                >
+                    <div className="h-fit border max-sm:col-span-2 p-3">
+                        <div className="w-full flex justify-between">
+                            <h2>Elegir divisa:</h2>
+                            <select
+                                onChange={(e) =>
+                                    setCurrencyType(e.target.value)
+                                }
+                                className="w-fit justify-end"
+                            >
+                                <option value="pesos">Pesos</option>
+                                <option value="usd">USD</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div className="bg-[#EAEAEA]">
-                    <h2 className="p-3 text-xl font-bold">Pedido</h2>
-                </div>
+                    <div className="bg-[#EAEAEA]">
+                        <h2 className="p-3 text-xl font-bold">Pedido</h2>
+                    </div>
 
-                <div className="flex flex-col justify-between px-4 text-xl gap-6 py-6 border-b">
-                    {pedidosInfo?.descuento > 0 ||
-                        (userInfo?.discount > 0 &&
-                            tipo_entrega === "retiro cliente" && (
-                                <div className="flex flex-row justify-between w-full">
-                                    <p>Subtotal {"(sin descuento)"}</p>
-                                    <p>${subtotal}</p>
-                                </div>
-                            ))}
-                    {pedidosInfo?.descuento > 0 &&
-                        tipo_entrega === "retiro cliente" && (
-                            <div className="flex flex-row justify-between w-full">
+                    <motion.div
+                        transition={{ ease: "linear" }}
+                        layout
+                        className="flex flex-col justify-between px-4 text-xl gap-6 py-6 border-b"
+                    >
+                        {(pedidosInfo?.descuento > 0 ||
+                            (userInfo?.discount > 0 &&
+                                tipo_entrega === "retiro cliente")) && (
+                            <motion.div
+                                transition={{ ease: "linear" }}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -20 }}
+                                className="flex flex-row justify-between w-full"
+                            >
+                                <p>Subtotal {"(sin descuento)"}</p>
+                                <p>${subtotal}</p>
+                            </motion.div>
+                        )}
+                        <AnimatePresence>
+                            {pedidosInfo?.descuento > 0 &&
+                                tipo_entrega === "retiro cliente" && (
+                                    <motion.div
+                                        transition={{ ease: "linear" }}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -20 }}
+                                        className="flex flex-row justify-between w-full"
+                                    >
+                                        <p>
+                                            Descuento por retiro{" "}
+                                            {`(${pedidosInfo?.descuento}%)`}
+                                        </p>
+                                        <p className="text-green-600">
+                                            -${descuento}
+                                        </p>
+                                    </motion.div>
+                                )}
+                        </AnimatePresence>
+                        {userInfo?.discount > 0 && (
+                            <motion.div
+                                transition={{ ease: "linear" }}
+                                layout
+                                className="flex flex-row justify-between w-full"
+                            >
                                 <p>
-                                    Descuento {`(${pedidosInfo?.descuento}%)`}
+                                    Descuento cliente{" "}
+                                    {`(${userInfo?.discount}%)`}
                                 </p>
-                                <p className="text-green-600">-${descuento}</p>
-                            </div>
+                                <p className="text-green-600">
+                                    -${descuentoCliente}
+                                </p>
+                            </motion.div>
                         )}
-
-                    {userInfo?.discount > 0 && (
-                        <div className="flex flex-row justify-between w-full">
-                            <p>
-                                Descuento cliente {`(${userInfo?.discount}%)`}
-                            </p>
-                            <p className="text-green-600">-${descuento}</p>
-                        </div>
-                    )}
-                    <div className="flex flex-row justify-between w-full">
-                        <p>Subtotal</p>
-                        <p>${subtotalDescuento}</p>
-                    </div>
-                    {currencyType === "pesos" && (
-                        <div className="flex flex-row justify-between w-full">
-                            <p>IVA 21%</p>
-                            <p>${iva}</p>
-                        </div>
-                    )}
-                </div>
-                <div className="flex flex-row justify-between p-3">
-                    <p className="font-medium text-2xl">
-                        Total{" "}
+                        <motion.div
+                            transition={{ ease: "linear" }}
+                            layout
+                            className="flex flex-row justify-between w-full"
+                        >
+                            <p>Subtotal</p>
+                            <p>${subtotalDescuento}</p>
+                        </motion.div>
                         {currencyType === "pesos" && (
-                            <span className="text-base">
-                                {"(IVA incluido)"}
-                            </span>
+                            <motion.div
+                                transition={{ ease: "linear" }}
+                                layout
+                                className="flex flex-row justify-between w-full"
+                            >
+                                <p>IVA 21%</p>
+                                <p>${iva}</p>
+                            </motion.div>
                         )}
-                    </p>
-                    <p className="text-2xl">${totalFinal}</p>
-                </div>
-            </div>
-
+                    </motion.div>
+                    <motion.div
+                        transition={{ ease: "linear" }}
+                        layout
+                        className="flex flex-row justify-between p-3"
+                    >
+                        <p className="font-medium text-2xl">
+                            Total{" "}
+                            {currencyType === "pesos" && (
+                                <span className="text-base">
+                                    {"(IVA incluido)"}
+                                </span>
+                            )}
+                        </p>
+                        <p className="text-2xl">${totalFinal}</p>
+                    </motion.div>
+                </motion.div>
+            </AnimatePresence>
             <div className="flex flex-col gap-3 max-sm:col-span-2 max-sm:order-4">
                 <h2 className="font-bold text-2xl">Adjuntar un archivo</h2>
                 <div className="w-full border flex items-center justify-between">
@@ -501,21 +576,23 @@ export default function Pedidos() {
             </div>
 
             <div className="flex flex-row gap-3 w-full max-sm:col-span-2 max-sm:order-6 items-end">
-                <Link
+                <MotionLink
+                    whileHover={{ scale: 0.95 }}
                     to={"/privado/productos"}
                     onClick={clearCart}
                     className="h-[47px] w-full border flex items-center justify-center border-primary-red text-primary-red"
                 >
                     CANCELAR PEDIDO
-                </Link>
-                <button
+                </MotionLink>
+                <motion.button
+                    whileHover={{ scale: 0.95 }}
                     onClick={handleSubmit}
                     className={`w-full h-[47px] text-white ${
                         isSubmitting ? "bg-gray-400" : "bg-primary-red"
                     }`}
                 >
                     {isSubmitting ? "Enviando pedido..." : "REALIZAR PEDIDO"}
-                </button>
+                </motion.button>
             </div>
         </div>
     );

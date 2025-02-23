@@ -1,5 +1,6 @@
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 
 export default function NovedadesCard({ newsObject }) {
@@ -7,38 +8,48 @@ export default function NovedadesCard({ newsObject }) {
 
     return (
         <div>
-            {isOpen && (
-                <div>
-                    <div className="fixed top-0 left-0 bg-black opacity-50 w-screen h-screen z-[60]"></div>
-                    <div className="fixed w-[80%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[60]  flex h-[80%]  bg-white max-lg:flex-col max-lg:pt-10">
-                        <button
-                            onClick={() => setIsOpen(false)}
-                            className="absolute right-3 top-2"
-                        >
-                            <FontAwesomeIcon icon={faX} size="xl" />
-                        </button>
-                        <div className="w-1/2 max-lg:h-1/2 max-lg:w-full flex ">
-                            <img
-                                className="w-full h-full object-contain"
-                                src={newsObject?.image_url}
-                                alt=""
-                            />
-                        </div>
-                        <div className="w-1/2 max-lg:h-1/2 max-lg:w-full">
-                            <div className="flex flex-col gap-3 p-4">
-                                <h1 className="text-[30px]">
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed top-0 left-0 w-screen h-screen z-[1000] flex justify-center items-center bg-black bg-opacity-50 overflow-y-auto"
+                    >
+                        <div className="bg-white rounded-lg shadow-lg overflow-hidden w-[90%]  flex flex-col relative">
+                            {/* Botón de cierre */}
+                            <button
+                                onClick={() => setIsOpen(false)}
+                                className="absolute top-3 right-3 text-white hover:text-gray-400 transition"
+                            >
+                                <FontAwesomeIcon icon={faX} size="xl" />
+                            </button>
+
+                            {/* Imagen de portada */}
+                            <div className="w-full h-64 min-h-[300px]">
+                                <img
+                                    className="w-full h-full object-cover"
+                                    src={newsObject?.image_url}
+                                    alt="Noticia"
+                                />
+                            </div>
+
+                            {/* Contenido */}
+                            <div className="p-6 flex flex-col gap-3 max-h-[600px] overflow-y-auto">
+                                <h1 className="text-2xl font-bold text-gray-900">
                                     {newsObject.title}
                                 </h1>
-                                <p className="break-words whitespace-pre-line w-full max-h-[600px] overflow-y-auto max-lg:max-h-[250px]">
+                                <p className="text-gray-700 whitespace-pre-line">
                                     {newsObject.text}
                                 </p>
                             </div>
                         </div>
-                    </div>
-                </div>
-            )}
-
-            <button
+                    </motion.div>
+                )}
+            </AnimatePresence>
+            <motion.button
+                initial={{ scale: 1 }}
+                whileHover={{ scale: 0.98 }}
                 onClick={() => setIsOpen(!isOpen)}
                 className={
                     "bg-white h-[493px] w-[392px] font-roboto border text-left"
@@ -69,7 +80,7 @@ export default function NovedadesCard({ newsObject }) {
                         </button>
                     </div>
                 </div>
-            </button>
+            </motion.button>
         </div>
     );
 }

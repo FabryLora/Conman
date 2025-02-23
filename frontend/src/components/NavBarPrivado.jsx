@@ -46,11 +46,6 @@ export default function NavbarPrivado() {
         setCartProd(cart.length);
     }, [cart]);
 
-    const socials = [
-        { logo: fbIcon, href: contactInfo?.fb },
-        { logo: igIcon, href: contactInfo?.ig },
-    ];
-
     const links = [
         { title: "Productos", href: "/privado/productos", selected: false },
         { title: "Pedido", href: "/privado/pedido", selected: false },
@@ -63,107 +58,142 @@ export default function NavbarPrivado() {
 
     return (
         <div className="sticky top-0 flex flex-col items-center justify-center font-roboto-condensed z-[100]">
-            <div className="bg-primary-blue h-[40px] w-full flex items-center justify-between px-20 max-sm:p-0 max-sm:justify-end max-sm:pr-10">
-                <div className="flex gap-4 items-center text-[14px] text-white h-[16px] max-sm:hidden">
-                    <div className="flex gap-2 items-center">
-                        <img className="h-[16px]" src={letterIcon} alt="" />
-                        <p>{contactInfo?.mail}</p>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                        <img className="h-[16px]" src={phoneIcon} alt="" />
-                        <p>{contactInfo?.phone}</p>
-                    </div>
-                </div>
-                <div className="flex fle-row gap-4 h-full items-center">
-                    <div className="flex flex-row gap-4 h-[16px] items-center justify-center">
-                        {socials.map((social, index) => (
-                            <Link key={index} to={social.href}>
-                                <img src={social.logo} alt="" />
-                            </Link>
-                        ))}
-                    </div>
-                    {userToken && (
-                        <div className="h-full relative">
-                            <button
-                                onClick={() => setUserLoged(!userLoged)}
-                                className="w-[139px] h-full flex justify-center items-center bg-white"
+            <div className="bg-primary-blue w-full">
+                <div className="max-w-[1240px] mx-auto h-[40px] w-full flex items-center justify-between  max-sm:pl-0 max-sm:justify-end">
+                    <div className="flex gap-4 items-center text-[14px] text-white h-[16px] max-sm:hidden">
+                        {contactInfo?.mail && (
+                            <a
+                                href={`mailto:${contactInfo?.mail}`}
+                                className="flex gap-2 items-center"
                             >
-                                <h2 className="font-medium text-sm text-primary-blue">
-                                    {userInfo?.name
-                                        ? userInfo?.name.toUpperCase()
-                                        : ""}
-                                </h2>
-                            </button>
-                            <AnimatePresence>
-                                {userLoged && (
-                                    <motion.div
-                                        ref={userMenu}
-                                        initial={{ opacity: 0, y: -30 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -30 }}
-                                        transition={{
-                                            duration: 0.1,
-                                            ease: "linear",
-                                        }}
-                                        className="absolute flex flex-col gap-4 top-10 right-0 border broder-gray bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-fit z-20"
-                                    >
-                                        <Link
-                                            onClick={() => {
-                                                setUserToken("");
-                                                clearCart;
-                                            }}
-                                            to={"/"}
-                                            className="bg-primary-red text-white text-center px-4 py-2"
-                                        >
-                                            CERRAR SESION
-                                        </Link>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
+                                <img
+                                    className="h-[16px]"
+                                    src={letterIcon}
+                                    alt=""
+                                />
+                                <p>{contactInfo?.mail}</p>
+                            </a>
+                        )}
+                        {contactInfo?.phone && (
+                            <a
+                                href={`tel:${contactInfo?.phone}`}
+                                className="flex gap-2 items-center"
+                            >
+                                <img
+                                    className="h-[16px]"
+                                    src={phoneIcon}
+                                    alt=""
+                                />
+                                <p>{contactInfo?.phone}</p>
+                            </a>
+                        )}
+                    </div>
+                    <div className="flex fle-row gap-4 h-full items-center">
+                        <div className="flex flex-row gap-4 h-[16px] items-center justify-center">
+                            {contactInfo?.ig && (
+                                <a
+                                    target="_blanck"
+                                    rel="noopener noreferrer"
+                                    href={contactInfo?.ig}
+                                >
+                                    <img src={igIcon} alt="" />
+                                </a>
+                            )}
+                            {contactInfo?.fb && (
+                                <a
+                                    target="_blanck"
+                                    rel="noopener noreferrer"
+                                    href={contactInfo?.fb}
+                                >
+                                    <img src={fbIcon} alt="" />
+                                </a>
+                            )}
                         </div>
-                    )}
+                        {userToken && (
+                            <div className="h-full relative">
+                                <button
+                                    onClick={() => setUserLoged(!userLoged)}
+                                    className="w-[139px] h-full flex justify-center items-center bg-white"
+                                >
+                                    <h2 className="font-medium text-sm text-primary-blue">
+                                        {userInfo?.name
+                                            ? userInfo?.name.toUpperCase()
+                                            : ""}
+                                    </h2>
+                                </button>
+                                <AnimatePresence>
+                                    {userLoged && (
+                                        <motion.div
+                                            ref={userMenu}
+                                            initial={{ opacity: 0, y: -30 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -30 }}
+                                            transition={{
+                                                duration: 0.1,
+                                                ease: "linear",
+                                            }}
+                                            className="absolute flex flex-col gap-4 top-10 right-0 border broder-gray bg-white shadow-md p-5 font-roboto-condensed w-[367px] h-fit z-20"
+                                        >
+                                            <Link
+                                                onClick={() => {
+                                                    setUserToken("");
+                                                    clearCart;
+                                                }}
+                                                to={"/"}
+                                                className="bg-primary-red text-white text-center px-4 py-2"
+                                            >
+                                                CERRAR SESION
+                                            </Link>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-            <nav className="flex relative flex-row items-center px-20 gap-20 w-full h-[85px] shadow-sm max-lg:justify-center bg-white">
-                <Link className="w-[267px] h-[57px]" to={"/"}>
-                    <img
-                        src={logos?.principal_url}
-                        alt="Logo"
-                        className="w-full h-full object-contain"
-                    />
-                </Link>
-                <ul className="flex flex-row gap-5 w-full justify-end max-lg:hidden">
-                    {links.map((linkInfo) => (
-                        <li
-                            className="relative"
-                            onClick={() => setSelectedLink(linkInfo.title)}
-                            key={linkInfo.title}
-                        >
-                            {linkInfo.title === "Pedido" &&
-                                cart.length !== 0 && (
-                                    <div className="absolute -top-2 -right-2 text-sm bg-primary-red text-white w-[17px] h-[18px] flex justify-center items-center rounded-full">
-                                        <p>{cartProd}</p>
-                                    </div>
-                                )}
-                            <Link
-                                className={`${
-                                    linkInfo.title === selectedLink
-                                        ? "font-bold"
-                                        : ""
-                                }`}
-                                to={linkInfo.href}
+            <nav className="flex bg-white relative flex-row gap-24 w-full h-[85px] shadow-sm justify-between max-xl:justify-center">
+                <div className="w-[1240px] mx-auto flex relative flex-row justify-between items-center max-sm:justify-center">
+                    <Link className="w-[267px] h-[57px]" to={"/"}>
+                        <img
+                            src={logos?.principal_url}
+                            alt="Logo"
+                            className="w-full h-full object-contain"
+                        />
+                    </Link>
+                    <ul className="flex flex-row gap-5 w-full justify-end max-lg:hidden">
+                        {links.map((linkInfo) => (
+                            <li
+                                className="relative"
+                                onClick={() => setSelectedLink(linkInfo.title)}
+                                key={linkInfo.title}
                             >
-                                {linkInfo.title}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-                <button
-                    onClick={() => setTinyMenu(!tinyMenu)}
-                    className="w-[24px] h-[24px] absolute left-10 lg:hidden"
-                >
-                    <img src={barsIcon} alt="" />
-                </button>
+                                {linkInfo.title === "Pedido" &&
+                                    cart.length !== 0 && (
+                                        <div className="absolute -top-2 -right-2 text-sm bg-primary-red text-white w-[17px] h-[18px] flex justify-center items-center rounded-full">
+                                            <p>{cartProd}</p>
+                                        </div>
+                                    )}
+                                <Link
+                                    className={`${
+                                        linkInfo.title === selectedLink
+                                            ? "font-bold"
+                                            : ""
+                                    }`}
+                                    to={linkInfo.href}
+                                >
+                                    {linkInfo.title}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                    <button
+                        onClick={() => setTinyMenu(!tinyMenu)}
+                        className="w-[24px] h-[24px] absolute left-10 lg:hidden max-sm:left-5"
+                    >
+                        <img src={barsIcon} alt="" />
+                    </button>
+                </div>
             </nav>
             <AnimatePresence>
                 {tinyMenu && (

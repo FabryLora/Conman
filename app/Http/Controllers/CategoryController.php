@@ -32,8 +32,10 @@ class CategoryController extends Controller
             "destacado" => "boolean|nullable"
         ]);
 
-        $imagePath = $request->file('image')->store('images', 'public');
-        $data["image"] = $imagePath;
+        if ($request->hasFile('image')) {
+            $data["image"] = $request->file('image')->store('images', 'public');
+        }
+
 
         $category = Category::create($data);
         return new CategoryResource($category);
@@ -63,7 +65,7 @@ class CategoryController extends Controller
             "name" => "required|string",
             "order_value" => "string",
             "link" => "string",
-            "image" => "string|nullable",
+            "image" => "file|nullable",
             "destacado" => "boolean|nullable"
         ]);
 

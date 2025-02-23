@@ -17,6 +17,13 @@ export default function CalidadContenido() {
     }, []);
 
     useEffect(() => {
+        document.body.style.overflow = "hidden"; // Desactivar scroll
+        return () => {
+            document.body.style.overflow = "auto"; // Restaurar scroll al desmontar
+        };
+    }, []);
+
+    useEffect(() => {
         setText(calidadInfo?.text || "");
 
         // Si el editor está inicializado, actualiza el contenido
@@ -55,7 +62,7 @@ export default function CalidadContenido() {
     };
 
     return (
-        <div>
+        <div className="">
             <ToastContainer />
             <form
                 onSubmit={update}
@@ -63,7 +70,7 @@ export default function CalidadContenido() {
             >
                 <div className="space-y-12">
                     <div className="border-b border-gray-900/10 pb-12">
-                        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                        <div className="mt-10 flex flex-col">
                             <div className="col-span-full">
                                 <label className="block text-sm/6 font-medium text-gray-900">
                                     Texto
@@ -84,7 +91,7 @@ export default function CalidadContenido() {
                                                 },
                                             ],
                                         }}
-                                        className="w-full"
+                                        className="w-full h-fit"
                                         onInit={({ note }) => {
                                             if (!editorRef.current) {
                                                 editorRef.current = note; // Guarda la referencia del editor solo una vez
@@ -106,7 +113,7 @@ export default function CalidadContenido() {
                                 <label className="block font-medium text-gray-900 text-xl">
                                     Imagen
                                 </label>
-                                <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25">
+                                <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 max-w-[900px]">
                                     <div className="w-1/2">
                                         <img
                                             className="w-full h-full object-contain"

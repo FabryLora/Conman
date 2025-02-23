@@ -10,7 +10,7 @@ export default function ListaDePrecios() {
     }, []);
 
     return (
-        <div className="w-full px-20 py-20 min-h-[500px]">
+        <div className="w-full py-20 min-h-[500px]">
             <table className=" border font-roboto-condensed w-full">
                 <thead>
                     <tr className="bg-gray-300 font-bold">

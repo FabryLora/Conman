@@ -146,11 +146,6 @@ export default function Navbar() {
         );
     };
 
-    const socials = [
-        { logo: fbIcon, href: contactInfo?.fb },
-        { logo: igIcon, href: contactInfo?.ig },
-    ];
-
     const [dropdowns, setDropdowns] = useState([{}]);
 
     useEffect(() => {
@@ -234,20 +229,34 @@ export default function Navbar() {
             <div className="bg-primary-blue w-full">
                 <div className="max-w-[1240px] mx-auto h-[40px] w-full flex items-center justify-between  max-sm:pl-0 max-sm:justify-end">
                     <div className="flex gap-4 items-center text-[14px] text-white h-[16px] max-sm:hidden">
-                        <a
-                            href={`mailto:${contactInfo?.mail}`}
-                            className="flex gap-2 items-center"
-                        >
-                            <img className="h-[16px]" src={letterIcon} alt="" />
-                            <p>{contactInfo?.mail}</p>
-                        </a>
-                        <a
-                            href={`tel:${soloDejarNumeros(contactInfo?.phone)}`}
-                            className="flex gap-2 items-center"
-                        >
-                            <img className="h-[16px]" src={phoneIcon} alt="" />
-                            <p>{contactInfo?.phone}</p>
-                        </a>
+                        {contactInfo?.mail && (
+                            <a
+                                href={`mailto:${contactInfo?.mail}`}
+                                className="flex gap-2 items-center"
+                            >
+                                <img
+                                    className="h-[16px]"
+                                    src={letterIcon}
+                                    alt=""
+                                />
+                                <p>{contactInfo?.mail}</p>
+                            </a>
+                        )}
+                        {contactInfo?.phone && (
+                            <a
+                                href={`tel:${soloDejarNumeros(
+                                    contactInfo?.phone
+                                )}`}
+                                className="flex gap-2 items-center"
+                            >
+                                <img
+                                    className="h-[16px]"
+                                    src={phoneIcon}
+                                    alt=""
+                                />
+                                <p>{contactInfo?.phone}</p>
+                            </a>
+                        )}
                     </div>
                     <div className="flex flex-row gap-4 max-sm:pr-4 h-full items-center">
                         <div
@@ -334,17 +343,27 @@ export default function Navbar() {
                                 )}
                             </AnimatePresence>
                         </div>
-                        {socials.map((social, index) => (
+                        {contactInfo?.fb && (
                             <a
-                                key={index}
                                 target="_blanck"
-                                href={social.href}
+                                href={contactInfo?.fb}
                                 rel="noopener noreferrer"
                                 className="max-sm:hidden"
                             >
-                                <img src={social.logo} alt="" />
+                                <img src={fbIcon} alt="" />
                             </a>
-                        ))}
+                        )}
+                        {contactInfo?.ig && (
+                            <a
+                                target="_blanck"
+                                href={contactInfo?.ig}
+                                rel="noopener noreferrer"
+                                className="max-sm:hidden"
+                            >
+                                <img src={igIcon} alt="" />
+                            </a>
+                        )}
+
                         <div className="relative flex flex-row gap-4 h-[16px] items-center justify-center ">
                             {!userToken && (
                                 <>
