@@ -30,7 +30,7 @@ class RealProductController extends Controller
             "price" => "sometimes|numeric",
             "discount" => "sometimes|integer",
             "dolar_price" => "required|numeric",
-            "image" => "sometimes|file|mimes:jpg,jpeg,png,gif",
+            "image" => "nullable|file|mimes:jpg,jpeg,png,gif",
             "product_id" => "sometimes|exists:products,id",
         ]);
 
@@ -66,7 +66,7 @@ class RealProductController extends Controller
             "price" => "required|numeric",
             "dolar_price" => "required|numeric",
             "discount" => "nullable|integer",
-            "image" => "sometimes|file|mimes:jpg,jpeg,png,gif",
+            "image" => "nullable|file|mimes:jpg,jpeg,png,gif",
             "product_id" => "sometimes|exists:products,id",
         ]);
 

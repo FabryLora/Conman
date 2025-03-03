@@ -294,7 +294,7 @@ export default function Pedidos() {
                     <p></p>
                 </div>
 
-                <div className="h-[300px] overflow-y-auto">
+                <div className="h-[300px]">
                     <AnimatePresence>
                         {cart.map((prod, index) => (
                             <motion.div

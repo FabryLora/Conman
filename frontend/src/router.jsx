@@ -183,7 +183,7 @@ const router = createBrowserRouter([
                 element: <CalidadContenido />,
             },
             {
-                path: "/dashboard/carga-de-datos",
+                path: "/dashboard/mangueras",
                 element: <CargaDeDatos />,
             },
             {

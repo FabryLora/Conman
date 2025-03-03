@@ -11,7 +11,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Http;
 
 class ImportarTerminalesJob implements ShouldQueue
 {
@@ -40,7 +39,6 @@ class ImportarTerminalesJob implements ShouldQueue
             $nombreCompleto = trim($row['B'] ?? '');
             $precio = $row['D'] ?? null;
 
-
             if (empty($codigo) || empty($nombreCompleto)) {
                 continue;
             }
@@ -59,29 +57,53 @@ class ImportarTerminalesJob implements ShouldQueue
 
             // Buscar o crear el Product
             if (!isset($productos[$grupo])) {
-                $productos[$grupo] = Product::firstOrCreate([
-                    'name' => $grupo,
-                    'category_id' => 1,
-                    'description' => $grupo,
-                    'image' => null,
-                    'file' => null,
-                ]);
+                $product = Product::where('name', $grupo)->first();
+
+                if ($product) {
+                    // Si el producto ya existe, actualiza la descripción (puedes agregar más campos si es necesario)
+                    $product->update([
+                        'description' => $grupo,
+                    ]);
+                } else {
+                    // Si no existe, se crea
+                    $product = Product::create([
+                        'name' => $grupo,
+                        'category_id' => 1,
+                        'description' => $grupo,
+                        'image' => null,
+                        'file' => null,
+                    ]);
+                }
+
+                $productos[$grupo] = $product;
             }
+
             $product = $productos[$grupo];
 
-            // Manejo de imagen
+            // Buscar si ya existe el RealProduct con el código
+            $realProduct = RealProduct::where('code', $codigo)->first();
 
-
-            // Crear RealProduct asociado
-            RealProduct::create([
-                'code'        => $codigo,
-                'name'        => "$grupo $agregado",
-                'price'       => (float) $precio,
-                'dolar_price' => 0,
-                'image'       => null,
-                'discount'    => 0,
-                'product_id'  => $product->id,
-            ]);
+            if ($realProduct) {
+                // Si ya existe, se actualiza
+                $realProduct->update([
+                    'name'        => "$grupo $agregado",
+                    'price'       => (float) $precio,
+                    'dolar_price' => 0,
+                    'discount'    => 0,
+                    'product_id'  => $product->id,
+                ]);
+            } else {
+                // Si no existe, se crea
+                RealProduct::create([
+                    'code'        => $codigo,
+                    'name'        => "$grupo $agregado",
+                    'price'       => (float) $precio,
+                    'dolar_price' => 0,
+                    'image'       => null,
+                    'discount'    => 0,
+                    'product_id'  => $product->id,
+                ]);
+            }
         }
     }
 }

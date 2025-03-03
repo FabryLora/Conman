@@ -45,9 +45,9 @@ export default function Footer() {
             <div className="flex flex-row flex-wrap gap-10 justify-between w-[1240px] mx-auto max-sm:justify-start items-center h-full order-1 max-sm:flex-col max-sm:w-full">
                 {/* logos y redes */}
                 <div className="flex flex-col justify-center items-center gap-8 order-1 max-sm:mx-auto h-full sm:py-20">
-                    <div className="flex flex-col max-sm:py-5">
+                    <Link to={"/"} className="flex flex-col max-sm:py-5">
                         <img src={logos?.secundario_url} alt="" />
-                    </div>
+                    </Link>
                     <div className="flex flex-row gap-4">
                         {contactInfo?.fb && (
                             <a href={contactInfo?.fb} target="_black">

@@ -154,7 +154,7 @@ export default function Administrator() {
             subHref: [
                 {
                     title: "Cargar Mangueras",
-                    href: "/dashboard/carga-de-datos",
+                    href: "/dashboard/mangueras",
                 },
                 {
                     title: "Cargar Terminales",
@@ -266,7 +266,7 @@ export default function Administrator() {
                 )}
             </AnimatePresence>
             <div className="w-full flex flex-col overflow-y-auto h-screen scrollbar-hide">
-                <div className="shadow-md py-3 flex flex-row justify-between items-center px-4">
+                <div className="shadow-md py-3 flex flex-row justify-between items-center px-4 sticky top-0">
                     <div className="flex flex-row gap-3">
                         <button onClick={() => setSidebar(!sidebar)}>
                             <FontAwesomeIcon
