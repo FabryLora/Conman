@@ -39,11 +39,15 @@ export default function MetadatosRow({ metadatosObject }) {
 
     return (
         <div className="table-row h-[50px] bg-gray-200">
-            <div className="table-cell align-middle">{seccion}</div>
+            <div className="table-cell align-middle pl-4">{seccion}</div>
 
-            <div className="table-cell align-middle">{keywords}</div>
+            <div className="table-cell align-middle max-w-[200px] break-words pr-4">
+                {keywords}
+            </div>
 
-            <div className="table-cell align-middle">{descripcion}</div>
+            <div className="table-cell align-middle max-w-[200px] break-words pr-4">
+                {descripcion}
+            </div>
 
             <div className="table-cell text-center align-middle">
                 <button onClick={() => setEdit(true)}>
@@ -57,7 +61,7 @@ export default function MetadatosRow({ metadatosObject }) {
                         className="absolute top-1/2 left-1/2 tranform -translate-x-1/2 -translate-y-1/2"
                         onSubmit={update}
                     >
-                        <div className="relative flex flex-col gap-4 bg-white p-4 w-[300px]">
+                        <div className="relative flex flex-col gap-4 bg-white p-4 w-[400px]">
                             <button
                                 className="absolute right-3 top-1"
                                 onClick={() => setEdit(false)}
@@ -66,20 +70,22 @@ export default function MetadatosRow({ metadatosObject }) {
                             </button>
                             <h2>{seccion}</h2>
                             <label htmlFor="keywords">Keywords</label>
-                            <input
+                            <textarea
                                 className="border py-1 pl-2"
                                 type="text"
                                 value={keywords}
                                 onChange={(e) => setKeywords(e.target.value)}
                                 id="keywords"
+                                rows={6}
                             />
                             <label htmlFor="descripcion">Descripcion</label>
-                            <input
+                            <textarea
                                 className="border py-1 pl-2"
                                 type="text"
                                 value={descripcion}
                                 onChange={(e) => setDescripcion(e.target.value)}
                                 id="descripcion"
+                                rows={6}
                             />
                             <button
                                 className="bg-blue-500 text-white py-1"

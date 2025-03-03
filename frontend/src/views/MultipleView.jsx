@@ -78,8 +78,8 @@ export default function MultipleView() {
     };
 
     return (
-        <div className="font-roboto-condensed w-[1240px] mx-auto ">
-            <div className="flex flex-row gap-1 items-center justify-start -top-14 -left-24  max-lg:-left-0 w-[1240px] mx-auto py-10">
+        <div className="font-roboto-condensed max-w-[1240px] mx-auto max-sm:px-6 ">
+            <div className="flex flex-row gap-1 items-center justify-start -top-14 -left-24  max-lg:-left-0 max-w-[1240px] mx-auto py-10">
                 <Link to={"/"}>{primeraMayuscula(cleanPathname[0])}</Link>
                 <p>{">"}</p>
                 <Link to={`/inicio/${cleanPathname[1].split(" ").join("-")}`}>
@@ -89,29 +89,32 @@ export default function MultipleView() {
                 <Link className="font-bold">{productInfo?.name}</Link>
             </div>
             <div className="grid grid-cols-2 grid-rows-2 gap-4 gap-y-10 max-lg:grid-cols-1 max-lg:grid-rows-4">
-                <div className="relative flex flex-row w-full gap-3">
-                    <div className=" -left-24 flex flex-col h-[300px] w-fit  gap-y-3">
-                        {productInfo.images.map((image, index) => (
-                            <button
-                                className={` border-[3px] border-gray-300 w-[80px] h-[80px] ${
-                                    currentImage === image?.image_url
-                                        ? "border-primary-red"
-                                        : ""
-                                }`}
-                                onClick={() =>
-                                    setCurrentImage(image?.image_url)
-                                }
-                                key={index}
-                            >
-                                <img
-                                    src={image?.image_url}
-                                    alt={image?.name}
-                                    className="object-cover w-full h-full"
-                                />
-                            </button>
-                        ))}
-                    </div>
-                    <div className="h-full w-full border border-gray-300">
+                <div className="relative flex flex-row w-full  gap-3">
+                    {productInfo?.images != false && (
+                        <div className=" -left-24 flex flex-col h-[300px] w-fit  gap-y-3">
+                            {productInfo.images.map((image, index) => (
+                                <button
+                                    className={` border-[3px] border-gray-300 w-[80px] h-[80px] ${
+                                        currentImage === image?.image_url
+                                            ? "border-primary-red"
+                                            : ""
+                                    }`}
+                                    onClick={() =>
+                                        setCurrentImage(image?.image_url)
+                                    }
+                                    key={index}
+                                >
+                                    <img
+                                        src={image?.image_url}
+                                        alt={image?.name}
+                                        className="object-cover w-full h-full"
+                                    />
+                                </button>
+                            ))}
+                        </div>
+                    )}
+
+                    <div className="max-h-[600px] w-full border border-gray-300">
                         <img
                             src={currentImage ? currentImage : defaultPhoto}
                             className="object-contain h-full w-full"
@@ -166,14 +169,14 @@ export default function MultipleView() {
                             </thead>
                             <tbody className="h-fit">
                                 {realProducts
-                                    .filter(
+                                    ?.filter(
                                         (realProduct) =>
-                                            realProduct.product.name ===
-                                            productInfo.name
+                                            realProduct?.product?.name ===
+                                            productInfo?.name
                                     )
-                                    .map((cosas, index) => (
+                                    ?.map((cosas, index) => (
                                         <tr
-                                            key={cosas.id}
+                                            key={cosas?.id}
                                             className={
                                                 index % 2 === 0
                                                     ? "bg-gray-100"

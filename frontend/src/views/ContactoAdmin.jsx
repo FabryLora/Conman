@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -6,7 +6,18 @@ import { useStateContext } from "../contexts/ContextProvider";
 export default function ContactoAdmin() {
     const { contactInfo, fetchContactInfo } = useStateContext();
 
-    const [contact, setContacto] = useState({});
+    useEffect(() => {
+        fetchContactInfo();
+    }, []);
+
+    const [contact, setContacto] = useState({
+        mail: contactInfo?.mail,
+        phone: contactInfo?.phone,
+        wp: contactInfo?.wp,
+        location: contactInfo?.location,
+        ig: contactInfo?.ig,
+        fb: contactInfo?.fb,
+    });
 
     useState(() => {
         setContacto({
@@ -56,7 +67,7 @@ export default function ContactoAdmin() {
                                     <div className="flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
                                         <div className="shrink-0 select-none text-base text-gray-500 sm:text-sm/6"></div>
                                         <input
-                                            value={contactInfo?.mail}
+                                            value={contact?.mail}
                                             onChange={(ev) => {
                                                 setContacto({
                                                     ...contact,
@@ -83,7 +94,7 @@ export default function ContactoAdmin() {
                                     <div className="flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
                                         <div className="shrink-0 select-none text-base text-gray-500 sm:text-sm/6"></div>
                                         <input
-                                            value={contactInfo?.phone}
+                                            value={contact?.phone}
                                             onChange={(ev) => {
                                                 setContacto({
                                                     ...contact,
@@ -109,7 +120,7 @@ export default function ContactoAdmin() {
                                     <div className="flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
                                         <div className="shrink-0 select-none text-base text-gray-500 sm:text-sm/6"></div>
                                         <input
-                                            value={contactInfo?.wp}
+                                            value={contact?.wp}
                                             onChange={(ev) => {
                                                 setContacto({
                                                     ...contact,
@@ -135,7 +146,7 @@ export default function ContactoAdmin() {
                                     <div className="flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
                                         <div className="shrink-0 select-none text-base text-gray-500 sm:text-sm/6"></div>
                                         <input
-                                            value={contactInfo?.location}
+                                            value={contact?.location}
                                             onChange={(ev) => {
                                                 setContacto({
                                                     ...contact,
@@ -162,7 +173,7 @@ export default function ContactoAdmin() {
                                     <div className="flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
                                         <div className="shrink-0 select-none text-base text-gray-500 sm:text-sm/6"></div>
                                         <input
-                                            value={contactInfo?.ig}
+                                            value={contact?.ig}
                                             onChange={(ev) => {
                                                 setContacto({
                                                     ...contact,
@@ -186,7 +197,7 @@ export default function ContactoAdmin() {
                                     <div className="flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
                                         <div className="shrink-0 select-none text-base text-gray-500 sm:text-sm/6"></div>
                                         <input
-                                            value={contactInfo?.fb}
+                                            value={contact?.fb}
                                             onChange={(ev) => {
                                                 setContacto({
                                                     ...contact,

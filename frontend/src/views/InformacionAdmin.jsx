@@ -63,7 +63,7 @@ export default function InformacionAdmin() {
                         htmlFor="descuento"
                         className="block text-sm/6 font-medium text-gray-900 pt-2"
                     >
-                        Descuento
+                        Descuento de retiro cliente
                     </label>
                     <div className="mt-2">
                         <input

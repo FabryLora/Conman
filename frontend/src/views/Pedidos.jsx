@@ -51,7 +51,7 @@ export default function Pedidos() {
         let descuentoPedido = 0;
         let descuentoUsuario = 0;
 
-        if (pedidoDescuento > 0) {
+        if (pedidoDescuento > 0 && tipo_entrega === "retiro cliente") {
             descuentoPedido = (subtotalDescuento * pedidoDescuento) / 100;
             subtotalDescuento -= descuentoPedido;
         }
@@ -167,17 +167,14 @@ export default function Pedidos() {
 
             cart.forEach((prod) => {
                 const formProds = new FormData();
-                formProds.append(
-                    "image",
-                    prod.image_url.split("http://localhost:8000/storage/")[1]
-                );
+                formProds.append("image", null);
                 // Para producción
                 /* formProds.append(
                     "image",
                     prod.image_url.split(`${location.origin}/storage/`)[1]
                 ); */
                 formProds.append("name", prod.name);
-                formProds.append("price", prod.price);
+                formProds.append("price", Number(prod.price));
                 formProds.append("cantidad", prod.additionalInfo.cantidad);
                 formProds.append("code", prod.code);
                 formProds.append("dolar_price", prod.dolar_price);

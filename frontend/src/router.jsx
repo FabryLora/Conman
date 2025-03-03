@@ -27,6 +27,7 @@ import NosotrosAdmin from "./views/NosotrosAdmin";
 import NosotrosInicioAdmin from "./views/NosotrosInicioAdmin";
 import Novedades from "./views/Novedades";
 import NovedadesAdmin from "./views/NovedadesAdmin";
+import NovedadUnica from "./views/NovedadUnica";
 import Pedidos from "./views/Pedidos";
 import PedidosAdmin from "./views/PedidosAdmin";
 import PrivateProducts from "./views/PrivateProducts";
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
             {
                 path: "/inicio/novedades",
                 element: <Novedades />,
+            },
+            {
+                path: "/inicio/novedades/:id",
+                element: <NovedadUnica />,
             },
             {
                 path: "/inicio/contacto",

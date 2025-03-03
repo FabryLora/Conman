@@ -1,6 +1,6 @@
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { PhotoIcon } from "@heroicons/react/24/solid";
+import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axiosClient from "../axios";
@@ -150,9 +150,9 @@ export default function ProductRowAdmin({
         }
     };
 
-    const deleteGroup = async (groupid) => {
+    const deleteGroup = async () => {
         try {
-            await axiosClient.delete(`/product/${groupid}`);
+            await axiosClient.delete(`/product/${productObject?.id}`);
             fetchProductInfo();
             toast.success("Producto eliminado correctamente");
         } catch (error) {
@@ -162,36 +162,167 @@ export default function ProductRowAdmin({
     };
 
     return (
-        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 h-[134px]">
-            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[340px] overflow-x-auto scrollbar-hide">
-                {editable ? (
-                    <div className="text-center items-center h-fit self-center flex flex-col justify-start gap-3">
-                        <PhotoIcon
-                            aria-hidden="true"
-                            className="mx-auto size-12 text-gray-300"
-                        />
-                        <div className=" flex text-sm/6 text-gray-600">
-                            <label
-                                className="text-white cursor-pointer bg-blue-500 py-2 px-4 rounded"
-                                htmlFor="fileInput"
+        <>
+            <AnimatePresence>
+                {editable && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed flex justify-center items-center w-screen h-screen bg-black bg-opacity-50 top-0 left-0 z-50"
+                    >
+                        <div
+                            className="flex flex-col bg-white p-10 gap-5 w-[700px] max-h-[95vh] h-fit overflow-y-auto scrollbar-hide text-black"
+                            action=""
+                        >
+                            <div className="flex flex-col gap-2">
+                                <label className="font-bold" htmlFor="name">
+                                    Nombre
+                                </label>
+                                <input
+                                    value={name}
+                                    onChange={(ev) => setName(ev.target.value)}
+                                    className="w-full h-[45px] border pl-2"
+                                    type="text"
+                                    name="name"
+                                    id="name"
+                                />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <label
+                                    className="font-bold"
+                                    htmlFor="description"
+                                >
+                                    Descripción
+                                </label>
+                                <textarea
+                                    value={description}
+                                    onChange={(ev) =>
+                                        setDescription(ev.target.value)
+                                    }
+                                    className="w-full h-[45px] border pl-2"
+                                    type="text"
+                                    name="description"
+                                    id="description"
+                                />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <label className="font-bold" htmlFor="category">
+                                    Categoria
+                                </label>
+                                <select
+                                    value={category_id}
+                                    onChange={(ev) => {
+                                        setCategory_id(ev.target.value);
+                                    }}
+                                    id="category"
+                                    name="category"
+                                    className="w-full h-[45px] border pl-2"
+                                >
+                                    <option value="">
+                                        Seleccione una categoria
+                                    </option>
+                                    {categoryInfo.map((category, index) => (
+                                        <option key={index} value={category.id}>
+                                            {category.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <label
+                                    className="font-bold"
+                                    htmlFor="sub_category"
+                                >
+                                    Subcategoria
+                                </label>
+                                <select
+                                    value={sub_category_id}
+                                    onChange={(ev) => {
+                                        setSub_category_id(ev.target.value);
+                                    }}
+                                    id="sub_category"
+                                    name="sub_category"
+                                    className="w-full h-[45px] border pl-2"
+                                >
+                                    <option value="">
+                                        Seleccione una subcategoria
+                                    </option>
+                                    {subCategoryInfo
+                                        .filter(
+                                            (subcategory) =>
+                                                subcategory.category_id ===
+                                                Number(category_id)
+                                        )
+                                        .map((subcategory, index) => (
+                                            <option
+                                                key={index}
+                                                value={subcategory.id}
+                                            >
+                                                {subcategory.name}
+                                            </option>
+                                        ))}
+                                </select>
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <label className="font-bold" htmlFor="file">
+                                    Archivo
+                                </label>
+                                <input
+                                    type="file"
+                                    name="file"
+                                    id="file"
+                                    onChange={(e) => setFile(e.target.files[0])}
+                                />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <label className="font-bold" htmlFor="image">
+                                    Imagen Tecnica
+                                </label>
+                                <input
+                                    type="file"
+                                    name="image"
+                                    id="image"
+                                    onChange={(e) =>
+                                        setImage(e.target.files[0])
+                                    }
+                                />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <label className="font-bold" htmlFor="images">
+                                    Imágenes de grupo
+                                </label>
+                                <input
+                                    type="file"
+                                    name="images"
+                                    id="images"
+                                    multiple
+                                    onChange={handleFileChange}
+                                />
+                            </div>
+                            <button
+                                className="bg-blue-500 text-white py-2"
+                                onClick={handleSubmit}
                             >
-                                Agregar una imagen
-                            </label>
-                            <input
-                                accept="image/*"
-                                id="fileInput"
-                                name="file-upload"
-                                type="file"
-                                className="hidden"
-                                onChange={handleFileChange}
-                            />
+                                Guardar
+                            </button>
+                            <button
+                                className="bg-red-500 text-white py-2"
+                                onClick={() => setEditable(false)}
+                            >
+                                Cancelar
+                            </button>
                         </div>
-                    </div>
-                ) : (
-                    <div className="flex flex-row gap-2 w-[340px]">
+                    </motion.div>
+                )}
+            </AnimatePresence>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 h-[134px]">
+                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[340px] overflow-x-auto ">
+                    <div className="flex flex-row gap-2 max-w-[340px]">
                         {productObject?.images.map((image, index) => (
                             <div
-                                className="relative flex justify-between items-center h-[100px]"
+                                className="relative flex justify-between items-center min-w-[70px] h-[100px]"
                                 key={index}
                             >
                                 <button
@@ -212,35 +343,10 @@ export default function ProductRowAdmin({
                             </div>
                         ))}
                     </div>
-                )}
-            </td>
+                </td>
 
-            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[340px] overflow-x-auto scrollbar-hide">
-                {editable ? (
-                    <div className="text-center items-center h-fit self-center flex flex-col justify-start gap-3">
-                        <PhotoIcon
-                            aria-hidden="true"
-                            className="mx-auto size-12 text-gray-300"
-                        />
-                        <div className=" flex text-sm/6 text-gray-600">
-                            <label
-                                className="text-white cursor-pointer bg-blue-500 py-2 px-4 rounded"
-                                htmlFor="tt"
-                            >
-                                Elegir una imagen
-                            </label>
-                            <input
-                                accept=""
-                                id="tt"
-                                name="file-upload"
-                                type="file"
-                                className="hidden"
-                                onChange={(e) => setImage(e.target.files[0])}
-                            />
-                        </div>
-                    </div>
-                ) : (
-                    <div className="flex flex-row gap-2 w-[340px] h-[100px]">
+                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[340px] overflow-x-auto scrollbar-hide">
+                    <div className="flex flex-row gap-2 max-w-[340px] h-[100px]">
                         {productObject?.image_url && (
                             <img
                                 className="w-full h-full object-contain "
@@ -249,153 +355,49 @@ export default function ProductRowAdmin({
                             />
                         )}
                     </div>
-                )}
-            </td>
+                </td>
 
-            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[340px] overflow-x-auto scrollbar-hide">
-                {editable ? (
-                    <div className="text-center items-center h-fit self-center flex flex-col justify-start gap-3">
-                        <PhotoIcon
-                            aria-hidden="true"
-                            className="mx-auto size-12 text-gray-300"
-                        />
-                        <div className=" flex text-sm/6 text-gray-600">
-                            <label
-                                className="text-white cursor-pointer bg-blue-500 py-2 px-4 rounded"
-                                htmlFor="dd"
-                            >
-                                Elegir un Archivo
-                            </label>
-                            <input
-                                accept=""
-                                id="dd"
-                                name="file-upload"
-                                type="file"
-                                className="hidden"
-                                onChange={(e) => setFile(e.target.files[0])}
-                            />
-                        </div>
-                    </div>
-                ) : productObject?.file_url ? (
-                    <button className="text-blue-500" onClick={downloadPDF}>
-                        Archivo
-                    </button>
-                ) : (
-                    <p className="text-gray-300">No hay archivo</p>
-                )}
-            </td>
+                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[340px] overflow-x-auto scrollbar-hide">
+                    {productObject?.file_url ? (
+                        <button className="text-blue-500" onClick={downloadPDF}>
+                            Archivo
+                        </button>
+                    ) : (
+                        <p className="text-gray-300">No hay archivo</p>
+                    )}
+                </td>
 
-            <td className="px-6 py-4">
-                {editable ? (
-                    <input
-                        type="text"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-black"
-                        value={name}
-                        onChange={(ev) => setName(ev.target.value)}
-                    />
-                ) : (
-                    name
-                )}
-            </td>
+                <td className="px-6 py-4">
+                    <p>{name}</p>
+                </td>
 
-            <td className="px-6 py-4">
-                {editable ? (
-                    <textarea
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-black"
-                        value={description}
-                        onChange={(ev) => setDescription(ev.target.value)}
-                        rows={4}
-                    />
-                ) : (
-                    description
-                )}
-            </td>
+                <td className="px-6 py-4">
+                    <p>{description}</p>
+                </td>
 
-            <td className="px-6 py-4">
-                {editable ? (
-                    <div className="mt-2">
-                        <select
-                            value={category_id}
-                            onChange={(ev) => {
-                                setCategory_id(ev.target.value);
-                            }}
-                            id="categoria"
-                            name="categoria"
-                            className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        >
-                            <option value="">Seleccione una categoría</option>
-                            {categoryInfo.map((category, index) => (
-                                <option key={index} value={category.id}>
-                                    {category.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                ) : (
-                    categoryName
-                )}
-            </td>
-            <td className="px-6 py-4">
-                {editable ? (
-                    <div className="mt-2">
-                        <select
-                            value={sub_category_id}
-                            onChange={(ev) => {
-                                setSub_category_id(ev.target.value);
-                            }}
-                            id="subcategoria"
-                            name="subcategoria"
-                            className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        >
-                            <option value="">Seleccione una categoria</option>
-                            {subCategoryInfo
-                                .filter(
-                                    (subcategory) =>
-                                        subcategory.category_id ===
-                                        Number(category_id)
-                                )
-                                .map((subcategory, index) => (
-                                    <option key={index} value={subcategory.id}>
-                                        {subcategory.name}
-                                    </option>
-                                ))}
-                        </select>
-                    </div>
-                ) : (
-                    subCategory
-                )}
-            </td>
-            <td>
-                {editable ? (
+                <td className="px-6 py-4">
+                    <p>{categoryName}</p>
+                </td>
+                <td className="px-6 py-4">
+                    <p>{subCategory}</p>
+                </td>
+                <td className="pr-4">
                     <div className="flex flex-col gap-2">
                         <button
-                            className="bg-blue-500 rounded-md text-white py-2"
-                            onClick={() => setEditable(false)}
+                            className="bg-blue-500 rounded-md text-white py-2 px-6"
+                            onClick={() => setEditable(true)}
                         >
-                            Cancelar
+                            Editar
                         </button>
                         <button
-                            className="bg-green-500 rounded-md text-white py-2"
-                            onClick={handleSubmit}
-                        >
-                            Guardar
-                        </button>
-                        <button
-                            className="bg-red-500 rounded-md text-white py-2"
-                            onClick={() => deleteGroup(productObject.id)}
+                            onClick={deleteGroup}
+                            className="bg-red-500 rounded-md text-white py-2 px-6"
                         >
                             Eliminar
                         </button>
                     </div>
-                ) : (
-                    <button
-                        className="bg-blue-500 rounded-md text-white py-2 px-6"
-                        onClick={() => setEditable(true)}
-                    >
-                        Editar
-                    </button>
-                )}
-            </td>
-        </tr>
+                </td>
+            </tr>
+        </>
     );
 }

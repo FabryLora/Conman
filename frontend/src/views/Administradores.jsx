@@ -25,7 +25,7 @@ export default function Administradores() {
     };
 
     return (
-        <div className="flex flex-col items-center py-20">
+        <div className="flex flex-col items-center justify-between h-screen ">
             <ToastContainer />
             <div className="flex flex-col gap-2 top-10 right-10 mb-20 bg-white shadow-md p-5 font-roboto-condensed w-fit h-fit border">
                 <h2 className="font-bold text-[24px] py-5">

@@ -1,4 +1,5 @@
 import { PhotoIcon } from "@heroicons/react/24/solid";
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import axiosClient from "../axios";
@@ -24,7 +25,7 @@ export default function NovedadesRow({ novedadesObject }) {
         const formData = new FormData();
         formData.append("title", title);
         formData.append("text", text);
-        formData.append("featured", featured);
+        formData.append("featured", featured ? 1 : 0);
         if (image) {
             formData.append("image", image);
         }
@@ -69,32 +70,100 @@ export default function NovedadesRow({ novedadesObject }) {
     };
 
     return (
-        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 h-[134px]">
-            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[340px] overflow-x-auto">
-                {editable ? (
-                    <div className="text-center items-center h-fit self-center flex flex-col justify-start gap-3">
-                        <PhotoIcon
-                            aria-hidden="true"
-                            className="mx-auto size-12 text-gray-300"
-                        />
-                        <div className=" flex text-sm/6 text-gray-600">
-                            <label
-                                className="text-white cursor-pointer bg-blue-500 py-2 px-4 rounded"
-                                htmlFor="fileInput"
+        <>
+            <AnimatePresence>
+                {editable && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed flex justify-center items-center w-screen h-screen bg-black bg-opacity-50 top-0 left-0 z-50"
+                    >
+                        <div
+                            className="flex flex-col bg-white p-10 gap-5 w-[700px] max-h-[95vh] h-fit overflow-y-auto scrollbar-hide text-black"
+                            action=""
+                        >
+                            <div className="flex flex-col gap-2">
+                                <label className="font-bold" htmlFor="name">
+                                    Titulo
+                                </label>
+                                <input
+                                    value={title}
+                                    onChange={(ev) => setTitle(ev.target.value)}
+                                    className="w-full h-[45px] border pl-2"
+                                    type="text"
+                                    name="name"
+                                    id="name"
+                                />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <label
+                                    className="font-bold"
+                                    htmlFor="description"
+                                >
+                                    Descripcion
+                                </label>
+                                <textarea
+                                    value={text}
+                                    onChange={(ev) => setText(ev.target.value)}
+                                    className="w-full border pl-2"
+                                    type="text"
+                                    name="description"
+                                    id="description"
+                                    rows={10}
+                                />
+                            </div>
+
+                            <div className="flex items-start flex-col gap-2">
+                                <label className="font-bold" htmlFor="images">
+                                    Destacado
+                                </label>
+                                <div className="flex flex-row gap-2">
+                                    <input
+                                        id="2"
+                                        type="checkbox"
+                                        checked={featured}
+                                        onChange={(e) =>
+                                            setFeatured(e.target.checked)
+                                        }
+                                    />
+                                    <label htmlFor="2">
+                                        Marcar esta casilla si quiere que la
+                                        novedad se vea en el inicio
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <label className="font-bold" htmlFor="images">
+                                    Imágen de portada
+                                </label>
+                                <input
+                                    type="file"
+                                    name="images"
+                                    id="images"
+                                    multiple
+                                    onChange={handleFileChange}
+                                />
+                            </div>
+                            <button
+                                className="bg-blue-500 text-white py-2"
+                                onClick={handleSubmit}
                             >
-                                Cambiar imagen
-                            </label>
-                            <input
-                                accept="image/*"
-                                id="fileInput"
-                                name="file-upload"
-                                type="file"
-                                className="hidden"
-                                onChange={handleFileChange}
-                            />
+                                Guardar
+                            </button>
+                            <button
+                                className="bg-red-500 text-white py-2"
+                                onClick={() => setEditable(false)}
+                            >
+                                Cancelar
+                            </button>
                         </div>
-                    </div>
-                ) : (
+                    </motion.div>
+                )}
+            </AnimatePresence>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 h-[134px]">
+                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[340px] overflow-x-auto">
                     <div className="flex flex-row gap-2">
                         <div className="relative flex justify-between items-center h-[100px]">
                             <img
@@ -104,76 +173,31 @@ export default function NovedadesRow({ novedadesObject }) {
                             />
                         </div>
                     </div>
-                )}
-            </td>
+                </td>
 
-            <td className="px-6 py-4">
-                {editable ? (
-                    <input
-                        type="text"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-black"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
-                ) : (
-                    novedadesObject?.title
-                )}
-            </td>
+                <td className="px-6 py-4">
+                    <p>{novedadesObject?.title}</p>
+                </td>
 
-            <td className="px-6 py-4">
-                {editable ? (
-                    <textarea
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-black"
-                        value={text}
-                        onChange={(e) => setText(e.target.value)}
-                        rows={8}
-                    />
-                ) : (
+                <td className="px-6 py-4">
                     <p className="overflow-hidden max-w-[200px] max-h-[100px]">
                         {novedadesObject?.text}...
                     </p>
-                )}
-            </td>
+                </td>
 
-            <td className="px-6 py-4 text-center">
-                <input
-                    type="checkbox"
-                    checked={featured}
-                    onChange={(e) => setFeatured(e.target.checked)}
-                />
-            </td>
+                <td className="px-6 py-4 text-center">
+                    {novedadesObject.featured ? "Si" : "No"}
+                </td>
 
-            <td>
-                {editable ? (
-                    <div className="flex flex-col gap-2">
-                        <button
-                            className="bg-blue-500 rounded-md text-white py-2"
-                            onClick={() => setEditable(false)}
-                        >
-                            Cancelar
-                        </button>
-                        <button
-                            className="bg-green-500 rounded-md text-white py-2"
-                            onClick={handleSubmit}
-                        >
-                            Guardar
-                        </button>
-                        <button
-                            className="bg-red-500 rounded-md text-white py-2"
-                            onClick={deleteGroup}
-                        >
-                            Eliminar
-                        </button>
-                    </div>
-                ) : (
+                <td>
                     <button
                         className="bg-blue-500 rounded-md text-white py-2 px-6"
                         onClick={() => setEditable(true)}
                     >
                         Editar
                     </button>
-                )}
-            </td>
-        </tr>
+                </td>
+            </tr>
+        </>
     );
 }

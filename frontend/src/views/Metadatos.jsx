@@ -10,13 +10,13 @@ export default function Metadatos() {
             <ToastContainer />
             <div className="table-header-group ...">
                 <div className="table-row bg-gray-300 h-[50px]">
-                    <div className="table-cell text-left align-middle  ...">
+                    <div className="table-cell text-left align-middle  pl-4">
                         Seccion
                     </div>
-                    <div className="table-cell text-left align-middle ...">
+                    <div className="table-cell text-left align-middle min-w-[200px]">
                         Keyword
                     </div>
-                    <div className="table-cell text-left align-middle ...">
+                    <div className="table-cell text-left align-middle min-w-[200px]">
                         Descripcion
                     </div>
                     <div className="table-cell text-center align-middle ...">

@@ -42,7 +42,7 @@ export default function DefaultLayout() {
     }
 
     return (
-        <div className="">
+        <div className="overflow-x-hidden overflow-y-hidden">
             <Navbar />
             {cleanPathname.length <= 2 && (
                 <DefaultBanner

@@ -26,11 +26,15 @@ export default function RealProducts() {
         const formData = new FormData();
         formData.append("name", name);
         formData.append("code", code);
-        formData.append("price", price);
-        formData.append("dolar_price", dolarPrice);
+        formData.append("price", price ? price : 0);
+        formData.append("dolar_price", dolarPrice ? dolarPrice : 0);
         formData.append("discount", 0);
-        formData.append("image", image ? image : null);
-        formData.append("product_id", productid);
+        if (image) {
+            formData.append("image", image);
+        }
+        if (productid) {
+            formData.append("product_id", productid);
+        }
 
         try {
             const response = await axiosClient.post("realproducts", formData, {
@@ -44,6 +48,20 @@ export default function RealProducts() {
             toast.error("Error al guardar");
         }
     };
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+    const [paginatedProducts, setPaginatedProducts] = useState([]);
+    const [totalPages, setTotalPages] = useState(1);
+
+    useEffect(() => {
+        const indexOfLastItem = currentPage * itemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+        setPaginatedProducts(
+            realProducts.slice(indexOfFirstItem, indexOfLastItem)
+        );
+        setTotalPages(Math.ceil(realProducts.length / itemsPerPage));
+    }, [realProducts, currentPage]); // Se ejecuta cuando cambia realProducts o currentPage
 
     return (
         <div className="relative overflow-x-auto">
@@ -61,7 +79,6 @@ export default function RealProducts() {
                                     className="block text-sm/6 font-medium text-gray-900"
                                 >
                                     Imagen
-                                    <span className="text-red-500">*</span>
                                 </label>
                                 <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 ">
                                     <div className="flex items-center justify-start p-4 w-1/2">
@@ -140,7 +157,6 @@ export default function RealProducts() {
                                     className="block text-sm/6 font-medium text-gray-900"
                                 >
                                     Precio
-                                    <span className="text-red-500">*</span>
                                 </label>
                                 <div className="mt-2">
                                     <input
@@ -162,7 +178,6 @@ export default function RealProducts() {
                                     className="block text-sm/6 font-medium text-gray-900"
                                 >
                                     Precio en dolares
-                                    <span className="text-red-500">*</span>
                                 </label>
                                 <div className="mt-2">
                                     <input
@@ -218,6 +233,9 @@ export default function RealProducts() {
                     </div>
                 </div>
             </form>
+            <div>
+                <h2 className="text-2xl font-bold pl-4 py-2">Productos</h2>
+            </div>
             <div className="table w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <div className="table-header-group text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <div className="table-row">
@@ -238,14 +256,37 @@ export default function RealProducts() {
                     </div>
                 </div>
                 <div className="table-row-group">
-                    {realProducts &&
-                        realProducts.map((info, index) => (
+                    {paginatedProducts &&
+                        paginatedProducts.map((info, index) => (
                             <RealProductRowAdmin
                                 key={index}
                                 productObject={info}
                             />
                         ))}
                 </div>
+            </div>
+            <div className="flex justify-center space-x-2 py-4 bg-gray-800">
+                <button
+                    onClick={() =>
+                        setCurrentPage((prev) => Math.max(prev - 1, 1))
+                    }
+                    disabled={currentPage === 1}
+                    className="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50"
+                >
+                    Anterior
+                </button>
+                <span className="px-4 py-2 bg-gray-100 border rounded">
+                    Página {currentPage} de {totalPages}
+                </span>
+                <button
+                    onClick={() =>
+                        setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                    }
+                    disabled={currentPage === totalPages}
+                    className="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50"
+                >
+                    Siguiente
+                </button>
             </div>
         </div>
     );

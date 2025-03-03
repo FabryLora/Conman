@@ -27,16 +27,18 @@ class RealProductController extends Controller
         $data = $request->validate([
             "name" => "required|string",
             "code" => "required|string",
-            "price" => "required|numeric",
-            "discount" => "nullable|integer",
+            "price" => "sometimes|numeric",
+            "discount" => "sometimes|integer",
             "dolar_price" => "required|numeric",
-            "image" => "required|file|mimes:jpg,jpeg,png,gif",
-            "product_id" => "required|exists:products,id",
+            "image" => "sometimes|file|mimes:jpg,jpeg,png,gif",
+            "product_id" => "sometimes|exists:products,id",
         ]);
 
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('images', 'public');
+            $data["image"] = $imagePath;
+        }
 
-        $imagePath = $request->file('image')->store('images', 'public');
-        $data["image"] = $imagePath;
 
         $realProduct = RealProduct::create($data);
         return new RealProductResource($realProduct);
@@ -64,8 +66,8 @@ class RealProductController extends Controller
             "price" => "required|numeric",
             "dolar_price" => "required|numeric",
             "discount" => "nullable|integer",
-            "image" => "nullable|file|mimes:jpg,jpeg,png,gif",
-            "product_id" => "required|exists:products,id",
+            "image" => "sometimes|file|mimes:jpg,jpeg,png,gif",
+            "product_id" => "sometimes|exists:products,id",
         ]);
 
 

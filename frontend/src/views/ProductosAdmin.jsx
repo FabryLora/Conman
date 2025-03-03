@@ -14,6 +14,7 @@ export default function ProductosAdmin() {
     const [subCategoryId, setSubCategoryId] = useState(""); // ID de la subcategoría
     // ID de la categoría
     const [principal, setPrincipal] = useState("0");
+    const [searchTerm, setSearchTerm] = useState("");
 
     const [image, setImage] = useState();
     const [file, setFile] = useState();
@@ -34,15 +35,17 @@ export default function ProductosAdmin() {
 
             prodData.append("name", name);
             prodData.append("category_id", categoryId);
-            prodData.append(
-                "sub_category_id",
-                subCategoryId ? subCategoryId : null
-            );
+            if (subCategoryId) {
+                prodData.append("sub_category_id", subCategoryId);
+            }
+
             prodData.append("description", description ? description : "");
-
-            prodData.append("image", image ? image : null);
-
-            prodData.append("file", file ? file : null);
+            if (image) {
+                prodData.append("image", image);
+            }
+            if (file) {
+                prodData.append("file", file);
+            }
 
             // 1. Crear el producto
             const productResponse = await axiosClient.post(
@@ -58,30 +61,56 @@ export default function ProductosAdmin() {
             const productId = productResponse.data.data.id; // ID del producto recién creado
 
             // 2. Subir imágenes
-            const formData = new FormData();
-            formData.append("principal", principal);
+            if (images && images.length > 0) {
+                const formData = new FormData();
+                formData.append("principal", principal);
 
-            formData.append("image", images); // Agregar cada archivo al FormData
+                formData.append("image", images); // Agregar cada archivo al FormData
 
-            formData.append("product_id", productId); // Agregar el ID del producto
+                formData.append("product_id", productId); // Agregar el ID del producto
 
-            const imageResponse = await axiosClient.post("/image", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
+                const imageResponse = await axiosClient.post(
+                    "/image",
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }
+                );
+            }
 
-            console.log(
-                "Producto e imágenes creadas:",
-                productResponse,
-                imageResponse
-            );
+            console.log("Producto e imágenes creadas:", productResponse);
             toast.success("Guardado correctamente");
             fetchProductInfo();
         } catch (err) {
             toast.error("Error al guardar");
         }
     };
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const productsPerPage = 10; // Número de productos por página
+
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = productInfo.slice(
+        indexOfFirstProduct,
+        indexOfLastProduct
+    );
+
+    const totalPages = Math.ceil(productInfo.length / productsPerPage);
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    };
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) setCurrentPage(currentPage - 1);
+    };
+
+    const filteredProducts = currentProducts.filter((product) =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <div className="relative overflow-x-auto">
@@ -99,7 +128,6 @@ export default function ProductosAdmin() {
                                     className="block text-sm/6 font-medium text-gray-900"
                                 >
                                     Imagen de Portada
-                                    <apan className="text-red-500">*</apan>
                                 </label>
                                 <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 ">
                                     <div className="flex items-center justify-start p-4 w-1/2">
@@ -292,7 +320,6 @@ export default function ProductosAdmin() {
                                     className="block text-sm/6 font-medium text-gray-900"
                                 >
                                     Sub Categoria
-                                    <apan className="text-red-500">*</apan>
                                 </label>
                                 <div className="mt-2">
                                     <select
@@ -338,6 +365,15 @@ export default function ProductosAdmin() {
             </form>
             <div>
                 <h2 className="text-2xl font-bold p-4">Grupos de productos</h2>
+                <div className="flex items-center gap-4 p-4">
+                    <input
+                        type="text"
+                        placeholder="Buscar grupo de productos..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-indigo-600 sm:text-sm"
+                    />
+                </div>
             </div>
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -371,7 +407,7 @@ export default function ProductosAdmin() {
                     </tr>
                 </thead>
                 <tbody>
-                    {productInfo.map((info, index) => (
+                    {filteredProducts.map((info, index) => (
                         <ProductRowAdmin
                             key={index}
                             productObject={info}
@@ -393,6 +429,25 @@ export default function ProductosAdmin() {
                     ))}
                 </tbody>
             </table>
+            <div className="flex justify-center gap-4 items-center py-5 bg-gray-800 text-gray-800">
+                <button
+                    onClick={handlePrevPage}
+                    disabled={currentPage === 1}
+                    className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+                >
+                    Anterior
+                </button>
+                <span className="text-white">
+                    Página {currentPage} de {totalPages}
+                </span>
+                <button
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                    className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+                >
+                    Siguiente
+                </button>
+            </div>
         </div>
     );
 }

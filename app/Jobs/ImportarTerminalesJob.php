@@ -31,53 +31,57 @@ class ImportarTerminalesJob implements ShouldQueue
         $sheet = $spreadsheet->getActiveSheet();
         $rows = $sheet->toArray(null, true, true, true);
 
-        $currentProduct = null;
+        $productos = []; // Array para rastrear los grupos (Product)
 
         foreach ($rows as $index => $row) {
             if ($index === 1) continue; // Saltar encabezado
 
-            $colA = trim($row['A'] ?? '');
-            $colB = trim($row['B'] ?? '');
-            $most = $row['C'] ?? null;
-            $most30 = $row['D'] ?? null;
-            $imagen = $row['I'] ?? null;
+            $codigo = trim($row['A'] ?? '');
+            $nombreCompleto = trim($row['B'] ?? '');
+            $precio = $row['D'] ?? null;
 
-            // 📌 Si la columna A tiene texto y C está vacía, es un nuevo Product (por celda combinada)
-            if (!empty($colA) && empty($most)) {
-                $currentProduct = Product::firstOrCreate([
-                    'name' => $colA, // Solo usamos A porque B está vacía por la celda combinada
-                    'category_id' => 2, // Ajusta según sea necesario
-                    'description' => $colA,
-                    'image' => null,
-                    'file' => null,
-                ]);
+
+            if (empty($codigo) || empty($nombreCompleto)) {
                 continue;
             }
 
-            // 📌 Si hay código en A y nombre en B, es un RealProduct asociado al último Product detectado
-            if (!empty($colA) && !empty($colB) && $currentProduct) {
-                // Manejo de imagen
-                $imagenPath = null;
-                if ($imagen && filter_var($imagen, FILTER_VALIDATE_URL)) {
-                    $imagenData = Http::get($imagen)->body();
-                    $nombreImagen = 'imagenes/' . uniqid() . '.jpg';
-                    Storage::put('public/' . $nombreImagen, $imagenData);
-                    $imagenPath = $nombreImagen;
-                } elseif ($imagen) {
-                    $imagenPath = $imagen;
+            // Intentar separar el grupo y el agregado de forma genérica
+            $partes = explode(' ', $nombreCompleto);
+            $grupo = array_shift($partes);
+            foreach ($partes as $parte) {
+                if (!preg_match('/[0-9]/', $parte)) {
+                    $grupo .= ' ' . $parte;
+                } else {
+                    break;
                 }
+            }
+            $agregado = trim(str_replace($grupo, '', $nombreCompleto));
 
-                // Crear RealProduct
-                RealProduct::create([
-                    'code'        => $colA,
-                    'name'        => $colB,
-                    'price'       => (float) $most,
-                    'dolar_price' => (float) $most30,
-                    'image'       => null,
-                    'discount'    => 0,
-                    'product_id'  => $currentProduct->id,
+            // Buscar o crear el Product
+            if (!isset($productos[$grupo])) {
+                $productos[$grupo] = Product::firstOrCreate([
+                    'name' => $grupo,
+                    'category_id' => 1,
+                    'description' => $grupo,
+                    'image' => null,
+                    'file' => null,
                 ]);
             }
+            $product = $productos[$grupo];
+
+            // Manejo de imagen
+
+
+            // Crear RealProduct asociado
+            RealProduct::create([
+                'code'        => $codigo,
+                'name'        => "$grupo $agregado",
+                'price'       => (float) $precio,
+                'dolar_price' => 0,
+                'image'       => null,
+                'discount'    => 0,
+                'product_id'  => $product->id,
+            ]);
         }
     }
 }

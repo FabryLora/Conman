@@ -160,10 +160,6 @@ export default function Administrator() {
                     title: "Cargar Terminales",
                     href: "/dashboard/terminales",
                 },
-                {
-                    title: "Cargar Importados",
-                    href: "/dashboard/importados",
-                },
             ],
         },
     ]);
@@ -196,7 +192,7 @@ export default function Administrator() {
                         animate={{ x: 0 }}
                         exit={{ x: -300 }}
                         transition={{ ease: "linear", duration: 0.2 }}
-                        className="flex flex-col h-screen w-[300px] bg-primary-blue text-white overflow-y-auto"
+                        className="flex flex-col h-screen w-[300px] bg-primary-blue text-white overflow-y-auto scrollbar-hide"
                     >
                         <Link to={"/"} className="p-6">
                             <img src={conmanWhiteLogo} alt="" />
@@ -269,7 +265,7 @@ export default function Administrator() {
                     </motion.div>
                 )}
             </AnimatePresence>
-            <div className="w-full flex flex-col overflow-y-auto h-screen">
+            <div className="w-full flex flex-col overflow-y-auto h-screen scrollbar-hide">
                 <div className="shadow-md py-3 flex flex-row justify-between items-center px-4">
                     <div className="flex flex-row gap-3">
                         <button onClick={() => setSidebar(!sidebar)}>

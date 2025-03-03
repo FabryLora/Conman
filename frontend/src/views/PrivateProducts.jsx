@@ -9,6 +9,8 @@ export default function PrivateProducts() {
     const [categoria, setCategoria] = useState("");
     const [nombre, setNombre] = useState("");
     const [codigo, setCodigo] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 12;
 
     const filteredProducts = realProducts.filter((product) => {
         return (
@@ -26,9 +28,30 @@ export default function PrivateProducts() {
         );
     });
 
+    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
+    const handlePrevious = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const handleNext = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentProducts = filteredProducts.slice(
+        indexOfFirstItem,
+        indexOfLastItem
+    );
 
     return (
         <div className="w-full pb-20 flex flex-col gap-20 max-sm:px-0">
@@ -40,13 +63,16 @@ export default function PrivateProducts() {
                         <select
                             className="h-[41px] bg-transparent border w-full px-3"
                             value={categoria}
-                            onChange={(e) => setCategoria(e.target.value)}
+                            onChange={(e) => {
+                                setCategoria(e.target.value);
+                                setCurrentPage(1);
+                            }}
                         >
                             <option disabled value="">
                                 Seleccionar categoría
                             </option>
                             <option className="text-black" value="">
-                                Todas las categorias
+                                Todas las categorías
                             </option>
                             {productInfo.map((subCategory, index) => (
                                 <option
@@ -60,14 +86,20 @@ export default function PrivateProducts() {
                         </select>
                         <input
                             value={nombre}
-                            onChange={(e) => setNombre(e.target.value)}
+                            onChange={(e) => {
+                                setNombre(e.target.value);
+                                setCurrentPage(1);
+                            }}
                             className="h-[41px] bg-transparent border w-full pl-3"
                             type="text"
                             placeholder="Nombre"
                         />
                         <input
                             value={codigo}
-                            onChange={(e) => setCodigo(e.target.value)}
+                            onChange={(e) => {
+                                setCodigo(e.target.value);
+                                setCurrentPage(1);
+                            }}
                             className="h-[41px] bg-transparent border w-full pl-3"
                             type="text"
                             placeholder="Código"
@@ -75,6 +107,27 @@ export default function PrivateProducts() {
                     </div>
                 </div>
             </div>
+            {filteredProducts.length > itemsPerPage && (
+                <div className="w-full flex justify-center items-center gap-4 mt-6">
+                    <button
+                        onClick={handlePrevious}
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 border rounded disabled:opacity-50"
+                    >
+                        Anterior
+                    </button>
+                    <span>
+                        Página {currentPage} de {totalPages}
+                    </span>
+                    <button
+                        onClick={handleNext}
+                        disabled={currentPage === totalPages}
+                        className="px-4 py-2 border rounded disabled:opacity-50"
+                    >
+                        Siguiente
+                    </button>
+                </div>
+            )}
             <div className="grid w-full max-sm:hidden">
                 <div className="grid grid-cols-8 items-center justify-center bg-[#F5F5F5] h-[52px] font-semibold">
                     <p></p>
@@ -86,18 +139,39 @@ export default function PrivateProducts() {
                     <p className="text-center">Cantidad</p>
                     <p className="text-center"></p>
                 </div>
-
                 <div className="h-fit">
-                    {filteredProducts.map((prod, index) => (
+                    {currentProducts.map((prod, index) => (
                         <ProductRow key={index} product={prod} />
                     ))}
                 </div>
             </div>
             <div className="flex flex-col gap-3 sm:hidden px-5">
-                {filteredProducts.map((prod, index) => (
+                {currentProducts.map((prod, index) => (
                     <ProductCard key={index} product={prod} />
                 ))}
             </div>
+            {/* Paginación */}
+            {filteredProducts.length > itemsPerPage && (
+                <div className="w-full flex justify-center items-center gap-4 mt-6">
+                    <button
+                        onClick={handlePrevious}
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 border rounded disabled:opacity-50"
+                    >
+                        Anterior
+                    </button>
+                    <span>
+                        Página {currentPage} de {totalPages}
+                    </span>
+                    <button
+                        onClick={handleNext}
+                        disabled={currentPage === totalPages}
+                        className="px-4 py-2 border rounded disabled:opacity-50"
+                    >
+                        Siguiente
+                    </button>
+                </div>
+            )}
         </div>
     );
 }

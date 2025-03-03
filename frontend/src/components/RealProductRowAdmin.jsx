@@ -1,4 +1,4 @@
-import { PhotoIcon } from "@heroicons/react/24/solid";
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import axiosClient from "../axios";
@@ -27,8 +27,8 @@ export default function RealProductRowAdmin({ productObject }) {
         const formData = new FormData();
         formData.append("name", name);
         formData.append("code", code);
-        formData.append("price", price);
-        formData.append("dolar_price", dolarPrice);
+        formData.append("price", price ? price : 0);
+        formData.append("dolar_price", dolarPrice ? dolarPrice : 0);
         formData.append("discount", 0);
         if (image) {
             formData.append("image", image);
@@ -68,38 +68,121 @@ export default function RealProductRowAdmin({ productObject }) {
     };
 
     return (
-        <form
-            method="POST"
-            onSubmit={update}
-            className="table-row bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 h-[134px]"
-        >
-            <div className="table-cell px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white align-middle">
-                {editable ? (
-                    <div className="text-center items-center h-fit self-center flex flex-row justify-start gap-3">
-                        <PhotoIcon
-                            aria-hidden="true"
-                            className="mx-auto size-12 text-gray-300"
-                        />
-                        <div className=" flex text-sm/6 text-gray-600">
-                            <label
-                                htmlFor="a"
-                                className="cursor-pointer text-white bg-blue-500 p-2 rounded-md"
-                            >
-                                Seleccionar imagen
-                            </label>
-                            <input
-                                onChange={(ev) => {
-                                    setImage(ev.target.files[0]);
-                                    console.log(image);
-                                }}
-                                id="a"
-                                name="file-upload"
-                                type="file"
-                                className="hidden"
-                            />
-                        </div>
-                    </div>
-                ) : (
+        <>
+            <AnimatePresence>
+                {editable && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed top-0 left-0 z-50 w-full h-full bg-black bg-opacity-50 flex justify-center items-center text-black"
+                    >
+                        <form action="">
+                            <div className="bg-white p-8 rounded-md">
+                                <div className="flex flex-col gap-4">
+                                    <label className="font-bold" htmlFor="6">
+                                        Imagen
+                                    </label>
+                                    <input
+                                        type="file"
+                                        id="6"
+                                        onChange={handleFileChange}
+                                        className="border py-2 pl-2"
+                                    />
+                                    <label className="font-bold" htmlFor="1">
+                                        Nombre
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="1"
+                                        value={name}
+                                        onChange={(ev) =>
+                                            setName(ev.target.value)
+                                        }
+                                        className="border py-2 pl-2"
+                                    />
+                                    <label className="font-bold" htmlFor="2">
+                                        Código
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="2"
+                                        value={code}
+                                        onChange={(ev) =>
+                                            setCode(ev.target.value)
+                                        }
+                                        className="border py-2 pl-2"
+                                    />
+                                    <label className="font-bold" htmlFor="3">
+                                        Precio
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="3"
+                                        value={price}
+                                        onChange={(ev) =>
+                                            setPrice(ev.target.value)
+                                        }
+                                        className="border py-2 pl-2"
+                                    />
+                                    <label className="font-bold" htmlFor="4">
+                                        Precio en dólares
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="4"
+                                        value={dolarPrice}
+                                        onChange={(ev) =>
+                                            setDolarPrice(ev.target.value)
+                                        }
+                                        className="border py-2 pl-2"
+                                    />
+                                    <label className="font-bold" htmlFor="5">
+                                        Grupo de productos
+                                    </label>
+                                    <select
+                                        value={productid}
+                                        onChange={(ev) =>
+                                            setProductId(ev.target.value)
+                                        }
+                                        id="5"
+                                        name="productid"
+                                        className="border py-2 pl-2"
+                                    >
+                                        <option value="" disabled>
+                                            Seleccione una categoría
+                                        </option>
+                                        {productInfo.map((prod, index) => (
+                                            <option key={index} value={prod.id}>
+                                                {prod.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="flex flex-col w-full gap-4 text-white pt-4">
+                                    <button
+                                        type="button"
+                                        className="bg-red-500 rounded-md py-2 order-2"
+                                        onClick={() => setEditable(false)}
+                                    >
+                                        Cancelar
+                                    </button>
+                                    <button
+                                        className="bg-green-500 rounded-md py-2 order-1"
+                                        type="submit"
+                                        onClick={update}
+                                    >
+                                        Actualizar
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            <div className="table-row bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 h-[134px]">
+                <div className="table-cell px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white align-middle">
                     <div className="flex flex-row overflow-x-auto scrollbar-hide gap-2">
                         <div>
                             <img
@@ -109,120 +192,47 @@ export default function RealProductRowAdmin({ productObject }) {
                             />
                         </div>
                     </div>
-                )}
-            </div>
+                </div>
 
-            <div className="table-cell px-6 py-4 align-middle">
-                {editable ? (
-                    <input
-                        type="text"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-black"
-                        value={name}
-                        onChange={(ev) => setName(ev.target.value)}
-                    />
-                ) : (
-                    name
-                )}
-            </div>
+                <div className="table-cell px-6 py-4 align-middle">
+                    <p>{name}</p>
+                </div>
 
-            <div className="table-cell px-6 py-4 align-middle">
-                {editable ? (
-                    <input
-                        type="text"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-black"
-                        value={code}
-                        onChange={(ev) => setCode(ev.target.value)}
-                    />
-                ) : (
-                    code
-                )}
-            </div>
+                <div className="table-cell px-6 py-4 align-middle">
+                    <p>{code}</p>
+                </div>
 
-            <div className="table-cell px-6 py-4 align-middle">
-                {editable ? (
-                    <input
-                        type="text"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-black"
-                        value={price}
-                        onChange={(ev) => setPrice(ev.target.value)}
-                    />
-                ) : (
+                <div className="table-cell px-6 py-4 align-middle">
                     <p>${price}</p>
-                )}
-            </div>
+                </div>
 
-            <div className="table-cell px-6 py-4 align-middle">
-                {editable ? (
-                    <input
-                        type="text"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-black"
-                        value={dolarPrice}
-                        onChange={(ev) => setDolarPrice(ev.target.value)}
-                    />
-                ) : (
+                <div className="table-cell px-6 py-4 align-middle">
                     <p>${dolarPrice}</p>
-                )}
-            </div>
+                </div>
 
-            <div className="table-cell px-6 py-4 align-middle">
-                {editable ? (
-                    <div className="mt-2">
-                        <select
-                            value={productid}
-                            onChange={(ev) => setProductId(ev.target.value)}
-                            id="categoria"
-                            name="categoria"
-                            className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        >
-                            <option value="" disabled>
-                                Seleccione una categoría
-                            </option>
-                            {productInfo.map((prod, index) => (
-                                <option key={index} value={prod.id}>
-                                    {prod.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                ) : (
-                    productObject.product.name
-                )}
-            </div>
+                <div className="table-cell px-6 py-4 align-middle">
+                    <p>{productObject.product.name}</p>
+                </div>
 
-            <div className="table-cell align-middle text-white w-[150px]">
-                {editable ? (
-                    <div className="flex flex-col gap-2">
+                <div className="table-cell align-middle text-white w-[150px] pr-4">
+                    <div className="flex flex-col gap-3">
                         <button
                             type="button"
-                            className="bg-blue-500 rounded-md py-2"
-                            onClick={() => setEditable(false)}
+                            onClick={() => setEditable(true)}
+                            className="bg-blue-500 rounded-md px-4 py-2"
                         >
-                            Cancelar
+                            Editar
                         </button>
                         <button
-                            className="bg-green-500 rounded-md py-2"
-                            type="submit"
-                        >
-                            Actualizar
-                        </button>
-                        <div
-                            type="button"
-                            className="bg-red-500 rounded-md py-2 cursor-pointer flex justify-center items-center"
                             onClick={deleteProduct}
+                            type="button"
+                            className="bg-red-500 rounded-md px-4 py-2"
                         >
                             Eliminar
-                        </div>
+                        </button>
                     </div>
-                ) : (
-                    <button
-                        type="button"
-                        onClick={() => setEditable(true)}
-                        className="bg-blue-500 rounded-md px-4 py-2"
-                    >
-                        Editar
-                    </button>
-                )}
+                </div>
             </div>
-        </form>
+        </>
     );
 }
