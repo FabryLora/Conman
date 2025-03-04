@@ -161,6 +161,32 @@ export default function ProductRowAdmin({
         }
     };
 
+    const imageToNull = async () => {
+        try {
+            await axiosClient.put(`/product/${productObject?.id}?_method=PUT`, {
+                image: null,
+            });
+            fetchProductInfo();
+            toast.success("Imagen eliminada correctamente");
+        } catch (error) {
+            toast.error("Error al eliminar la imagen");
+            console.error("Error al eliminar la imagen:", error);
+        }
+    };
+
+    const fileToNull = async () => {
+        try {
+            await axiosClient.put(`/product/${productObject?.id}?_method=PUT`, {
+                file: null,
+            });
+            fetchProductInfo();
+            toast.success("Archivo eliminado correctamente");
+        } catch (error) {
+            toast.error("Error al eliminar el archivo");
+            console.error("Error al eliminar el archivo:", error);
+        }
+    };
+
     return (
         <>
             <AnimatePresence>
@@ -346,22 +372,46 @@ export default function ProductRowAdmin({
                 </td>
 
                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[340px] overflow-x-auto scrollbar-hide">
-                    <div className="flex flex-row gap-2 max-w-[340px] h-[100px]">
+                    <div className="relative flex flex-row gap-2 max-w-[340px] h-[100px]">
                         {productObject?.image_url && (
-                            <img
-                                className="w-full h-full object-contain "
-                                src={productObject?.image_url}
-                                alt=""
-                            />
+                            <>
+                                <button
+                                    onClick={imageToNull}
+                                    className="w-full h-full bg-black bg-opacity-50 absolute"
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faTrash}
+                                        size="xl"
+                                        color="#ef4444"
+                                    />
+                                </button>
+                                <img
+                                    className="w-full h-full object-contain "
+                                    src={productObject?.image_url}
+                                    alt=""
+                                />
+                            </>
                         )}
                     </div>
                 </td>
 
                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[340px] overflow-x-auto scrollbar-hide">
                     {productObject?.file_url ? (
-                        <button className="text-blue-500" onClick={downloadPDF}>
-                            Archivo
-                        </button>
+                        <div className="flex flex-row gap-2">
+                            <button
+                                className="text-blue-500"
+                                onClick={downloadPDF}
+                            >
+                                Archivo
+                            </button>
+                            <button onClick={fileToNull}>
+                                <FontAwesomeIcon
+                                    icon={faTrash}
+                                    size="base"
+                                    color="#ef4444"
+                                />
+                            </button>
+                        </div>
                     ) : (
                         <p className="text-gray-300">No hay archivo</p>
                     )}

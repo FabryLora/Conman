@@ -41,9 +41,8 @@ export default function PedidosRowAdmin({ pedidoObject }) {
                 Ver
             </button>
             {isOpen && (
-                <div>
-                    <div className="fixed w-screen h-screen bg-black opacity-50 top-0 left-0"></div>
-                    <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-sans max-w-3xl mx-auto p-5 border border-gray-300 rounded-lg bg-gray-100">
+                <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex items-center justify-center">
+                    <div className="relative max-w-3xl mx-auto p-5 border border-gray-300 rounded-lg bg-gray-100 max-h-[90vh] overflow-y-auto scrollbar-hide">
                         <button
                             onClick={() => setIsOpen(false)}
                             className="absolute top-0 right-0 p-2 text-xl text-gray-500"

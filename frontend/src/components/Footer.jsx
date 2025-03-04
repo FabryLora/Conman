@@ -9,7 +9,7 @@ import whatsappIcon from "../assets/icons/whatsapp-red-icon.svg";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Footer() {
-    const { contactInfo, logos, categoryInfo, userToken } = useStateContext();
+    const { contactInfo, logos, categoryInfo } = useStateContext();
 
     function removeAccents(str) {
         return str?.normalize("NFD")?.replace(/[\u0300-\u036f]/g, "");
@@ -29,16 +29,6 @@ export default function Footer() {
             location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
         );
     }, [location]);
-
-    const contactoInfo = [
-        {
-            icon: locationIcon,
-            text: contactInfo?.location,
-        },
-        { icon: phoneIcon, text: contactInfo?.phone },
-        { icon: letterIcon, text: contactInfo?.mail },
-        { icon: whatsappIcon, text: contactInfo?.wp },
-    ];
 
     return (
         <footer className="bg-primary-blue h-[402px] max-sm:h-fit font-roboto-condensed text-white flex flex-col justify-between">
@@ -182,8 +172,8 @@ export default function Footer() {
             </div>
 
             {/* copy y derechos */}
-            <div className="bg-primary-blue-dark order-2">
-                <div className="h-[60px] w-[1240px] mx-auto flex flex-row justify-between items-center text-[14px]">
+            <div className="bg-primary-blue-dark order-2 h-[60px]">
+                <div className="h-full max-w-[1240px] mx-auto flex flex-row justify-between items-center text-[14px] max-sm:text-xs">
                     <p>
                         © Copyright 2025{" "}
                         <span className="font-semibold">Conman</span>. Todos los

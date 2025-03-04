@@ -25,8 +25,8 @@ class ProductStore extends FormRequest
             "description" => "nullable|string",
             "image" => "nullable|file|max:2048",
             "file" => "nullable|file|max:2048",
-            "name"  => "required|string",
-            "sub_category_id" => "nullable|exists:sub_categories,id",
+            "name"  => "sometimes|string",
+            "sub_category_id" => "sometimes|exists:sub_categories,id",
             "category_id" => "required|exists:categories,id",
 
         ];

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ReactDOMServer from "react-dom/server";
 import { Helmet } from "react-helmet-async";
-import { ToastContainer, toast } from "react-toastify";
+import { Toaster, toast } from "react-hot-toast";
 import letterIcon from "../assets/icons/letter-red-icon.svg";
 import locationIcon from "../assets/icons/location-red-icon.svg";
 import phoneIcon from "../assets/icons/phone-red-icon.svg";
@@ -72,7 +72,7 @@ export default function Contacto() {
 
     return (
         <div className="flex justify-center">
-            <ToastContainer />
+            <Toaster />
             <Helmet>
                 <meta
                     name="description"

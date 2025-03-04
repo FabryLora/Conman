@@ -23,11 +23,11 @@ class ProductUpdate extends FormRequest
     {
         return [
 
-            "name" => "required|string",
+            "name" => "sometimes|string",
             "description" => "nullable|string",
             "image" => "nullable|file|max:2048",
             "file" => "nullable|file|max:2048",
-            "category_id" => "required|integer|exists:categories,id", // Validación de categoría
+            "category_id" => "sometimes|integer|exists:categories,id", // Validación de categoría
             "sub_category_id" => "nullable|integer|exists:sub_categories,id", // Validación de subcategoría
         ];
     }

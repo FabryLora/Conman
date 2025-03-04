@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import defaultPhoto from "../assets/default-card-image.png";
 import carritoRed from "../assets/icons/carrito-icon.svg";
 import removeFromCartIcon from "../assets/icons/remove-from-cart.svg";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -33,11 +34,15 @@ export default function ProductCard({ product }) {
 
     return (
         <div className="flex border flex-col">
-            <div className="flex">
+            <div className="flex h-[300px]">
                 <img
-                    src={product?.image_url}
+                    src={product?.image_url ? product?.image_url : defaultPhoto}
                     alt={product?.name}
                     className="object-cover h-full w-full"
+                    onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = defaultPhoto;
+                    }}
                 />
             </div>
             <div className="flex flex-col p-6 gap-2">
