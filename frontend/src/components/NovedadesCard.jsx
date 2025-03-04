@@ -5,7 +5,7 @@ export default function NovedadesCard({ newsObject }) {
         <Link
             to={`/inicio/novedades/${newsObject.id}`}
             className={
-                "bg-white h-[493px] w-[392px] font-roboto border text-left"
+                "bg-white h-[493px] w-[392px] font-roboto border text-left hover:scale-95 transition-transform"
             }
         >
             <div className={"flex flex-col p-4 gap-3 h-full"}>

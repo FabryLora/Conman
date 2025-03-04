@@ -1,17 +1,24 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useStateContext } from "../contexts/ContextProvider";
 
 export default function HomeCategory({ categoryObject }) {
+    const { setLinkInfo } = useStateContext();
+
     const MotionLink = motion.create(Link);
+
+    const quitarTildes = (str) => {
+        return str?.normalize("NFD")?.replace(/[\u0300-\u036f]/g, "");
+    };
 
     return (
         <MotionLink
             whileHover={{ scale: 0.99 }}
             transition={{ duration: 0.2 }}
-            to={`/inicio/${categoryObject?.name
-                ?.toLowerCase()
-                ?.split(" ")
-                ?.join("-")}`}
+            onClick={() => setLinkInfo("")}
+            to={`/inicio/${quitarTildes(
+                categoryObject?.name?.toLowerCase()?.split(" ")?.join("-")
+            )}`}
             className="flex relative justify-center items-center bg-cover bg-no-repeat bg-center w-full h-[365px] overflow-hidden max-md:min-w-[365px] text-center"
             onMouseEnter={() => {}}
             onMouseLeave={() => {}}
