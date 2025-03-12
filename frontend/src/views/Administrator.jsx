@@ -6,7 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import conmanWhiteLogo from "../assets/logos/conman-white-logo.png";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -20,17 +20,15 @@ export default function Administrator() {
 
     const location = useLocation();
 
-    // Eliminar las barras iniciales y dividir la ruta en palabras
-    const cleanPathname = location.pathname
-        .replace(/^\/+/, "")
-        .replace(/-/g, " ")
-        .split("/");
+    const [cleanPathname, setCleanPathname] = useState(
+        location.pathname?.replace(/^\/+/, "").replace(/-/g, " ").split("/")
+    );
 
-    // Eliminar la primera palabra
-    cleanPathname.shift(); // Elimina la primera palabra (índice 0)
-
-    // Volver a unir las palabras restantes con '/'
-    const finalPath = cleanPathname.join("/");
+    useEffect(() => {
+        setCleanPathname(
+            location.pathname?.replace(/^\/+/, "").replace(/-/g, " ").split("/")
+        );
+    }, [location]);
 
     const [dropdowns, setDropdowns] = useState([
         {
@@ -276,8 +274,9 @@ export default function Administrator() {
                             />
                         </button>
                         <h1 className="text-2xl">
-                            {finalPath.charAt(0).toUpperCase() +
-                                finalPath.slice(1) || "Bienvenido al Dashboard"}
+                            {cleanPathname[1]?.charAt(0).toUpperCase() +
+                                cleanPathname[1]?.slice(1) ||
+                                "Bienvenido al Dashboard"}
                         </h1>
                     </div>
 
@@ -317,6 +316,20 @@ export default function Administrator() {
                         </AnimatePresence>
                     </div>
                 </div>
+                {cleanPathname[0] == "dashboard" &&
+                    cleanPathname.length <= 1 && (
+                        <div className="flex flex-col gap-3 p-4">
+                            <h2 className="text-2xl font-bold">
+                                Bienvenido al Panel de Administración
+                            </h2>
+                            <p className="text-lg">
+                                Aquí podrás gestionar el contenido de tu sitio
+                                web. Desde este panel podrás acceder a todas las
+                                herramientas necesarias para mantener tu sitio
+                                actualizado y optimizado.
+                            </p>
+                        </div>
+                    )}
                 <Outlet />
             </div>
         </div>

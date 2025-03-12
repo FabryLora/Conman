@@ -12,9 +12,12 @@ import { useStateContext } from "../contexts/ContextProvider";
 import "./numberInputCss.css";
 
 export default function ProductRow({ product, currency }) {
-    const { addToCart, removeFromCart, userInfo } = useStateContext();
+    const { addToCart, removeFromCart, userInfo, cart } = useStateContext();
 
-    const [cantidad, setCantidad] = useState(0);
+    const [cantidad, setCantidad] = useState(
+        cart?.find((prod) => prod?.id == product?.id)?.additionalInfo
+            ?.cantidad || 0
+    );
     const [extraInfo, setExtraInfo] = useState({
         cantidad: 0,
         descuento: product.discount
@@ -46,6 +49,14 @@ export default function ProductRow({ product, currency }) {
         }
     }, [currency]);
 
+    useEffect(() => {
+        const existsInCart = cart.find((item) => item.id === product.id);
+
+        if (existsInCart) {
+            addToCart(product, { cantidad, descuento: extraInfo?.descuento });
+        }
+    }, [cantidad, extraInfo?.descuento]);
+
     const location = useLocation();
 
     useEffect(() => {
@@ -76,46 +87,39 @@ export default function ProductRow({ product, currency }) {
             <p className="text-center">{userInfo?.discount}%</p>
 
             <div className="flex justify-center">
-                {location.pathname === "/privado/pedido" ? (
-                    <p>{product.additionalInfo.cantidad}</p>
-                ) : (
-                    <div className="relative flex items-center">
-                        {/* Contenedor con botones */}
-                        <div className="flex flex-row border h-[41px] w-[89px] items-center bg-transparent justify-between px-2 overflow-hidden">
-                            <input
-                                value={cantidad}
-                                onChange={(e) => {
-                                    const value = Number(e.target.value);
-                                    if (!isNaN(value) && value >= 0) {
-                                        setCantidad(value);
-                                    }
-                                }}
-                                type="number"
-                                className="text-lg max-w-[50px] outline-none border-none bg-transparent text-left"
-                            />
-                            <div className="flex flex-col justify-center h-full">
-                                <button
-                                    className="flex items-center max-h-[12px]"
-                                    onClick={() => handleChange(cantidad + 1)}
-                                >
-                                    <FontAwesomeIcon
-                                        icon={faChevronUp}
-                                        size="xs"
-                                    />
-                                </button>
-                                <button
-                                    className="flex items-center max-h-[12px]"
-                                    onClick={() => handleChange(cantidad - 1)}
-                                >
-                                    <FontAwesomeIcon
-                                        icon={faChevronDown}
-                                        size="xs"
-                                    />
-                                </button>
-                            </div>
+                <div className="relative flex items-center">
+                    {/* Contenedor con botones */}
+                    <div className="flex flex-row border h-[41px] w-[89px] items-center bg-transparent justify-between px-2 overflow-hidden">
+                        <input
+                            value={cantidad}
+                            onChange={(e) => {
+                                const value = Number(e.target.value);
+                                if (!isNaN(value) && value >= 0) {
+                                    setCantidad(value);
+                                }
+                            }}
+                            type="number"
+                            className="text-lg max-w-[50px] outline-none border-none bg-transparent text-left"
+                        />
+                        <div className="flex flex-col justify-center h-full">
+                            <button
+                                className="flex items-center max-h-[12px]"
+                                onClick={() => handleChange(cantidad + 1)}
+                            >
+                                <FontAwesomeIcon icon={faChevronUp} size="xs" />
+                            </button>
+                            <button
+                                className="flex items-center max-h-[12px]"
+                                onClick={() => handleChange(cantidad - 1)}
+                            >
+                                <FontAwesomeIcon
+                                    icon={faChevronDown}
+                                    size="xs"
+                                />
+                            </button>
                         </div>
                     </div>
-                )}
+                </div>
             </div>
             <div className="flex justify-center">
                 {location.pathname === "/privado/pedido" ? (

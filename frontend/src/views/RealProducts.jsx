@@ -15,6 +15,7 @@ export default function RealProducts() {
     const [image, setImage] = useState();
     const [productid, setProductId] = useState("");
     const [dolarPrice, setDolarPrice] = useState();
+    const [searchTerm, setSearchTerm] = useState("");
 
     const handleFileChange = (e) => {
         setImage(e.target.files[0]);
@@ -55,13 +56,17 @@ export default function RealProducts() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
+        const filteredProducts = realProducts.filter((product) =>
+            product.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
         const indexOfLastItem = currentPage * itemsPerPage;
         const indexOfFirstItem = indexOfLastItem - itemsPerPage;
         setPaginatedProducts(
-            realProducts.slice(indexOfFirstItem, indexOfLastItem)
+            filteredProducts.slice(indexOfFirstItem, indexOfLastItem)
         );
-        setTotalPages(Math.ceil(realProducts.length / itemsPerPage));
-    }, [realProducts, currentPage]); // Se ejecuta cuando cambia realProducts o currentPage
+        setTotalPages(Math.ceil(filteredProducts.length / itemsPerPage));
+    }, [realProducts, currentPage, searchTerm]); // Agregar searchTerm a la dependencia
 
     return (
         <div className="relative overflow-x-auto">
@@ -235,6 +240,15 @@ export default function RealProducts() {
             </form>
             <div>
                 <h2 className="text-2xl font-bold pl-4 py-2">Productos</h2>
+                <div className="px-4 py-2">
+                    <input
+                        type="text"
+                        placeholder="Buscar producto por nombre..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                </div>
             </div>
             <div className="table w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <div className="table-header-group text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -257,9 +271,9 @@ export default function RealProducts() {
                 </div>
                 <div className="table-row-group">
                     {paginatedProducts &&
-                        paginatedProducts.map((info, index) => (
+                        paginatedProducts.map((info) => (
                             <RealProductRowAdmin
-                                key={index}
+                                key={info?.id}
                                 productObject={info}
                             />
                         ))}
