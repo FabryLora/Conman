@@ -42,6 +42,7 @@ export default function SubCategoryAdminCard({ subCategory }) {
             );
 
             console.log(response);
+            setEdit(false);
             fetchSubCategoryInfo();
             toast.success("Subcategoria actualizada correctamente");
         } catch (error) {
@@ -54,7 +55,7 @@ export default function SubCategoryAdminCard({ subCategory }) {
             const response = await axiosClient.post(
                 `/subcategory/${subCategory.id}?_method=DELETE`
             );
-
+            setEdit(false);
             console.log(response);
             fetchSubCategoryInfo();
             toast.success("Subcategoria eliminada correctamente");

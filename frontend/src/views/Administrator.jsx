@@ -55,7 +55,10 @@ export default function Administrator() {
             icon: faHouse,
             href: "#",
             subHref: [
-                { title: "Categorias", href: "/dashboard/categorias" },
+                {
+                    title: "Categorias y Subcategorias",
+                    href: "/dashboard/categorias",
+                },
                 {
                     title: "Grupo de Productos",
                     href: "/dashboard/grupo-de-productos",

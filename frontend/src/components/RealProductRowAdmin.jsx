@@ -154,7 +154,7 @@ export default function RealProductRowAdmin({ productObject }) {
                                         </option>
                                         {productInfo.map((prod, index) => (
                                             <option key={index} value={prod.id}>
-                                                {prod.name}
+                                                {prod?.name}
                                             </option>
                                         ))}
                                     </select>
@@ -211,7 +211,7 @@ export default function RealProductRowAdmin({ productObject }) {
                 </div>
 
                 <div className="table-cell px-6 py-4 align-middle">
-                    <p>{productObject.product.name}</p>
+                    <p>{productObject?.product?.name}</p>
                 </div>
 
                 <div className="table-cell align-middle text-white w-[150px] pr-4">

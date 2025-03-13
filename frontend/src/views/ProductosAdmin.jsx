@@ -89,16 +89,23 @@ export default function ProductosAdmin() {
     };
 
     const [currentPage, setCurrentPage] = useState(1);
-    const productsPerPage = 10; // Número de productos por página
+    const productsPerPage = 10;
+    const [paginatedProducts, setPaginatedProducts] = useState([]);
+    const [totalPages, setTotalPages] = useState(1);
 
-    const indexOfLastProduct = currentPage * productsPerPage;
-    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = productInfo.slice(
-        indexOfFirstProduct,
-        indexOfLastProduct
-    );
+    useEffect(() => {
+        const filteredProducts = productInfo.filter((product) =>
+            product?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+        );
 
-    const totalPages = Math.ceil(productInfo.length / productsPerPage);
+        const indexOfLastProduct = currentPage * productsPerPage;
+        const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+        setPaginatedProducts(
+            filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct)
+        );
+
+        setTotalPages(Math.ceil(filteredProducts.length / productsPerPage));
+    }, [currentPage, searchTerm, productInfo]);
 
     const handleNextPage = () => {
         if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -107,10 +114,6 @@ export default function ProductosAdmin() {
     const handlePrevPage = () => {
         if (currentPage > 1) setCurrentPage(currentPage - 1);
     };
-
-    const filteredProducts = currentProducts.filter((product) =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
 
     return (
         <div className="relative overflow-x-auto">
@@ -407,26 +410,27 @@ export default function ProductosAdmin() {
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredProducts.map((info, index) => (
-                        <ProductRowAdmin
-                            key={index}
-                            productObject={info}
-                            subCategory={
-                                subCategoryInfo.find(
-                                    (category) =>
-                                        category.id ===
-                                        Number(info?.subCategory?.id)
-                                )?.name
-                            }
-                            categoryName={
-                                categoryInfo.find(
-                                    (category) =>
-                                        category.id ===
-                                        Number(info?.category?.id)
-                                )?.name
-                            }
-                        />
-                    ))}
+                    {paginatedProducts &&
+                        paginatedProducts?.map((info) => (
+                            <ProductRowAdmin
+                                key={info?.id}
+                                productObject={info}
+                                subCategory={
+                                    subCategoryInfo.find(
+                                        (category) =>
+                                            category.id ===
+                                            Number(info?.subCategory?.id)
+                                    )?.name
+                                }
+                                categoryName={
+                                    categoryInfo.find(
+                                        (category) =>
+                                            category.id ===
+                                            Number(info?.category?.id)
+                                    )?.name
+                                }
+                            />
+                        ))}
                 </tbody>
             </table>
             <div className="flex justify-center gap-4 items-center py-5 bg-gray-800 text-gray-800">

@@ -11,17 +11,39 @@ import EmailTemplate from "../components/EmailTemplate";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Contacto() {
-    const { contactInfo, metadatos } = useStateContext();
+    const { contactInfo, metadatos, contactoProd } = useStateContext();
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
+    const dejarsolonumeros = (string) => {
+        return string.replace(/\D/g, "");
+    };
+
     const contactoInfo = [
-        { icon: locationIcon, text: contactInfo?.location },
-        { icon: letterIcon, text: contactInfo?.mail },
-        { icon: phoneIcon, text: contactInfo?.phone },
-        { icon: whatsappIcon, text: contactInfo?.wp },
+        {
+            icon: locationIcon,
+            text: contactInfo?.location,
+            link: `https://www.google.com/maps/search/?q=${encodeURIComponent(
+                contactInfo?.location
+            )}`,
+        },
+        {
+            icon: letterIcon,
+            text: contactInfo?.mail,
+            link: `mailto:${contactInfo?.mail}`,
+        },
+        {
+            icon: phoneIcon,
+            text: contactInfo?.phone,
+            link: `tel:${dejarsolonumeros(contactInfo?.phone)}`,
+        },
+        {
+            icon: whatsappIcon,
+            text: contactInfo?.wp,
+            link: `https://wa.me/${contactInfo?.wp.replace(/\D/g, "")}`,
+        },
     ];
 
     const inputInfo = [
@@ -36,7 +58,7 @@ export default function Contacto() {
         phone: "",
         email: "",
         company: "",
-        message: "",
+        message: contactoProd ? contactoProd : "",
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -101,17 +123,23 @@ export default function Contacto() {
                             nuestras vías de comunicación.
                         </p>
                         <div className="flex flex-col gap-4 justify-start">
-                            {contactoInfo.map((item, index) => (
-                                <div
-                                    key={index}
-                                    className="flex flex-row items-center gap-3"
-                                >
-                                    <img src={item.icon} alt="" />
-                                    <p className="break-words w-[50%]">
-                                        {item.text}
-                                    </p>
-                                </div>
-                            ))}
+                            {contactoInfo.map(
+                                (item, index) =>
+                                    item.text && (
+                                        <a
+                                            key={index}
+                                            href={item.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex flex-row items-center gap-3"
+                                        >
+                                            <img src={item.icon} alt="" />
+                                            <p className="break-words w-[50%] ">
+                                                {item.text}
+                                            </p>
+                                        </a>
+                                    )
+                            )}
                         </div>
                     </div>
                     <div className="w-1/2 flex justify-end max-md:w-full max-md:flex-col">

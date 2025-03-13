@@ -57,7 +57,7 @@ export default function RealProducts() {
 
     useEffect(() => {
         const filteredProducts = realProducts.filter((product) =>
-            product.name.toLowerCase().includes(searchTerm.toLowerCase())
+            product?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
         );
 
         const indexOfLastItem = currentPage * itemsPerPage;
@@ -219,8 +219,11 @@ export default function RealProducts() {
                                             Seleccione una categoria
                                         </option>
                                         {productInfo.map((prod, index) => (
-                                            <option key={index} value={prod.id}>
-                                                {prod.name}
+                                            <option
+                                                key={index}
+                                                value={prod?.id}
+                                            >
+                                                {prod?.name}
                                             </option>
                                         ))}
                                     </select>
@@ -271,7 +274,7 @@ export default function RealProducts() {
                 </div>
                 <div className="table-row-group">
                     {paginatedProducts &&
-                        paginatedProducts.map((info) => (
+                        paginatedProducts?.map((info) => (
                             <RealProductRowAdmin
                                 key={info?.id}
                                 productObject={info}

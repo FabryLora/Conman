@@ -7,7 +7,7 @@ import WhatsappComponent from "../components/WhatsappComponent";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function MultipleView() {
-    const { realProducts } = useStateContext();
+    const { realProducts, setContactoProd } = useStateContext();
     const [productInfo, setProductInfo] = useState(null);
     const [currentImage, setCurrentImage] = useState("");
     const { id } = useParams();
@@ -141,6 +141,9 @@ export default function MultipleView() {
                             )}
 
                             <Link
+                                onClick={() =>
+                                    setContactoProd(productInfo?.name)
+                                }
                                 to={"/inicio/contacto"}
                                 className="h-[47px] w-full bg-primary-red text-white flex items-center justify-center"
                             >
@@ -159,7 +162,7 @@ export default function MultipleView() {
                     )}
                 </div>
                 <div>
-                    <div>
+                    <div className="max-h-[598px] overflow-y-auto scrollbar-hide">
                         <table className="border-y w-full">
                             <thead>
                                 <tr className="border-b bg-gray-200">
@@ -167,7 +170,7 @@ export default function MultipleView() {
                                     <td className="p-2">NOMBRE</td>
                                 </tr>
                             </thead>
-                            <tbody className="h-fit">
+                            <tbody className="h-fit ">
                                 {realProducts
                                     ?.filter(
                                         (realProduct) =>

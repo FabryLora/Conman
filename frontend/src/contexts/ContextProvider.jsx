@@ -63,6 +63,8 @@ const StateContext = createContext({
     userId: "",
     fetchCalidadInfo: () => {},
     calidadInfo: {},
+    contactoProd: "",
+    setContactoProd: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -92,6 +94,7 @@ export const ContextProvider = ({ children }) => {
     const [logos, setLogos] = useState({});
     const [calidadInfo, setCalidadInfo] = useState({});
     const [userId, setUserId] = useState("");
+    const [contactoProd, setContactoProd] = useState("");
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem("cart");
         return savedCart ? JSON.parse(savedCart) : [];
@@ -358,6 +361,8 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                contactoProd,
+                setContactoProd,
                 fetchCalidadInfo,
                 calidadInfo,
                 userId,

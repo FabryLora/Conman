@@ -159,13 +159,27 @@ export default function Navbar() {
                 chevron: true,
                 chevronAnimation: false,
                 order_value: category.order_value,
-                subHref: category.subcategories.map((subcategory) => ({
-                    title: subcategory.name,
-                    href: `/inicio/${category.name
-                        .toLowerCase()
-                        .split(" ")
-                        .join("-")}`,
-                })),
+                subHref: category.subcategories
+                    .sort((a, b) => {
+                        if (
+                            typeof a.order_value === "number" &&
+                            typeof b.order_value === "number"
+                        ) {
+                            return a.order_value - b.order_value; // Orden numérico ascendente
+                        }
+                        return String(a.order_value).localeCompare(
+                            String(b.order_value),
+                            undefined,
+                            { numeric: true }
+                        );
+                    })
+                    .map((subcategory) => ({
+                        title: subcategory.name,
+                        href: `/inicio/${category.name
+                            .toLowerCase()
+                            .split(" ")
+                            .join("-")}`,
+                    })),
             })),
         ]);
     }, [categoryInfo]);
