@@ -16,6 +16,7 @@ const Carousel = () => {
                 <video
                     autoPlay
                     loop
+                    muted
                     src={sliderInfo?.video}
                     className={`absolute inset-0 w-full h-full object-cover object-bottom transition-opacity duration-700 ease-in-out`}
                 />
@@ -25,18 +26,18 @@ const Carousel = () => {
                 <div className="  flex flex-col justify-center gap-16  max-sm:pl-6 text-white font-roboto z-30">
                     <div>
                         <div className="relative text-6xl font-bold">
-                            <span className="absolute bottom-[2px] text-primary-blue">
+                            <span className="absolute bottom-[2px] text-white">
                                 {sliderInfo.title}
                             </span>
-                            <span className="text-gray-700">
+                            <span className="text-gray-200">
                                 {sliderInfo.title}
                             </span>
                         </div>
                         <div className="relative text-[25px]">
-                            <span className="absolute bottom-[1px] text-primary-blue">
+                            <span className="absolute bottom-[1px] text-white">
                                 {sliderInfo.subtitle}
                             </span>
-                            <span className="text-gray-700">
+                            <span className="text-gray-200">
                                 {sliderInfo.subtitle}
                             </span>
                         </div>
