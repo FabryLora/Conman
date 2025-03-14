@@ -106,10 +106,7 @@ export default function PedidosRowAdmin({ pedidoObject }) {
                                             Nombre
                                         </th>
                                         <th className="p-2 border border-gray-300">
-                                            Precio x unidad {"(Pesos)"}
-                                        </th>
-                                        <th className="p-2 border border-gray-300">
-                                            Precio x unidad {"(USD)"}
+                                            Precio x unidad
                                         </th>
 
                                         <th className="p-2 border border-gray-300">
@@ -135,10 +132,14 @@ export default function PedidosRowAdmin({ pedidoObject }) {
                                                     {item?.name}
                                                 </td>
                                                 <td className="p-2 border border-gray-300">
-                                                    ${item?.price}
-                                                </td>
-                                                <td className="p-2 border border-gray-300">
-                                                    ${item?.dolar_price}
+                                                    $
+                                                    {item?.price?.toLocaleString(
+                                                        "es-AR",
+                                                        {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2,
+                                                        }
+                                                    )}
                                                 </td>
 
                                                 <td className="p-2 border border-gray-300">

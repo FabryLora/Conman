@@ -1,32 +1,8 @@
-import { motion } from "motion/react";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 
-const MotionLink = motion.create(Link);
-
 const Carousel = () => {
     const { sliderInfo } = useStateContext();
-
-    useEffect(() => {
-        const handleVisibilityChange = () => {
-            const video = document.querySelector("video");
-            if (document.visibilityState === "visible" && video?.paused) {
-                video
-                    .play()
-                    .catch((error) =>
-                        console.error("Error al reproducir el video:", error)
-                    );
-            }
-        };
-
-        document.addEventListener("visibilitychange", handleVisibilityChange);
-        return () =>
-            document.removeEventListener(
-                "visibilitychange",
-                handleVisibilityChange
-            );
-    }, []);
 
     return (
         <div className="relative w-full h-[750px] overflow-hidden">
@@ -37,9 +13,8 @@ const Carousel = () => {
                     autoPlay
                     loop
                     muted
-                    playsInline
                     src={sliderInfo?.video}
-                    className={`absolute inset-0 w-full h-full object-cover object-bottom transition-opacity duration-700 ease-in-out`}
+                    className={` inset-0 w-full h-full object-cover object-bottom transition-opacity duration-700 ease-in-out`}
                 />
             </div>
             <div className="absolute max-w-[1240px] mx-auto inset-0 flex flex-col justify-between h-[400px] my-20 mt-auto gap-16  text-white font-roboto z-30">
@@ -64,14 +39,14 @@ const Carousel = () => {
                         </div>
                     </div>
 
-                    <MotionLink
+                    <Link
                         initial={{ scale: 1 }}
                         whileHover={{ scale: 0.95 }}
                         to={sliderInfo.link}
                         className=" flex justify-center items-center bg-primary-red text-white w-[172px] h-[47px] font-roboto-condensed"
                     >
                         MAS INFO
-                    </MotionLink>
+                    </Link>
                 </div>
 
                 {/* Indicadores */}

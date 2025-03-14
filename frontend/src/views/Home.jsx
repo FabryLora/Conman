@@ -64,9 +64,8 @@ export default function Home() {
                 />
             </Helmet>
             <Navbar />
+            <Carousel />
             <div>
-                <Carousel />
-
                 {/* categorias */}
                 <div className="flex flex-col items-center max-w-[1240px] mx-auto my-20 gap-3 overflow-hidden max-lg:w-full">
                     <h2 className="font-bold text-[40px] font-roboto-condensed self-start max-lg:pl-5">
