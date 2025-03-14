@@ -95,16 +95,9 @@ export default function PedidoTemplate({
                                     border: "1px solid #ddd",
                                 }}
                             >
-                                Precio x unidad {"Pesos"}
+                                Precio x unidad
                             </th>
-                            <th
-                                style={{
-                                    padding: "10px",
-                                    border: "1px solid #ddd",
-                                }}
-                            >
-                                Precio x unidad {"USD"}
-                            </th>
+
                             <th
                                 style={{
                                     padding: "10px",
@@ -154,16 +147,13 @@ export default function PedidoTemplate({
                                         border: "1px solid #ddd",
                                     }}
                                 >
-                                    ${item.price}
+                                    $
+                                    {item.price?.toLocaleString("es-AR", {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                    })}
                                 </td>
-                                <td
-                                    style={{
-                                        padding: "10px",
-                                        border: "1px solid #ddd",
-                                    }}
-                                >
-                                    ${item.dolar_price}
-                                </td>
+
                                 <td
                                     style={{
                                         padding: "10px",
@@ -191,9 +181,7 @@ export default function PedidoTemplate({
                 <p>
                     <strong>Tipo de entrega:</strong> {extraInfo.tipo_entrega}
                 </p>
-                <p>
-                    <strong>Divisa:</strong> {currency}
-                </p>
+
                 <div
                     style={{
                         backgroundColor: "#f2f2f2",

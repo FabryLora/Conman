@@ -15,15 +15,15 @@ export default function PrivateProducts() {
     const filteredProducts = realProducts.filter((product) => {
         return (
             (nombre
-                ? product.name.toLowerCase().includes(nombre.toLowerCase())
+                ? product?.name.toLowerCase()?.includes(nombre?.toLowerCase())
                 : true) &&
             (codigo
-                ? product.code.toLowerCase().includes(codigo.toLowerCase())
+                ? product?.code.toLowerCase()?.includes(codigo?.toLowerCase())
                 : true) &&
             (categoria
-                ? product.product.name
-                      .toLowerCase()
-                      .includes(categoria.toLowerCase())
+                ? product?.product?.name
+                      ?.toLowerCase()
+                      ?.includes(categoria?.toLowerCase())
                 : true)
         );
     });
@@ -129,18 +129,18 @@ export default function PrivateProducts() {
                 </div>
             )}
             <div className="grid w-full max-sm:hidden">
-                <div className="grid grid-cols-8 items-center justify-center bg-[#F5F5F5] h-[52px] font-semibold">
+                <div className="grid grid-cols-7 items-center justify-center bg-[#F5F5F5] h-[52px] font-semibold">
                     <p></p>
                     <p>Código</p>
                     <p>Producto</p>
-                    <p className="text-center">Precio x unidad {"(Pesos)"}</p>
-                    <p className="text-center">Precio x unidad {"(USD)"}</p>
+                    <p className="text-center">Precio x unidad</p>
+
                     <p className="text-center">Descuento de Cliente</p>
                     <p className="text-center">Cantidad</p>
                     <p className="text-center"></p>
                 </div>
                 <div className="h-fit">
-                    {currentProducts.map((prod, index) => (
+                    {currentProducts?.map((prod, index) => (
                         <ProductRow key={index} product={prod} />
                     ))}
                 </div>

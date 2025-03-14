@@ -57,7 +57,7 @@ export default function NavbarPrivado() {
     ];
 
     return (
-        <div className="sticky top-0 flex flex-col items-center justify-center font-roboto-condensed z-[100]">
+        <div className="fixed w-full top-0 flex flex-col items-center justify-center font-roboto-condensed z-[100]">
             <div className="bg-primary-blue w-full">
                 <div className="max-w-[1240px] mx-auto h-[40px] w-full flex items-center justify-between  max-sm:pl-0 max-sm:justify-end">
                     <div className="flex gap-4 items-center text-[14px] text-white h-[16px] max-sm:hidden">

@@ -114,9 +114,9 @@ export default function PDFComponent({ pdfObject, onUpdate }) {
                     onChange={handleImageChange}
                     className="border p-2 rounded w-full"
                 />
-                <div className="flex flex-col justify-between">
+                <div className="flex flex-col justify-between items-center">
                     <img
-                        className="w-32 h-32 mx-auto py-2"
+                        className=" mx-auto py-2 w-32 h-32 object-contain"
                         src={pdfObject?.image_url}
                         alt=""
                     />

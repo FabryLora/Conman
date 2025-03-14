@@ -258,8 +258,8 @@ export default function Pedidos() {
                 )}
                 {succ && (
                     <div>
-                        <div className="fixed w-screen h-screen bg-black opacity-50 top-0 left-0"></div>
-                        <div className="fixed transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-[642px] h-[343px] bg-white text-black shadow-lg flex flex-col items-center justify-evenly">
+                        <div className="fixed w-screen h-screen bg-black opacity-50 top-0 left-0 z-[100]"></div>
+                        <div className="z-[110] fixed transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-[642px] h-[343px] bg-white text-black shadow-lg flex flex-col items-center justify-evenly">
                             <h1 className="font-bold text-[32px]">
                                 Pedido confirmado
                             </h1>
@@ -283,12 +283,12 @@ export default function Pedidos() {
             </AnimatePresence>
 
             <div className="grid  w-full  items-start col-span-2">
-                <div className="grid grid-cols-8 items-center justify-center bg-[#F5F5F5] h-[52px] text-center font-semibold max-sm:text-sm">
+                <div className="grid grid-cols-7 items-center justify-center bg-[#F5F5F5] h-[52px] text-center font-semibold max-sm:text-sm">
                     <p className="max-sm:hidden"></p>
                     <p className="text-left">Codigo</p>
                     <p className="text-left">Producto</p>
-                    <p>Precio x unidad {"(Pesos)"}</p>
-                    <p>Precio x unidad {"(USD)"}</p>
+                    <p>Precio x unidad</p>
+
                     <p>Descuento por cliente</p>
                     <p>Cantidad</p>
                     <p></p>
@@ -440,34 +440,12 @@ export default function Pedidos() {
                 ></textarea>
             </div>
             <AnimatePresence>
-                <motion.div
-                    transition={{ ease: "linear" }}
-                    layout
-                    className="h-fit border max-sm:col-span-2 max-sm:order-5"
-                >
-                    <div className="h-fit border max-sm:col-span-2 p-3">
-                        <div className="w-full flex justify-between">
-                            <h2>Elegir divisa:</h2>
-                            <select
-                                onChange={(e) =>
-                                    setCurrencyType(e.target.value)
-                                }
-                                className="w-fit justify-end"
-                            >
-                                <option value="pesos">Pesos</option>
-                                <option value="usd">USD</option>
-                            </select>
-                        </div>
-                    </div>
+                <div className="h-fit border max-sm:col-span-2 max-sm:order-5">
                     <div className="bg-[#EAEAEA]">
                         <h2 className="p-3 text-xl font-bold">Pedido</h2>
                     </div>
 
-                    <motion.div
-                        transition={{ ease: "linear" }}
-                        layout
-                        className="flex flex-col justify-between px-4 text-xl gap-6 py-6 border-b"
-                    >
+                    <div className="flex flex-col justify-between px-4 text-xl gap-6 py-6 border-b">
                         {(pedidosInfo?.descuento > 0 ||
                             (userInfo?.discount > 0 &&
                                 tipo_entrega === "retiro cliente")) && (
@@ -490,36 +468,27 @@ export default function Pedidos() {
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         exit={{ opacity: 0, x: -20 }}
-                                        className="flex flex-row justify-between w-full"
+                                        className="flex flex-row justify-between w-full text-green-500"
                                     >
                                         <p>
                                             Descuento por retiro{" "}
                                             {`(${pedidosInfo?.descuento}%)`}
                                         </p>
-                                        <p className="text-green-600">
-                                            -${descuento}
-                                        </p>
+                                        <p className="">-${descuento}</p>
                                     </motion.div>
                                 )}
                         </AnimatePresence>
                         {userInfo?.discount > 0 && (
-                            <motion.div
-                                transition={{ ease: "linear" }}
-                                layout
-                                className="flex flex-row justify-between w-full"
-                            >
+                            <div className="flex flex-row justify-between w-full text-green-500">
                                 <p>
                                     Descuento cliente{" "}
                                     {`(${userInfo?.discount}%)`}
                                 </p>
-                                <p className="text-green-600">
-                                    -${descuentoCliente}
-                                </p>
-                            </motion.div>
+                                <p className="">-${descuentoCliente}</p>
+                            </div>
                         )}
                         <motion.div
                             transition={{ ease: "linear" }}
-                            layout
                             className="flex flex-row justify-between w-full"
                         >
                             <p>Subtotal</p>
@@ -528,17 +497,15 @@ export default function Pedidos() {
                         {currencyType === "pesos" && (
                             <motion.div
                                 transition={{ ease: "linear" }}
-                                layout
                                 className="flex flex-row justify-between w-full"
                             >
                                 <p>IVA 21%</p>
                                 <p>${iva}</p>
                             </motion.div>
                         )}
-                    </motion.div>
+                    </div>
                     <motion.div
                         transition={{ ease: "linear" }}
-                        layout
                         className="flex flex-row justify-between p-3"
                     >
                         <p className="font-medium text-2xl">
@@ -551,7 +518,7 @@ export default function Pedidos() {
                         </p>
                         <p className="text-2xl">${totalFinal}</p>
                     </motion.div>
-                </motion.div>
+                </div>
             </AnimatePresence>
             <div className="flex flex-col gap-3 max-sm:col-span-2 max-sm:order-4">
                 <h2 className="font-bold text-2xl">Adjuntar un archivo</h2>
@@ -583,7 +550,7 @@ export default function Pedidos() {
                 </MotionLink>
                 <motion.button
                     whileHover={{ scale: 0.95 }}
-                    onClick={handleSubmit}
+                    onClick={cart.length > 0 && handleSubmit}
                     className={`w-full h-[47px] text-white ${
                         isSubmitting ? "bg-gray-400" : "bg-primary-red"
                     }`}

@@ -67,7 +67,7 @@ export default function ProductRow({ product, currency }) {
     }, [cantidad]);
 
     return (
-        <div className="grid grid-cols-8 items-center justify-center py-2 border-b text-[#515A53]">
+        <div className="grid grid-cols-7 items-center justify-center py-2 border-b text-[#515A53]">
             <div className="flex justify-center w-[85px] h-[85px] border max-sm:hidden">
                 <img
                     src={product?.image_url ? product?.image_url : defaultPhoto}
@@ -80,10 +80,13 @@ export default function ProductRow({ product, currency }) {
             <p className="text-center">
                 $
                 {product?.price?.toLocaleString("es-AR")
-                    ? product?.price?.toLocaleString("es-AR")
+                    ? product?.price?.toLocaleString("es-AR", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                      })
                     : 0}
             </p>
-            <p className="text-center">${product?.dolar_price}</p>
+
             <p className="text-center">{userInfo?.discount}%</p>
 
             <div className="flex justify-center">

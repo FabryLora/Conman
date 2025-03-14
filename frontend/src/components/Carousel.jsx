@@ -8,6 +8,26 @@ const MotionLink = motion.create(Link);
 const Carousel = () => {
     const { sliderInfo } = useStateContext();
 
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            const video = document.querySelector("video");
+            if (document.visibilityState === "visible" && video?.paused) {
+                video
+                    .play()
+                    .catch((error) =>
+                        console.error("Error al reproducir el video:", error)
+                    );
+            }
+        };
+
+        document.addEventListener("visibilitychange", handleVisibilityChange);
+        return () =>
+            document.removeEventListener(
+                "visibilitychange",
+                handleVisibilityChange
+            );
+    }, []);
+
     return (
         <div className="relative w-full h-[750px] overflow-hidden">
             <div className="absolute inset-0 bg-black opacity-30 z-20"></div>
@@ -17,6 +37,7 @@ const Carousel = () => {
                     autoPlay
                     loop
                     muted
+                    playsInline
                     src={sliderInfo?.video}
                     className={`absolute inset-0 w-full h-full object-cover object-bottom transition-opacity duration-700 ease-in-out`}
                 />
