@@ -18,7 +18,7 @@ export default function Contacto() {
     }, []);
 
     const dejarsolonumeros = (string) => {
-        return string.replace(/\D/g, "");
+        return string?.replace(/\D/g, "");
     };
 
     const contactoInfo = [
@@ -42,7 +42,7 @@ export default function Contacto() {
         {
             icon: whatsappIcon,
             text: contactInfo?.wp,
-            link: `https://wa.me/${contactInfo?.wp.replace(/\D/g, "")}`,
+            link: `https://wa.me/${contactInfo?.wp?.replace(/\D/g, "")}`,
         },
     ];
 

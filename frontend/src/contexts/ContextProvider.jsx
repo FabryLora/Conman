@@ -65,11 +65,14 @@ const StateContext = createContext({
     calidadInfo: {},
     contactoProd: "",
     setContactoProd: () => {},
+    currentAdmin: {},
+    fetchCurrentAdmin: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
     const [contactInfo, setContactInfo] = useState({});
     const [userInfo, setUserInfo] = useState({});
+    const [currentAdmin, setCurrentAdmin] = useState({});
     const [adminInfo, setAdminInfo] = useState({});
     const [sliderInfo, setSliderInfo] = useState({});
     const [sliderImage, setSliderImage] = useState([]);
@@ -173,6 +176,12 @@ export const ContextProvider = ({ children }) => {
         axiosClient.get("/me").then(({ data }) => {
             setUserInfo(data[0]);
             setUserId(data.id);
+        });
+    };
+
+    const fetchCurrentAdmin = () => {
+        axiosClient.get("/me-unico-admin").then(({ data }) => {
+            setCurrentAdmin(data.data[0]);
         });
     };
 
@@ -352,15 +361,11 @@ export const ContextProvider = ({ children }) => {
         });
     };
 
-    useEffect(() => {
-        if (adminToken) {
-            fetchAdminInfo();
-        }
-    }, [adminToken]);
-
     return (
         <StateContext.Provider
             value={{
+                currentAdmin,
+                fetchCurrentAdmin,
                 contactoProd,
                 setContactoProd,
                 fetchCalidadInfo,

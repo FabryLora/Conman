@@ -35,12 +35,33 @@ export default function Navbar() {
     const signupRef = useRef(null);
     const [signup, setSignup] = useState(false);
     const [registro, setRegistro] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+
+    const location = useLocation();
+
+    const [cleanPathname, setCleanPathname] = useState(
+        location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
+    );
+
+    useEffect(() => {
+        setCleanPathname(
+            location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
+        );
+    }, [location]);
 
     const { setLinkInfo, categoryInfo, logos } = useStateContext();
 
     function removeAccents(str) {
         return str?.normalize("NFD")?.replace(/[\u0300-\u036f]/g, "");
     }
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 50); // Cambia cuando baja 50px
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -238,7 +259,7 @@ export default function Navbar() {
     };
 
     return (
-        <div className="sticky top-0 z-50  flex flex-col items-center justify-center font-roboto-condensed ">
+        <div className="fixed w-full top-0 z-50  flex flex-col items-center justify-center font-roboto-condensed ">
             <ToastContainer />
             <div className="bg-primary-blue w-full">
                 <div className="max-w-[1240px] mx-auto h-[40px] w-full flex items-center justify-between  max-sm:pl-0 max-sm:justify-end">
@@ -861,12 +882,22 @@ export default function Navbar() {
                 </div>
             </div>
 
-            <nav className="flex bg-white relative flex-row gap-24 w-full h-[85px] shadow-sm justify-between max-xl:justify-center">
+            <nav
+                className={`flex relative flex-row gap-24 w-full h-[85px]  justify-between max-xl:justify-center transition-all duration-300 ${
+                    scrolled || cleanPathname[0]
+                        ? "bg-white shadow-md text-black"
+                        : "bg-transparent text-white"
+                } ${cleanPathname[0] === "inicio" ? "fixed" : "sticky"}`}
+            >
                 <div className="w-[1240px] mx-auto flex relative flex-row justify-between items-center max-sm:justify-center">
                     <div className="w-[267px] h-[57px]">
                         <Link className="" to={"/"}>
                             <img
-                                src={logos?.principal_url}
+                                src={
+                                    scrolled || cleanPathname[0]
+                                        ? logos?.principal_url
+                                        : logos?.secundario_url
+                                }
                                 alt="Logo"
                                 className="w-full h-full object-contain"
                             />
@@ -896,15 +927,23 @@ export default function Navbar() {
                                     <div className="relative flex flex-row items-center gap-1">
                                         <Link
                                             onClick={() => setLinkInfo("")}
-                                            className="hover:text-gray-500 whitespace-nowrap"
+                                            className={` whitespace-nowrap ${
+                                                scrolled || cleanPathname[0]
+                                                    ? "hover:text-gray-500"
+                                                    : "hover:text-gray-200"
+                                            }`}
                                             to={drop.href}
                                         >
                                             {drop.id}
                                         </Link>
                                         {drop.chevron && (
                                             <img
-                                                className=""
-                                                src={chevronDown}
+                                                className="w-[13px] "
+                                                src={
+                                                    scrolled || cleanPathname[0]
+                                                        ? chevronDown
+                                                        : chevronDownWhite
+                                                }
                                                 alt="Chevron"
                                             />
                                         )}
@@ -927,7 +966,12 @@ export default function Navbar() {
                                                                 sub.title
                                                             )
                                                         }
-                                                        className="flex flex-row items-center justify-between px-2 border-b border-white hover:text-gray-700 py-1"
+                                                        className={`flex flex-row items-center justify-between px-2 border-b border-white hover:text-gray-700 py-1 ${
+                                                            scrolled ||
+                                                            cleanPathname[0]
+                                                                ? ""
+                                                                : "text-black"
+                                                        }`}
                                                         key={sub.title}
                                                         to={`${drop.href}`}
                                                     >

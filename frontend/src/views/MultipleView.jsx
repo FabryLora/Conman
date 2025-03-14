@@ -78,7 +78,7 @@ export default function MultipleView() {
     };
 
     return (
-        <div className="font-roboto-condensed max-w-[1240px] mx-auto max-sm:px-6 ">
+        <div className="font-roboto-condensed max-w-[1240px] mx-auto max-sm:px-6 mt-[125px]">
             <div className="flex flex-row gap-1 items-center justify-start -top-14 -left-24  max-lg:-left-0 max-w-[1240px] mx-auto py-10">
                 <Link to={"/"}>{primeraMayuscula(cleanPathname[0])}</Link>
                 <p>{">"}</p>

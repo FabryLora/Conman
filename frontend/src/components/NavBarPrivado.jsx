@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import barsIcon from "../assets/icons/bars-solid.svg";
 import chevronDownWhite from "../assets/icons/chevron-down-white.svg";
 import fbIcon from "../assets/icons/fbIcon.svg";
@@ -28,6 +28,18 @@ export default function NavbarPrivado() {
     const [cartProd, setCartProd] = useState(cart.length);
 
     const userMenu = useRef(null);
+
+    const location = useLocation();
+
+    const [cleanPathname, setCleanPathname] = useState(
+        location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
+    );
+
+    useEffect(() => {
+        setCleanPathname(
+            location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
+        );
+    }, [location]);
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -176,7 +188,8 @@ export default function NavbarPrivado() {
                                     )}
                                 <Link
                                     className={`${
-                                        linkInfo.title === selectedLink
+                                        linkInfo?.title?.toLowerCase() ===
+                                        cleanPathname[1]?.toLowerCase()
                                             ? "font-bold"
                                             : ""
                                     }`}

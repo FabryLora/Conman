@@ -58,6 +58,22 @@ class AdminController extends Controller
         ]);
     }
 
+    public function meunico(Request $request)
+    {
+        $admin = Auth::guard('admin')->user();
+
+        if (!$admin) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return response()->json([
+            'id' => $admin->id,
+            'user' => $admin,
+        ]);
+    }
+
+
+
     public function show(Request $request, $id)
     {
         return response()->json(Admin::find($id));

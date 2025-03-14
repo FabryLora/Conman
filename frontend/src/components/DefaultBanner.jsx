@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function DefaultBanner({ title, href, bannerImage }) {
     return (
-        <div className="h-[298px] flex justify-center relative w-full font-roboto-condensed bg-primary-blue text-white">
+        <div className="h-[425px] flex justify-center relative w-full font-roboto-condensed bg-primary-blue text-white">
             <img
                 className="absolute w-full h-full opacity-50"
                 src={bannerImage}

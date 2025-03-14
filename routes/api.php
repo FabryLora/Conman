@@ -38,11 +38,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
+
 Route::post('/sendcontact', [SendContactInfoController::class, 'sendReactEmail']);
 Route::post('/sendpedido', [SendPedidoController::class, 'sendReactEmail']);
 Route::put('/users/{id}', [AuthController::class, 'update']);
 Route::delete('/users/{id}', [AuthController::class, 'destroy']);
 Route::get('/me-admin', [AdminController::class, 'me']);
+
 Route::get('/allusers', [AuthController::class, 'index']);
 Route::apiResource('/contact-info', ContactInfoController::class);
 Route::apiResource('/nosotros-first', NosotrosFirstController::class);

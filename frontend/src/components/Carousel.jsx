@@ -5,7 +5,7 @@ const Carousel = () => {
     const { sliderInfo } = useStateContext();
 
     return (
-        <div className="relative w-full h-[750px] overflow-hidden">
+        <div className="relative w-full h-[800px] overflow-hidden">
             <div className="absolute inset-0 bg-black opacity-30 z-20"></div>
             {/* Contenedor de imágenes con transición */}
             <div className="absolute inset-0">
@@ -13,6 +13,7 @@ const Carousel = () => {
                     autoPlay
                     loop
                     muted
+                    preload="auto"
                     src={sliderInfo?.video}
                     className={` inset-0 w-full h-full object-cover object-bottom transition-opacity duration-700 ease-in-out`}
                 />

@@ -6,14 +6,24 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import conmanWhiteLogo from "../assets/logos/conman-white-logo.png";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Administrator() {
-    const { adminToken, setAdminToken, adminInfo } = useStateContext();
+    const {
+        adminToken,
+        setAdminToken,
+        fetchCurrentAdmin,
+        fetchAdminInfo,
+        currentAdmin,
+    } = useStateContext();
     const [sidebar, setSidebar] = useState(true);
+
+    useEffect(() => {
+        fetchAdminInfo();
+    }, []);
 
     const MotionFontAwesomeIcon = motion.create(FontAwesomeIcon);
     const MotionLink = motion.create(Link);
@@ -286,7 +296,7 @@ export default function Administrator() {
                     <div>
                         <div className="flex flex-row gap-2">
                             <div className="">
-                                <h2>{adminInfo[0]?.name.toUpperCase()}</h2>
+                                <h2>{currentAdmin?.name?.toUpperCase()}</h2>
                             </div>
                             <button
                                 className="relative "

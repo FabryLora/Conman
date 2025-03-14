@@ -12,8 +12,8 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'admin' => [ // Nuevo guard para admins
-            'driver' => 'session',
+        'admin' => [
+            'driver' => 'sanctum', // Asegúrate de que sea sanctum si usas tokens API
             'provider' => 'admins',
         ],
     ],
@@ -23,7 +23,7 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
-        'admins' => [ // Nuevo provider para admins
+        'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],

@@ -53,7 +53,7 @@ export default function LogosAdmin() {
                                     Logo Principal
                                 </label>
                                 <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 w-1/2">
-                                    <div className=" w-1/2 h-[200px]">
+                                    <div className=" w-1/2 h-[200px] bg-black bg-opacity-30">
                                         <img
                                             className="w-full h-full object-contain"
                                             src={logos?.principal_url}
@@ -101,7 +101,7 @@ export default function LogosAdmin() {
                                     Logo Secundario
                                 </label>
                                 <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 w-1/2">
-                                    <div className=" w-1/2 h-[200px]">
+                                    <div className=" w-1/2 h-[200px] bg-black bg-opacity-30">
                                         <img
                                             className="w-full h-full object-contain"
                                             src={logos?.secundario_url}
