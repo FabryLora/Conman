@@ -190,12 +190,20 @@ export default function NovedadesRow({ novedadesObject }) {
                 </td>
 
                 <td>
-                    <button
-                        className="bg-blue-500 rounded-md text-white py-2 px-6"
-                        onClick={() => setEditable(true)}
-                    >
-                        Editar
-                    </button>
+                    <div className="flex flex-col gap-3">
+                        <button
+                            className="bg-blue-500 rounded-md text-white py-2 px-6"
+                            onClick={() => setEditable(true)}
+                        >
+                            Editar
+                        </button>
+                        <button
+                            onClick={deleteGroup}
+                            className="bg-red-500 rounded-md text-white py-2 px-6"
+                        >
+                            Eliminar
+                        </button>
+                    </div>
                 </td>
             </tr>
         </>

@@ -2,7 +2,6 @@ export default function PedidoTemplate({
     cart,
     extraInfo,
     user,
-    currency,
     descuentoCliente,
 }) {
     return (
@@ -95,7 +94,15 @@ export default function PedidoTemplate({
                                     border: "1px solid #ddd",
                                 }}
                             >
-                                Precio x unidad
+                                Precio x unidad {"Pesos"}
+                            </th>
+                            <th
+                                style={{
+                                    padding: "10px",
+                                    border: "1px solid #ddd",
+                                }}
+                            >
+                                Precio x unidad {"USD"}
                             </th>
 
                             <th
@@ -147,11 +154,15 @@ export default function PedidoTemplate({
                                         border: "1px solid #ddd",
                                     }}
                                 >
-                                    $
-                                    {item.price?.toLocaleString("es-AR", {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2,
-                                    })}
+                                    ${item.price}
+                                </td>
+                                <td
+                                    style={{
+                                        padding: "10px",
+                                        border: "1px solid #ddd",
+                                    }}
+                                >
+                                    ${item.dolar_price}
                                 </td>
 
                                 <td
@@ -181,7 +192,9 @@ export default function PedidoTemplate({
                 <p>
                     <strong>Tipo de entrega:</strong> {extraInfo.tipo_entrega}
                 </p>
-
+                <h2>
+                    <strong>Pedido Pesos</strong>
+                </h2>
                 <div
                     style={{
                         backgroundColor: "#f2f2f2",
@@ -194,21 +207,55 @@ export default function PedidoTemplate({
                         <strong>Subtotal:</strong> ${extraInfo.subtotal}
                     </p>
                     <p>
-                        <strong>Descuento aplicado:</strong> $
+                        <strong>Descuento entrega:</strong> $
                         {extraInfo?.descuento}
+                    </p>
+                    <p>
+                        <strong>Descuento cliente:</strong> $
+                        {extraInfo?.descuentoCliente}
                     </p>
                     <p>
                         <strong>Subtotal con descuento:</strong> $
                         {extraInfo.subtotalDescuento}
                     </p>
-                    {currency !== "usd" && (
-                        <p>
-                            <strong>IVA:</strong> ${extraInfo.iva}
-                        </p>
-                    )}
+
+                    <p>
+                        <strong>IVA:</strong> ${extraInfo.iva}
+                    </p>
 
                     <p style={{ fontSize: "18px", fontWeight: "bold" }}>
                         <strong>Total del pedido:</strong> ${extraInfo.total}
+                    </p>
+                </div>
+                <h2>
+                    <strong>Pedido Dolares</strong>
+                </h2>
+                <div
+                    style={{
+                        backgroundColor: "#f2f2f2",
+                        padding: "10px",
+                        borderRadius: "5px",
+                        marginTop: "10px",
+                    }}
+                >
+                    <p>
+                        <strong>Subtotal:</strong> ${extraInfo.subtotalUSD}
+                    </p>
+                    <p>
+                        <strong>Descuento aplicado:</strong> $
+                        {extraInfo?.descuentoUSD}
+                    </p>
+                    <p>
+                        <strong>Descuento cliente:</strong> $
+                        {extraInfo?.descuentoClienteUSD}
+                    </p>
+                    <p>
+                        <strong>Subtotal con descuento:</strong> $
+                        {extraInfo.subtotalDescuentoUSD}
+                    </p>
+
+                    <p style={{ fontSize: "18px", fontWeight: "bold" }}>
+                        <strong>Total del pedido:</strong> ${extraInfo.totalUSD}
                     </p>
                 </div>
             </div>

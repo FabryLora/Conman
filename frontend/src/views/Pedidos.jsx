@@ -27,20 +27,32 @@ export default function Pedidos() {
     const [succID, setSuccID] = useState();
     const [currencyType, setCurrencyType] = useState("pesos");
     const [descuentoCliente, setDescuentoCliente] = useState(0);
+    const [subtotalUSD, setSubtotalUSD] = useState();
+    const [subtotalDescuentoUSD, setSubtotalDescuentoUSD] = useState();
+    const [descuentoUSD, setDescuentoUSD] = useState();
+    const [descuentoClienteUSD, setDescuentoClienteUSD] = useState(0);
+    const [totalFinalUSD, setTotalFinalUSD] = useState();
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
     useEffect(() => {
-        const isPesos = currencyType === "pesos";
-        const getPrice = (prod) => (isPesos ? prod.price : prod.dolar_price);
-
         // Cálculo del subtotal
-        const total = cart.reduce(
-            (acc, prod) => acc + getPrice(prod) * prod.additionalInfo.cantidad,
-            0
-        );
+        const total = cart
+            ?.filter((prod) => Number(prod?.dolar_price) <= 0)
+            ?.reduce(
+                (acc, prod) => acc + prod?.price * prod.additionalInfo.cantidad,
+                0
+            );
+
+        const totalUSD = cart
+            ?.filter((prod) => Number(prod?.dolar_price) > 0)
+            ?.reduce(
+                (acc, prod) =>
+                    acc + prod?.dolar_price * prod.additionalInfo.cantidad,
+                0
+            );
 
         // Obtener los descuentos individuales
         const pedidoDescuento = pedidosInfo?.descuento || 0;
@@ -51,23 +63,46 @@ export default function Pedidos() {
         let descuentoPedido = 0;
         let descuentoUsuario = 0;
 
+        let subtotalDescuentoCliente = total;
+
+        // dolares
+        let subtotalDescuentoUSD = totalUSD;
+        let descuentoPedidoUSD = 0;
+        let descuentoUsuarioUSD = 0;
+
+        let subtotalDescuentoClienteUSD = totalUSD;
+
         if (pedidoDescuento > 0 && tipo_entrega === "retiro cliente") {
             descuentoPedido = (subtotalDescuento * pedidoDescuento) / 100;
             subtotalDescuento -= descuentoPedido;
+            descuentoPedidoUSD = (subtotalDescuentoUSD * pedidoDescuento) / 100;
+            subtotalDescuentoUSD -= descuentoPedidoUSD;
         }
 
         if (usuarioDescuento > 0) {
-            descuentoUsuario = (subtotalDescuento * usuarioDescuento) / 100;
+            descuentoUsuario =
+                (subtotalDescuentoCliente * usuarioDescuento) / 100;
             subtotalDescuento -= descuentoUsuario;
+            descuentoUsuarioUSD =
+                (subtotalDescuentoClienteUSD * usuarioDescuento) / 100;
+            subtotalDescuentoUSD -= descuentoUsuarioUSD;
         }
 
         // Calcular el IVA solo si es en pesos
-        let iva = isPesos ? subtotalDescuento * 0.21 : 0;
+        let iva = subtotalDescuento * 0.21;
         let totalFinal = subtotalDescuento + iva;
+        let totalFinalUSD = subtotalDescuentoUSD;
 
         // Aplicar formato solo al final para mejorar rendimiento
         setSubtotal(
             total.toLocaleString("es-AR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            })
+        );
+
+        setSubtotalUSD(
+            totalUSD.toLocaleString("es-AR", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
             })
@@ -78,14 +113,32 @@ export default function Pedidos() {
                 maximumFractionDigits: 2,
             })
         );
+        setSubtotalDescuentoUSD(
+            subtotalDescuentoUSD.toLocaleString("es-AR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            })
+        );
         setDescuento(
             descuentoPedido.toLocaleString("es-AR", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
             })
         );
+        setDescuentoUSD(
+            descuentoPedidoUSD.toLocaleString("es-AR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            })
+        );
         setDescuentoCliente(
             descuentoUsuario.toLocaleString("es-AR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            })
+        );
+        setDescuentoClienteUSD(
+            descuentoUsuarioUSD.toLocaleString("es-AR", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
             })
@@ -98,6 +151,12 @@ export default function Pedidos() {
         );
         setTotalFinal(
             totalFinal.toLocaleString("es-AR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            })
+        );
+        setTotalFinalUSD(
+            totalFinalUSD.toLocaleString("es-AR", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
             })
@@ -179,6 +238,11 @@ export default function Pedidos() {
                 formProds.append("code", prod.code);
                 formProds.append("dolar_price", prod.dolar_price);
                 formProds.append("pedido_id", pedidoId);
+                formProds.append(
+                    "descuentoEntrega",
+                    pedidosInfo?.descuento || 0
+                );
+                formProds.append("descuentoCliente", userInfo?.discount || 0);
 
                 axiosClient.post(`/prodpedidos`, formProds, {
                     headers: {
@@ -195,9 +259,15 @@ export default function Pedidos() {
                         tipo_entrega: tipo_entrega,
                         subtotal: subtotal ? subtotal : 0,
                         descuento: descuento ? descuento : 0,
+                        descuentoCliente: descuentoCliente,
                         subtotalDescuento: subtotalDescuento,
                         iva: iva,
                         total: totalFinal,
+                        subtotalUSD: subtotalUSD ? subtotalUSD : 0,
+                        descuentoUSD: descuentoUSD ? descuentoUSD : 0,
+                        descuentoClienteUSD: descuentoClienteUSD,
+                        subtotalDescuentoUSD: subtotalDescuentoUSD,
+                        totalUSD: totalFinalUSD,
                     }}
                     user={userInfo}
                     currency={currencyType}
@@ -258,8 +328,8 @@ export default function Pedidos() {
                 )}
                 {succ && (
                     <div>
-                        <div className="fixed w-screen h-screen bg-black opacity-50 top-0 left-0 z-[100]"></div>
-                        <div className="z-[110] fixed transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-[642px] h-[343px] bg-white text-black shadow-lg flex flex-col items-center justify-evenly">
+                        <div className="fixed w-screen h-screen bg-black opacity-50 top-0 left-0"></div>
+                        <div className="fixed transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-[642px] h-[343px] bg-white text-black shadow-lg flex flex-col items-center justify-evenly">
                             <h1 className="font-bold text-[32px]">
                                 Pedido confirmado
                             </h1>
@@ -283,18 +353,18 @@ export default function Pedidos() {
             </AnimatePresence>
 
             <div className="grid  w-full  items-start col-span-2">
-                <div className="grid grid-cols-7 items-center justify-center bg-[#F5F5F5] h-[52px] text-center font-semibold max-sm:text-sm">
+                <div className="grid grid-cols-8 items-center justify-center bg-[#F5F5F5] h-[52px] text-center font-semibold max-sm:text-sm">
                     <p className="max-sm:hidden"></p>
                     <p className="text-left">Codigo</p>
                     <p className="text-left">Producto</p>
-                    <p>Precio x unidad</p>
-
+                    <p>Precio x unidad {"(Pesos)"}</p>
+                    <p>Precio x unidad {"(USD)"}</p>
                     <p>Descuento por cliente</p>
                     <p>Cantidad</p>
                     <p></p>
                 </div>
 
-                <div className="h-[300px] overflow-y-auto scrollbar-hide">
+                <div className="h-fit">
                     <AnimatePresence>
                         {cart.map((prod, index) => (
                             <motion.div
@@ -421,7 +491,7 @@ export default function Pedidos() {
                 </div>
             </div>
 
-            <div className="h-[206px] flex flex-col gap-3 max-sm:col-span-2 max-sm:order-2">
+            <div className="h-[206px] flex flex-col gap-3 col-span-2 max-sm:order-2">
                 <div className="">
                     <h2 className=" text-xl font-bold">
                         Escribinos un mensaje
@@ -440,26 +510,40 @@ export default function Pedidos() {
                 ></textarea>
             </div>
             <AnimatePresence>
-                <div className="h-fit border max-sm:col-span-2 max-sm:order-5">
+                <div className="h-full border max-sm:col-span-2 max-sm:order-5">
                     <div className="bg-[#EAEAEA]">
-                        <h2 className="p-3 text-xl font-bold">Pedido</h2>
+                        <h2 className="p-3 text-xl font-bold">
+                            Pedido en dolares
+                        </h2>
                     </div>
 
                     <div className="flex flex-col justify-between px-4 text-xl gap-6 py-6 border-b">
-                        {(pedidosInfo?.descuento > 0 ||
-                            (userInfo?.discount > 0 &&
-                                tipo_entrega === "retiro cliente")) && (
-                            <motion.div
-                                transition={{ ease: "linear" }}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -20 }}
-                                className="flex flex-row justify-between w-full"
-                            >
-                                <p>Subtotal {"(sin descuento)"}</p>
-                                <p>${subtotal}</p>
-                            </motion.div>
-                        )}
+                        {userInfo?.discount > 0 &&
+                            tipo_entrega !== "retiro cliente" && (
+                                <motion.div
+                                    transition={{ ease: "linear" }}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -20 }}
+                                    className="flex flex-row justify-between w-full"
+                                >
+                                    <p>Subtotal {"(sin descuento)"}</p>
+                                    <p>${subtotalUSD}</p>
+                                </motion.div>
+                            )}
+                        {tipo_entrega === "retiro cliente" &&
+                            pedidosInfo?.descuento > 0 && (
+                                <motion.div
+                                    transition={{ ease: "linear" }}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -20 }}
+                                    className="flex flex-row justify-between w-full"
+                                >
+                                    <p>Subtotal {"(sin descuento)"}</p>
+                                    <p>${subtotalUSD}</p>
+                                </motion.div>
+                            )}
                         <AnimatePresence>
                             {pedidosInfo?.descuento > 0 &&
                                 tipo_entrega === "retiro cliente" && (
@@ -468,46 +552,119 @@ export default function Pedidos() {
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         exit={{ opacity: 0, x: -20 }}
-                                        className="flex flex-row justify-between w-full text-green-500"
+                                        className="flex flex-row justify-between w-full"
                                     >
                                         <p>
                                             Descuento por retiro{" "}
                                             {`(${pedidosInfo?.descuento}%)`}
                                         </p>
-                                        <p className="">-${descuento}</p>
+                                        <p className="text-green-600">
+                                            -${descuentoUSD}
+                                        </p>
                                     </motion.div>
                                 )}
                         </AnimatePresence>
                         {userInfo?.discount > 0 && (
-                            <div className="flex flex-row justify-between w-full text-green-500">
+                            <div className="flex flex-row justify-between w-full">
                                 <p>
                                     Descuento cliente{" "}
                                     {`(${userInfo?.discount}%)`}
                                 </p>
-                                <p className="">-${descuentoCliente}</p>
+                                <p className="text-green-600">
+                                    -${descuentoClienteUSD}
+                                </p>
                             </div>
                         )}
-                        <motion.div
-                            transition={{ ease: "linear" }}
-                            className="flex flex-row justify-between w-full"
-                        >
+                        <div className="flex flex-row justify-between w-full">
+                            <p>Subtotal</p>
+                            <p>${subtotalDescuentoUSD}</p>
+                        </div>
+                        <div className="h-full text-white">a</div>
+                    </div>
+                    <div className="flex flex-row justify-between p-3">
+                        <p className="font-medium text-2xl">Total</p>
+                        <p className="text-2xl">${totalFinalUSD}</p>
+                    </div>
+                </div>
+            </AnimatePresence>
+            <AnimatePresence>
+                <div className="h-fit border max-sm:col-span-2 max-sm:order-5">
+                    <div className="bg-[#EAEAEA]">
+                        <h2 className="p-3 text-xl font-bold">
+                            Pedido en pesos
+                        </h2>
+                    </div>
+
+                    <div className="flex flex-col justify-between px-4 text-xl gap-6 py-6 border-b">
+                        {userInfo?.discount > 0 &&
+                            tipo_entrega !== "retiro cliente" && (
+                                <motion.div
+                                    transition={{ ease: "linear" }}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -20 }}
+                                    className="flex flex-row justify-between w-full"
+                                >
+                                    <p>Subtotal {"(sin descuento)"}</p>
+                                    <p>${subtotal}</p>
+                                </motion.div>
+                            )}
+                        {tipo_entrega === "retiro cliente" &&
+                            pedidosInfo?.descuento > 0 && (
+                                <motion.div
+                                    transition={{ ease: "linear" }}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -20 }}
+                                    className="flex flex-row justify-between w-full"
+                                >
+                                    <p>Subtotal {"(sin descuento)"}</p>
+                                    <p>${subtotal}</p>
+                                </motion.div>
+                            )}
+                        <AnimatePresence>
+                            {pedidosInfo?.descuento > 0 &&
+                                tipo_entrega === "retiro cliente" && (
+                                    <motion.div
+                                        transition={{ ease: "linear" }}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -20 }}
+                                        className="flex flex-row justify-between w-full"
+                                    >
+                                        <p>
+                                            Descuento por retiro{" "}
+                                            {`(${pedidosInfo?.descuento}%)`}
+                                        </p>
+                                        <p className="text-green-600">
+                                            -${descuento}
+                                        </p>
+                                    </motion.div>
+                                )}
+                        </AnimatePresence>
+                        {userInfo?.discount > 0 && (
+                            <div className="flex flex-row justify-between w-full">
+                                <p>
+                                    Descuento cliente{" "}
+                                    {`(${userInfo?.discount}%)`}
+                                </p>
+                                <p className="text-green-600">
+                                    -${descuentoCliente}
+                                </p>
+                            </div>
+                        )}
+                        <div className="flex flex-row justify-between w-full">
                             <p>Subtotal</p>
                             <p>${subtotalDescuento}</p>
-                        </motion.div>
+                        </div>
                         {currencyType === "pesos" && (
-                            <motion.div
-                                transition={{ ease: "linear" }}
-                                className="flex flex-row justify-between w-full"
-                            >
+                            <div className="flex flex-row justify-between w-full">
                                 <p>IVA 21%</p>
                                 <p>${iva}</p>
-                            </motion.div>
+                            </div>
                         )}
                     </div>
-                    <motion.div
-                        transition={{ ease: "linear" }}
-                        className="flex flex-row justify-between p-3"
-                    >
+                    <div className="flex flex-row justify-between p-3">
                         <p className="font-medium text-2xl">
                             Total{" "}
                             {currencyType === "pesos" && (
@@ -517,7 +674,7 @@ export default function Pedidos() {
                             )}
                         </p>
                         <p className="text-2xl">${totalFinal}</p>
-                    </motion.div>
+                    </div>
                 </div>
             </AnimatePresence>
             <div className="flex flex-col gap-3 max-sm:col-span-2 max-sm:order-4">
@@ -550,7 +707,7 @@ export default function Pedidos() {
                 </MotionLink>
                 <motion.button
                     whileHover={{ scale: 0.95 }}
-                    onClick={cart.length > 0 && handleSubmit}
+                    onClick={handleSubmit}
                     className={`w-full h-[47px] text-white ${
                         isSubmitting ? "bg-gray-400" : "bg-primary-red"
                     }`}

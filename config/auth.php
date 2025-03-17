@@ -13,7 +13,7 @@ return [
             'provider' => 'users',
         ],
         'admin' => [
-            'driver' => 'sanctum', // Asegúrate de que sea sanctum si usas tokens API
+            'driver' => 'session', // Cambiar de 'session' a 'sanctum'
             'provider' => 'admins',
         ],
     ],

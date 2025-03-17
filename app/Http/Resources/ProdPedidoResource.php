@@ -22,6 +22,8 @@ class ProdPedidoResource extends JsonResource
             "dolar_price" => $this->dolar_price,
             "cantidad" => $this->cantidad,
             "image" => $this->image,
+            'descuentoEntrega' => $this->descuentoEntrega,
+            'descuentoCliente' => $this->descuentoCliente,
         ];
     }
 }

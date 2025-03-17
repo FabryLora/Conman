@@ -5,8 +5,6 @@ import { Link, Navigate } from "react-router-dom";
 import shieldIcon from "../assets/icons/shield-icon.svg";
 
 import bannerCalidad from "../assets/inicio/pdc-banner.png";
-import iqnetLogo from "../assets/logos/iqnet-logo.png";
-import iramLogo from "../assets/logos/iram-logo.png";
 import Carousel from "../components/Carousel";
 import Footer from "../components/Footer";
 import HomeCategory from "../components/HomeCategory";
@@ -19,7 +17,6 @@ export default function Home() {
     const {
         nosotrosInicio,
         fetchNosotrosInicio,
-        categoryInicio,
         categoryInfo,
         calidadInicio,
         novedades,
@@ -119,6 +116,24 @@ export default function Home() {
                         <div className="flex flex-col items-start overflow-y-auto max-h-[700px] w-full ">
                             <style>
                                 {`
+                                    .custom-content h1 {
+                                        font-size: 48px !important; /* Cambia 3rem a 3rem */
+                                    }
+                                    .custom-content h2 {
+                                        font-size: 40px !important; /* Cambia 2.5rem a 2.5rem */
+                                    }
+                                    .custom-content h3 {
+                                        font-size: 24px !important; /* Cambia 1.5rem a 1.5rem */
+                                    }
+                                    .custom-content h4 {
+                                        font-size: 20px !important; /* Cambia 1.25rem a 1rem */
+                                    }
+                                    .custom-content h5 {
+                                        font-size: 18px !important; /* Cambia 1.25rem a 1rem */
+                                    }
+                                    .custom-content h6 {
+                                        font-size: 16px !important; /* Cambia 1.25rem a 1rem */
+                                    }
                                     .custom-content div > span {
                                         font-size: 16px !important; /* Cambia 1.25rem a 1rem */
                                     }
@@ -132,7 +147,7 @@ export default function Home() {
                                 dangerouslySetInnerHTML={{
                                     __html: nosotrosInicio?.text || "",
                                 }}
-                                className="custom-content font-roboto-condensed prose prose-sm sm:prose lg:prose-lg xl:prose-xl w-full min-w-full max-w-full"
+                                className="custom-content"
                             ></div>
                         </div>
                         <div className="">
@@ -161,17 +176,20 @@ export default function Home() {
                                 <img className="" src={shieldIcon} alt="" />
                             </div>
                             <h2 className="font-bold text-[40px]">
-                                Politicas de Calidad
+                                {calidadInicio?.title}
                             </h2>
-                            <p className="text-[16px] max-sm:px-5 max-sm:text-center">
-                                {calidadInicio?.text}
-                            </p>
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: calidadInicio?.text || "",
+                                }}
+                                className="text-[16px] max-sm:px-5 max-sm:text-center"
+                            />
                         </div>
 
                         <div className="relative flex flex-col gap-14 self-start pt-20 w-[242px] max-sm:self-center">
                             <div className="flex flex-row justify-between">
-                                <img src={iramLogo} alt="" />
-                                <img src={iqnetLogo} alt="" />
+                                <img src={calidadInicio?.imageOne} alt="" />
+                                <img src={calidadInicio?.imageTwo} alt="" />
                             </div>
                             <MotionLink
                                 initial={{ scale: 1 }}

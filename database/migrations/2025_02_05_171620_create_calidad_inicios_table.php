@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('calidad_inicios', function (Blueprint $table) {
             $table->id();
-            $table->text('text');
+            $table->string('title');
+            $table->string('imageOne');
+            $table->string('imageTwo');
+            $table->longText('text');
             $table->timestamps();
         });
     }

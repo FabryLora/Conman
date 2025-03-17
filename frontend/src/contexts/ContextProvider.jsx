@@ -98,6 +98,7 @@ export const ContextProvider = ({ children }) => {
     const [calidadInfo, setCalidadInfo] = useState({});
     const [userId, setUserId] = useState("");
     const [contactoProd, setContactoProd] = useState("");
+
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem("cart");
         return savedCart ? JSON.parse(savedCart) : [];
@@ -181,7 +182,7 @@ export const ContextProvider = ({ children }) => {
 
     const fetchCurrentAdmin = () => {
         axiosClient.get("/me-unico-admin").then(({ data }) => {
-            setCurrentAdmin(data.data[0]);
+            setCurrentAdmin(data[0]);
         });
     };
 

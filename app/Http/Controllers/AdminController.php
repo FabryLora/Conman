@@ -60,7 +60,7 @@ class AdminController extends Controller
 
     public function meunico(Request $request)
     {
-        $admin = Auth::guard('admin')->user();
+        $admin = auth()->user(); // Usa auth()->user() en lugar de Auth::guard('admin')->user()
 
         if (!$admin) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -71,6 +71,8 @@ class AdminController extends Controller
             'user' => $admin,
         ]);
     }
+
+
 
 
 

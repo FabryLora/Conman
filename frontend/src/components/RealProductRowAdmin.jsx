@@ -203,13 +203,7 @@ export default function RealProductRowAdmin({ productObject }) {
                 </div>
 
                 <div className="table-cell px-6 py-4 align-middle">
-                    <p>
-                        $
-                        {price?.toLocaleString("es-AR", {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                        })}
-                    </p>
+                    <p>${price}</p>
                 </div>
 
                 <div className="table-cell px-6 py-4 align-middle">

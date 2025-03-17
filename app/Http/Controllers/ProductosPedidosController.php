@@ -31,6 +31,8 @@ class ProductosPedidosController extends Controller
                 "dolar_price" => "required|numeric",
                 "cantidad" => "required|numeric",
                 "image" => "required|string",
+                'descuentoEntrega' => "required|nullable",
+                'descuentoCliente' => "required|nullable",
                 "pedido_id" => "required|exists:pedidos,id",
             ]
         );

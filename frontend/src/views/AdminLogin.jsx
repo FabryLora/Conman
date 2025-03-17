@@ -18,6 +18,7 @@ export default function AdminLogin() {
                 password: password,
             })
             .then(({ data }) => {
+                localStorage.setItem("adminNombre", user);
                 setAdminToken(data.adminToken);
             })
             .catch((error) => {
@@ -58,7 +59,7 @@ export default function AdminLogin() {
                         </div>
 
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="password">Contrasñe</label>
+                            <label htmlFor="password">Contraseña</label>
                             <input
                                 value={password}
                                 onChange={(ev) => setPassword(ev.target.value)}

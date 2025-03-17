@@ -12,6 +12,7 @@ import CargarTerminales from "./views/CargarTerminales";
 import CategoriasAdmin from "./views/CategoriasAdmin";
 import Contacto from "./views/Contacto";
 import ContactoAdmin from "./views/ContactoAdmin";
+import ContenidoAdmin from "./views/ContenidoAdmin";
 import DefaultLayout from "./views/DefaultLayout";
 import GeneralView from "./views/GeneralView";
 import Home from "./views/Home";
@@ -19,7 +20,6 @@ import InformacionAdmin from "./views/InformacionAdmin";
 import ListaDePrecios from "./views/ListaDePrecios";
 import ListaDePreciosAdmin from "./views/ListaDePreciosAdmin";
 import Login from "./views/Login";
-import LogosAdmin from "./views/LogosAdmin";
 import Metadatos from "./views/Metadatos";
 import MultipleView from "./views/MultipleView";
 import Nosotros from "./views/Nosotros";
@@ -175,8 +175,8 @@ const router = createBrowserRouter([
                 element: <ValoresAdmin />,
             },
             {
-                path: "/dashboard/logos",
-                element: <LogosAdmin />,
+                path: "/dashboard/contenido",
+                element: <ContenidoAdmin />,
             },
             {
                 path: "/dashboard/contenido",

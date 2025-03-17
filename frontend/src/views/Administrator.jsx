@@ -1,5 +1,6 @@
 import {
     faBars,
+    faChevronRight,
     faChevronUp,
     faHouse,
     faUser,
@@ -18,6 +19,7 @@ export default function Administrator() {
         fetchCurrentAdmin,
         fetchAdminInfo,
         currentAdmin,
+        nombreAdmin,
     } = useStateContext();
     const [sidebar, setSidebar] = useState(true);
 
@@ -49,13 +51,7 @@ export default function Administrator() {
             href: "#",
             subHref: [
                 { title: "Slider", href: "/dashboard/slider" },
-                { title: "Logos", href: "/dashboard/logos" },
-
-                {
-                    title: "Nosotros Inicio",
-                    href: "/dashboard/nosotros-inicio",
-                },
-                { title: "Calidad Inicio", href: "/dashboard/calidad-inicio" },
+                { title: "Contenido", href: "/dashboard/contenido" },
             ],
         },
         {
@@ -179,9 +175,10 @@ export default function Administrator() {
 
     const toggleDropdown = (id) => {
         setDropdowns((prevDropdowns) =>
-            prevDropdowns.map((drop) =>
-                drop.id === id ? { ...drop, open: !drop.open } : drop
-            )
+            prevDropdowns.map((drop) => ({
+                ...drop,
+                open: drop.id === id ? !drop.open : false,
+            }))
         );
     };
 
@@ -229,8 +226,17 @@ export default function Administrator() {
                                                     </Link>
                                                 </div>
                                                 <MotionFontAwesomeIcon
-                                                    size="lg"
-                                                    icon={faChevronUp}
+                                                    animate={{
+                                                        rotate: drop.open
+                                                            ? 90
+                                                            : 0,
+                                                    }}
+                                                    transition={{
+                                                        ease: "linear",
+                                                        duration: 0.1,
+                                                    }}
+                                                    size="xs"
+                                                    icon={faChevronRight}
                                                 />
                                             </button>
                                             <AnimatePresence>
@@ -240,7 +246,6 @@ export default function Administrator() {
                                                         animate={{
                                                             height: "fit-content",
                                                         }}
-                                                        exit={{ height: 0 }}
                                                         transition={{
                                                             ease: "linear",
                                                             duration: 0.2,
@@ -277,7 +282,7 @@ export default function Administrator() {
                 )}
             </AnimatePresence>
             <div className="w-full flex flex-col overflow-y-auto h-screen scrollbar-hide">
-                <div className="shadow-md py-3 flex flex-row justify-between items-center px-4 sticky top-0 bg-white">
+                <div className="shadow-md py-3 flex flex-row justify-between items-center px-4 sticky top-0 bg-white z-[1000]">
                     <div className="flex flex-row gap-3">
                         <button onClick={() => setSidebar(!sidebar)}>
                             <FontAwesomeIcon
@@ -296,7 +301,11 @@ export default function Administrator() {
                     <div>
                         <div className="flex flex-row gap-2">
                             <div className="">
-                                <h2>{currentAdmin?.name?.toUpperCase()}</h2>
+                                <h2>
+                                    {localStorage
+                                        .getItem("adminNombre")
+                                        ?.toUpperCase()}
+                                </h2>
                             </div>
                             <button
                                 className="relative "

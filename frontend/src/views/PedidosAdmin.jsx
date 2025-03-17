@@ -44,7 +44,7 @@ export default function PedidosAdmin() {
                     <p>Ver Pedido</p>
                 </div>
 
-                <div className="max-h-[800px] overflow-y-auto">
+                <div className="max-h-[90vh] overflow-y-auto">
                     {filteredPedidos.map((pedido, index) => (
                         <PedidosRowAdmin key={index} pedidoObject={pedido} />
                     ))}

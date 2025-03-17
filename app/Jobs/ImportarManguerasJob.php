@@ -26,13 +26,13 @@ class ImportarManguerasJob implements ShouldQueue
 
     public function handle()
     {
-        // Obtener el valor de "compra" desde la API
-        $response = Http::get('https://dolarapi.com/v1/dolares/oficial');
-        $dolarCompra = $response->successful() ? $response->json()['venta'] : null;
 
-        if (!$dolarCompra) {
-            throw new \Exception('No se pudo obtener el valor del dólar.');
-        }
+
+
+
+
+
+
 
         $filePath = Storage::path($this->archivoPath);
         $spreadsheet = IOFactory::load($filePath);
@@ -50,11 +50,12 @@ class ImportarManguerasJob implements ShouldQueue
             $most30 = $row['D'] ?? null;
             $imagen = $row['I'] ?? null;
 
+            // 📌 Si la columna A tiene texto y C está vacía, es un nuevo Product (por celda combinada)
             if (!empty($colA) && empty($most)) {
                 $currentProduct = Product::updateOrCreate(
-                    ['name' => $colA],
+                    ['name' => $colA], // Buscar por nombre
                     [
-                        'category_id' => 2,
+                        'category_id' => 2, // Ajusta según sea necesario
                         'description' => $colA,
                         'image' => null,
                         'file' => null,
@@ -63,7 +64,9 @@ class ImportarManguerasJob implements ShouldQueue
                 continue;
             }
 
+            // 📌 Si hay código en A y nombre en B, es un RealProduct asociado al último Product detectado
             if (!empty($colA) && !empty($colB) && $currentProduct) {
+                // Manejo de imagen
                 $imagenPath = null;
                 if ($imagen && filter_var($imagen, FILTER_VALIDATE_URL)) {
                     $imagenData = Http::get($imagen)->body();
@@ -74,14 +77,15 @@ class ImportarManguerasJob implements ShouldQueue
                     $imagenPath = $imagen;
                 }
 
+                // Crear o actualizar RealProduct
                 RealProduct::updateOrCreate(
                     [
                         'code' => $colA,
-
+                        'product_id' => $currentProduct->id, // Buscar por código y producto asociado
                     ],
                     [
                         'name'        => $colB,
-                        'price'       => $most30 ? ((float) $most30 * (float) $dolarCompra) : null,
+                        'price'       => 0,
                         'dolar_price' => (float) $most30,
                         'image'       => $imagenPath,
                         'discount'    => 0,

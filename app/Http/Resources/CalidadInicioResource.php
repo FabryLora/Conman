@@ -17,6 +17,9 @@ class CalidadInicioResource extends JsonResource
         return [
             "id" => $this->id,
             "text" => $this->text,
+            "imageOne" => $this->imageOne ? url("storage/" . $this->imageOne) : null,
+            "imageTwo" => $this->imageTwo ? url("storage/" . $this->imageTwo) : null,
+            "title" => $this->title,
         ];
     }
 }

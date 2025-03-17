@@ -71,7 +71,7 @@ export default function SliderAdmin() {
                 className="p-5 flex flex-col justify-between h-fit"
             >
                 <div className="space-y-12">
-                    <div className="border-b border-gray-900/10 pb-12">
+                    <div className=" border-gray-900/10 pb-12">
                         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div className="sm:col-span-4">
                                 <label
@@ -148,7 +148,7 @@ export default function SliderAdmin() {
                                 </label>
                                 <div className="mt-2 flex flex-row items-center">
                                     <label
-                                        className="cursor-pointer bg-indigo-500   rounded-md text-white px-3 py-1.5 text-base outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 "
+                                        className="cursor-pointer bg-primary-blue   rounded-md text-white px-3 py-1.5 text-base outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 "
                                         htmlFor="video"
                                     >
                                         Elegir Video
@@ -174,10 +174,10 @@ export default function SliderAdmin() {
                             </div>
                         </div>
                     </div>
-                    <div className=" flex items-center justify-end gap-x-6">
+                    <div className=" flex items-center justify-start ">
                         <button
                             type="submit"
-                            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            className="rounded-md bg-primary-blue px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         >
                             Guardar
                         </button>

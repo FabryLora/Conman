@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('code');
             $table->string('price');
             $table->string('dolar_price');
-
+            $table->string('discount');
             $table->string("cantidad");
             $table->foreignIdFor(Pedido::class, "pedido_id")->constrained();
             $table->timestamps();
