@@ -123,12 +123,49 @@ export default function MultipleView() {
                     </div>
                 </div>
                 <div>
-                    <div className="flex flex-col justify-between h-full">
-                        <div>
+                    <div className="flex flex-col justify-between h-full gap-5">
+                        <div className="flex flex-col gap-4">
                             <h2 className="font-bold text-[32px]">
                                 {productInfo?.name}
                             </h2>
-                            <p>{productInfo?.description}</p>
+                            <div className="h-fit">
+                                <div className="h-fit overflow-y-auto scrollbar-hide">
+                                    <table className="border-y w-full">
+                                        <thead>
+                                            <tr className="border-b bg-gray-200">
+                                                <td className="p-2">CODIGO</td>
+                                                <td className="p-2">NOMBRE</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="h-fit ">
+                                            {realProducts
+                                                ?.filter(
+                                                    (realProduct) =>
+                                                        realProduct?.product
+                                                            ?.name ===
+                                                        productInfo?.name
+                                                )
+                                                ?.map((cosas, index) => (
+                                                    <tr
+                                                        key={cosas?.id}
+                                                        className={
+                                                            index % 2 === 0
+                                                                ? "bg-gray-100"
+                                                                : "bg-white"
+                                                        }
+                                                    >
+                                                        <td className="p-2">
+                                                            {cosas?.code}
+                                                        </td>
+                                                        <td className="p-2">
+                                                            {cosas?.name}
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                         <div className="flex flex-row gap-10">
                             {productInfo?.file_url && (
@@ -160,43 +197,6 @@ export default function MultipleView() {
                             alt=""
                         />
                     )}
-                </div>
-                <div>
-                    <div className="max-h-[598px] overflow-y-auto scrollbar-hide">
-                        <table className="border-y w-full">
-                            <thead>
-                                <tr className="border-b bg-gray-200">
-                                    <td className="p-2">CODIGO</td>
-                                    <td className="p-2">NOMBRE</td>
-                                </tr>
-                            </thead>
-                            <tbody className="h-fit ">
-                                {realProducts
-                                    ?.filter(
-                                        (realProduct) =>
-                                            realProduct?.product?.name ===
-                                            productInfo?.name
-                                    )
-                                    ?.map((cosas, index) => (
-                                        <tr
-                                            key={cosas?.id}
-                                            className={
-                                                index % 2 === 0
-                                                    ? "bg-gray-100"
-                                                    : "bg-white"
-                                            }
-                                        >
-                                            <td className="p-2">
-                                                {cosas?.code}
-                                            </td>
-                                            <td className="p-2">
-                                                {cosas?.name}
-                                            </td>
-                                        </tr>
-                                    ))}
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
             </div>
             <WhatsappComponent />

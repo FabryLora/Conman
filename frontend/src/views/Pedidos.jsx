@@ -518,19 +518,20 @@ export default function Pedidos() {
                     </div>
 
                     <div className="flex flex-col justify-between px-4 text-xl gap-6 py-6 border-b">
-                        {userInfo?.discount > 0 &&
-                            tipo_entrega !== "retiro cliente" && (
-                                <motion.div
-                                    transition={{ ease: "linear" }}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -20 }}
-                                    className="flex flex-row justify-between w-full"
-                                >
-                                    <p>Subtotal {"(sin descuento)"}</p>
-                                    <p>${subtotalUSD}</p>
-                                </motion.div>
-                            )}
+                        {console.log(userInfo?.discount, tipo_entrega)}
+
+                        {userInfo?.discount > 0 && (
+                            <motion.div
+                                transition={{ ease: "linear" }}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -20 }}
+                                className="flex flex-row justify-between w-full"
+                            >
+                                <p>Subtotal {"(sin descuento)"}</p>
+                                <p>${subtotalUSD}</p>
+                            </motion.div>
+                        )}
                         {tipo_entrega === "retiro cliente" &&
                             pedidosInfo?.descuento > 0 && (
                                 <motion.div
@@ -596,19 +597,18 @@ export default function Pedidos() {
                     </div>
 
                     <div className="flex flex-col justify-between px-4 text-xl gap-6 py-6 border-b">
-                        {userInfo?.discount > 0 &&
-                            tipo_entrega !== "retiro cliente" && (
-                                <motion.div
-                                    transition={{ ease: "linear" }}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -20 }}
-                                    className="flex flex-row justify-between w-full"
-                                >
-                                    <p>Subtotal {"(sin descuento)"}</p>
-                                    <p>${subtotal}</p>
-                                </motion.div>
-                            )}
+                        {userInfo?.discount > 0 && (
+                            <motion.div
+                                transition={{ ease: "linear" }}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -20 }}
+                                className="flex flex-row justify-between w-full"
+                            >
+                                <p>Subtotal {"(sin descuento)"}</p>
+                                <p>${subtotal}</p>
+                            </motion.div>
+                        )}
                         {tipo_entrega === "retiro cliente" &&
                             pedidosInfo?.descuento > 0 && (
                                 <motion.div
